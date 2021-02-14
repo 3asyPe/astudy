@@ -58,7 +58,7 @@
         <input class="header-search" type="text" name="header-search" placeholder="Search for anything">
         <a href="basket.html" class="header-basket"><img src="assets/images/basket-icon.svg" alt="Alternate Text"></a>
         <a href="#" class="btn-empty header-btn-empty">Feedback</a>
-        <a class="btn-blue header-btn-blue open-modal" data-openmodal="modal-form">Personal account</a>
+        <a class="btn-blue header-btn-blue open-modal" (click)="onOpenAuthModal()">Personal account</a>
     </div>
 
     <div class="header-mobile">
@@ -66,12 +66,12 @@
         <a href="index.html" class="header-logo"><img src="assets/images/header-logo.png" alt="Alternate Text" width="73.2px" height="30px"></a>
         <input type="text" name="search" class="header-mobile-search">
 
-        <div class="mobile-menu-wrap" [ngClass]="{'active': menuOpened}">
-            <div class="mobile-menu-box">
+        <div class="mobile-menu-wrap" [ngClass]="{'active': menuOpened}" (click)="onCloseMenu()">
+            <div class="mobile-menu-box" (click)="$event.stopPropagation()">
                 <div class="mobile-menu-block">
                     <ul class="header-mobile-links">
-                        <li><a class="open-modal open-form" data-formid="0" data-openmodal="modal-form">Sign in</a></li>
-                        <li><a class="open-modal open-form" data-formid="1" data-openmodal="modal-form">Sign up</a></li>
+                        <li><a class="open-modal open-form" (click)="onOpenAuthSignInModal()">Sign in</a></li>
+                        <li><a class="open-modal open-form" (click)="onOpenAuthSignUpModal()">Sign up</a></li>
                     </ul>
                 </div>
                 <div class="mobile-menu-block">

@@ -1,0 +1,72 @@
+<div class="modal" [ngStyle]="{'display': modalOpened ? 'flex' : 'none'}" (click)="onCloseModal()">
+    <span class="close-modal" (click)="onCloseModal()">×</span>
+    <div class="modal-block modal-form" style="display: block;" (click)="$event.stopPropagation()">
+        <div class="block-form">
+            <div class="come-in-box">
+                <h3>Personal account</h3>
+                <ul class="come-in-navigation">
+                    <li class="come-nav-btn" [ngClass]="{'active': signInMode}" (click)="onSignInModeChange()"><span>Sign in</span></li>
+                    <li class="come-nav-btn" [ngClass]="{'active': !signInMode}" (click)="onSignUpModeChange()"><span>Sign up</span></li>
+                </ul>
+                <div class="come-in-tab">
+                    <form (ngSubmit)="onSignInSubmit(signInForm)" #signInForm="ngForm" class="come-in-block" [ngClass]="{'active': signInMode}">
+                        <input class="input" type="email" ngModel name="email"
+                                placeholder="Email address" required>
+                        <input class="input" type="password" ngModel name="password"
+                                placeholder="Password" required minlength="8">
+                        <div class="come-in-info">
+                            <a class="forgot-password-btn">Forgot your password?</a>
+                        </div>
+                        <button class="btn-blue" [disabled]="signInForm.invalid" >Sign in</button>
+                        <div class="social-come-in">
+                            <p class="social-title"><span>Or sign in using</span></p>
+                            <ul class="social-comes-btn">
+                                <li><a href="#"><img src="assets/images/social-icon-1.svg" alt="Alternate Text"></a></li>
+                                <li><a href="#"><img src="assets/images/social-icon-2.svg" alt="Alternate Text"></a></li>
+                                <li><a href="#"><img src="assets/images/social-icon-3.svg" alt="Alternate Text"></a></li>
+                            </ul>
+                        </div>
+                    </form>
+                    <form (ngSubmit)="onSignUpSubmit(signUpForm)" #signUpForm="ngForm" class="come-in-block" [ngClass]="{'active': !signInMode}">
+                        <input class="input" type="text" ngModel name="name"
+                                placeholder="Full name" required>
+                        <input class="input" type="email" ngModel name="email"
+                                placeholder="Email address" required>
+                                <input class="input" type="password" ngModel name="password"
+                                placeholder="Password" required minlength="8">
+                        <div class="come-in-info">
+                            <label class="checkbox">
+                                <input type="checkbox" name="marketingPref" ngModel>
+                                <span>Yes, I want to receive newsletters with exclusive offers, personalized recommendations, and training tips</span>
+                            </label>
+                        </div>
+                        <button class="btn-blue" [disabled]="signUpForm.invalid">Sign up</button>
+                        <div class="social-come-in">
+                            <p class="social-title"><span>Or sign up using</span></p>
+                            <ul class="social-comes-btn">
+                                <li><a href="#"><img src="assets/images/social-icon-1.svg" alt="Alternate Text"></a></li>
+                                <li><a href="#"><img src="assets/images/social-icon-2.svg" alt="Alternate Text"></a></li>
+                                <li><a href="#"><img src="assets/images/social-icon-3.svg" alt="Alternate Text"></a></li>
+                            </ul>
+                            <p class="registration-conditions">
+                                By signing up, you accept our <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="forgot-password-block">
+                <h3>Восстановление пароля</h3>
+                <div class="password-recovery-email">
+                    <input class="input" type="text" name="email" placeholder="Электронная почта" required="">
+                    <button class="btn-blue reset-pass-btn">Сбросить пароль</button>
+                </div>
+                <form action="#" method="post" class="password-recovery-new">
+                    <input class="input" type="password" name="password" placeholder="Введите новый пароль" required="">
+                    <input class="input" type="password" name="verificationPass" placeholder="Повторите  новый пароль" required="">
+                    <button class="btn-blue">Изменить пароль</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

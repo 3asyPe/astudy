@@ -1,0 +1,8 @@
+.come-in-info{
+    justify-content: center;
+}
+
+button:disabled{
+    opacity: 0.7;
+    pointer-events: none;
+}
