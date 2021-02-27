@@ -1,4 +1,4 @@
-<header class="header">
+<header class="header" [ngClass]="{'header-signed': user !== null}">
 
     <div class="header-desctop">
         <a routerLink="/" class="header-logo"><img src="assets/images/header-logo.png" alt="Alternate Text" width="73.2px" height="30px"></a>
@@ -56,9 +56,58 @@
             </div>
         </div>
         <input class="header-search" type="text" name="header-search" placeholder="Search for anything">
-        <a href="basket.html" class="header-basket"><img src="assets/images/basket-icon.svg" alt="Alternate Text"></a>
+        <a href="#" class="header-link">My courses</a>
+        <ul class="header-icons-btn">
+            <li *ngIf="user !== null"><a href="#" class="header-bell"><img src="assets/images/bell-icon.svg" alt="Alternate Text"></a></li>
+            <li *ngIf="user !== null"><a href="#" class="header-like"><img src="assets/images/header-like.svg" alt="Alternate Text"></a></li>
+            <li><a href="basket.html" class="header-basket"><img src="assets/images/basket-icon.svg" alt="Alternate Text"></a></li>
+        </ul>
         <a href="#" class="btn-empty header-btn-empty">Feedback</a>
-        <a class="btn-blue header-btn-blue open-modal" (click)="onOpenAuthModal()">Personal account</a>
+        <a class="btn-blue header-btn-blue open-modal" (click)="onOpenAuthModal()" *ngIf="user === null">Personal account</a>
+        <div class="header-user-menu btn-header-menu" *ngIf="user !== null">
+            <div class="header-user-photo" >
+                <img src="assets/images/user-photo.jpg" alt="Alternate Text" class="user-link">
+            </div>
+            <div class="header-menu-box">
+                <div class="header-user-content">
+                    <div class="header-user-top">
+                        <div class="user-photo">
+                            <img src="assets/images/user-photo.jpg" alt="Alternate Text">
+                        </div>
+                        <content>
+                            <h4>Serg</h4>
+                            <p>Serg@gmail.com</p>
+                        </content>
+                    </div>
+                    <ul class="user-links">
+                        <li>
+                            <a class="user-link" href="#">My courses</a>
+                            <span class="user-link-count">1</span>
+                        </li>
+                        <li><a class="user-link" href="#">My cart</a></li>
+                        <li><a class="user-link" href="#">Wishlist</a></li>
+                    </ul>
+                    <ul class="user-links">
+                        <li>
+                            <a class="user-link" href="#">Notifications</a>
+                            <span class="user-link-count">1</span>
+                        </li>
+                    </ul>
+                    <ul class="user-links">
+                        <li><a class="user-link" href="#">Account settings</a></li>
+                        <li><a class="user-link" href="#">Purchase history</a></li>
+                    </ul>
+                    <ul class="user-links">
+                        <li><a class="user-link" href="#">Public profile</a></li>
+                        <li><a class="user-link" href="#">Edit profile</a></li>
+                    </ul>
+                    <ul class="user-links">
+                        <li><a class="user-link" href="#">Help</a></li>
+                        <li><a class="user-link" (click)="onLogout()">Log out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="header-mobile">
@@ -67,15 +116,56 @@
         <input type="text" name="search" class="header-mobile-search">
 
         <div class="mobile-menu-wrap" [ngClass]="{'active': menuOpened}" (click)="onCloseMenu()">
-            <div class="mobile-menu-box" (click)="$event.stopPropagation()">
+            <div class="mobile-menu-box" (click)="$event.stopPropagation()" [ngClass]="{'overflow-hidden': mobileNextMenuOpened}">
                 <div class="mobile-menu-block">
-                    <ul class="header-mobile-links">
+                    <ul class="header-mobile-links" *ngIf="user === null">
                         <li><a class="open-modal open-form" (click)="onOpenAuthSignInModal()">Sign in</a></li>
                         <li><a class="open-modal open-form" (click)="onOpenAuthSignUpModal()">Sign up</a></li>
                     </ul>
+                    <div  class="header-user-top open-next-menu" *ngIf="user !== null" (click)="onOpenMobileNextMenu()">
+                        <div class="user-photo">
+                            <img src="assets/images/user-photo.jpg" alt="Alternate Text">
+                        </div>
+                        <content>
+                            <h4>Serg</h4>
+                            <p>Serg@gmail.com</p>
+                        </content>
+                    </div>
+                    <div class="mobile-menu-box" *ngIf="user !== null" [ngClass]="{'active': mobileNextMenuOpened}">
+                        <div class="back-menu-btn" (click)="onCloseMobileNextMenu()">Menu</div>
+                        <div class="mobile-menu-block">
+                            <ul class="user-links">
+                                <li>
+                                    <a href="#">My courses</a>
+                                    <span class="user-link-count">1</span>
+                                </li>
+                                <li><a href="#">My cart</a></li>
+                                <li><a href="#">Wishlist</a></li>
+                            </ul>
+                            <ul class="user-links">
+                                <li>
+                                    <a href="#">Notification</a>
+                                    <span class="user-link-count">1</span>
+                                </li>
+                            </ul>
+                            <ul class="user-links">
+                                <li><a href="#">Account settings</a></li>
+                                <li><a href="#">Purchase history</a></li>
+                            </ul>
+                            <ul class="user-links">
+                                <li><a href="#">Public profile</a></li>
+                                <li><a href="#">Edit profile</a></li>
+                            </ul>
+                            <ul class="user-links">
+                                <li><a href="#">Help</a></li>
+                                <li><a (click)="onLogout()">Log out</a></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
                 <div class="mobile-menu-block">
                     <ul class="mobile-menu-list">
+                        <div class="mobile-menu-title">Most popular</div>
                         <li><a href="index.html"><span class="mobile-menu-name">JavaScript</span></a></li>
                         <li><a href="index.html"><span class="mobile-menu-name">React</span></a></li>
                         <li><a href="index.html"><span class="mobile-menu-name">Angular</span></a></li>

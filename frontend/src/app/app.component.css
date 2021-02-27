@@ -607,7 +607,8 @@
     top: 15px;
     left: 0;
     z-index: 20;
-    padding-top: 30px;
+    margin-top: 25px;
+    padding-top: 5px;
   }
   .categories-menu {
     margin: 0 12px;
@@ -818,7 +819,7 @@
   .header-mobile-links li:not(:last-child) {
     margin-bottom: 12px;
   }
-  .mobile-menu-list lh {
+  .mobile-menu-title {
     display: block;
     color: #8D8D96;
     font-weight: 600;
@@ -3892,7 +3893,7 @@
     height: 80px;
   }
   .header.header-signed .header-search {
-    width: calc(100% - 950px);
+    width: calc(100% - 800px);
   }
   .header-link {
     font-weight: 700;
@@ -3940,7 +3941,8 @@
   .header-user-menu .header-menu-box {
     left: auto;
     right: 0;
-    padding-top: 33px;
+    margin-top: 25px;
+    padding-top: 5px;
   }
   .header-user-content {
     width: 250px;
@@ -3953,6 +3955,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    cursor: pointer;
   }
   .header-user-top content {
     width: calc(100% - 80px);

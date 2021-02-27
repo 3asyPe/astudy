@@ -1,21 +1,32 @@
-import { ThrowStmt } from '@angular/compiler';
-import { Component, OnInit } from '@angular/core';
-import { EventManager } from '@angular/platform-browser';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
+import { User } from '../auth/user.model';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
 
   menuOpened = false;
+  mobileNextMenuOpened = false;
+  user: User|null = null;
+  private userSub!: Subscription;
 
   constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
+    this.userSub = this.authService.user.subscribe(
+      user => {
+        this.user = user
+      }
+    )
+  }
 
+  onLogout() {
+    this.authService.logout()
   }
 
   onOpenMenu(){
@@ -24,6 +35,15 @@ export class HeaderComponent implements OnInit {
 
   onCloseMenu(){
     this.menuOpened = false;
+  }
+
+  onOpenMobileNextMenu() {
+    console.log("open")
+    this.mobileNextMenuOpened = true;
+  }
+
+  onCloseMobileNextMenu() {
+    this.mobileNextMenuOpened = false;
   }
 
   onOpenAuthModal() {
@@ -39,6 +59,10 @@ export class HeaderComponent implements OnInit {
   onOpenAuthSignUpModal() {
     this.onCloseMenu()
     this.authService.openSignUpModal()
+  }
+
+  ngOnDestroy() {
+    this.authService.user.unsubscribe()
   }
 
 }
