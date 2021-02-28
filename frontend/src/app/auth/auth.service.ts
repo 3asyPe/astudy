@@ -85,10 +85,20 @@ export class AuthService {
 
     autoLogin() {
         const userData = localStorage.getItem('userData');
-        if (userData){
-            const user: User = JSON.parse(userData)
-            this.user.next(user)
+        if (!userData){
+            return
         }
+
+        const parsedData = JSON.parse(userData)
+        console.log(parsedData)
+        this.user.next(
+            new User(
+                parsedData.email,
+                parsedData.id,
+                parsedData.isAdmin,
+                parsedData._token,
+            )
+        )
     }
 
     private handleAuthentication(authResponse: AuthResponse) {

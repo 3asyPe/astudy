@@ -7,6 +7,7 @@ export class User {
     }
 
     get token() {
+        console.log("GETTER")
         return this._token
     }
 }
