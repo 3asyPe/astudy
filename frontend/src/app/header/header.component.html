@@ -1,7 +1,7 @@
 <header class="header" [ngClass]="{'header-signed': user !== null}">
 
     <div class="header-desctop">
-        <a routerLink="/" class="header-logo"><img src="assets/images/header-logo.png" alt="Alternate Text" width="73.2px" height="30px"></a>
+        <a routerLink="/" class="header-logo"><img src="assets/images/custom-header-logo.png" alt="Alternate Text" width="73.2px" height="30px"></a>
         <div class="categories-menu btn-header-menu">
             <div class="categories-menu-title">Categories</div>
             <div class="categories-main-menu header-menu-box">
@@ -13,42 +13,42 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a routerLink="/courses/javascript">
                             <span class="menu-name">JavaScript</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a routerLink="/courses/react">
                             <span class="menu-name">React</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a routerLink="/courses/angular">
                             <span class="menu-name">Angular</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a routerLink="/courses/css">
                             <span class="menu-name">CSS</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a routerLink="/courses/php">
                             <span class="menu-name">PHP</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a routerLink="/courses/nodejs">
                             <span class="menu-name">Node.Js</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a routerLink="/courses/python">
                             <span class="menu-name">Python</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a routerLink="/courses/wordpress">
                             <span class="menu-name">WordPress</span>
                         </a>
                     </li>
@@ -112,7 +112,7 @@
 
     <div class="header-mobile">
         <div class="open-mobile-menu" (click)="onOpenMenu()"><img src="assets/images/hamburger-menu.svg" alt="Alternate Text"></div>
-        <a href="index.html" class="header-logo"><img src="assets/images/header-logo.png" alt="Alternate Text" width="73.2px" height="30px"></a>
+        <a href="index.html" class="header-logo"><img src="assets/images/custom-header-logo.png" alt="Alternate Text" width="73.2px" height="30px"></a>
         <input type="text" name="search" class="header-mobile-search">
 
         <div class="mobile-menu-wrap" [ngClass]="{'active': menuOpened}" (click)="onCloseMenu()">
@@ -166,14 +166,14 @@
                 <div class="mobile-menu-block">
                     <ul class="mobile-menu-list">
                         <div class="mobile-menu-title">Most popular</div>
-                        <li><a href="index.html"><span class="mobile-menu-name">JavaScript</span></a></li>
-                        <li><a href="index.html"><span class="mobile-menu-name">React</span></a></li>
-                        <li><a href="index.html"><span class="mobile-menu-name">Angular</span></a></li>
-                        <li><a href="index.html"><span class="mobile-menu-name">CSS</span></a></li>
-                        <li><a href="index.html"><span class="mobile-menu-name">PHP</span></a></li>
-                        <li><a href="index.html"><span class="mobile-menu-name">Node.Js</span></a></li>
-                        <li><a href="index.html"><span class="mobile-menu-name">Python</span></a></li>
-                        <li><a href="index.html"><span class="mobile-menu-name">WordPress</span></a></li>
+                        <li><a routerLink="/courses/javascript" (click)="onCloseMenu()"><span class="mobile-menu-name">JavaScript</span></a></li>
+                        <li><a routerLink="/courses/react" (click)="onCloseMenu()"><span class="mobile-menu-name">React</span></a></li>
+                        <li><a routerLink="/courses/angular" (click)="onCloseMenu()"><span class="mobile-menu-name">Angular</span></a></li>
+                        <li><a routerLink="/courses/css" (click)="onCloseMenu()"><span class="mobile-menu-name">CSS</span></a></li>
+                        <li><a routerLink="/courses/php" (click)="onCloseMenu()"><span class="mobile-menu-name">PHP</span></a></li>
+                        <li><a routerLink="/courses/nodejs" (click)="onCloseMenu()"><span class="mobile-menu-name">Node.Js</span></a></li>
+                        <li><a routerLink="/courses/python" (click)="onCloseMenu()"><span class="mobile-menu-name">Python</span></a></li>
+                        <li><a routerLink="/courses/wordpress" (click)="onCloseMenu()"><span class="mobile-menu-name">WordPress</span></a></li>
                     </ul>
                 </div>
                 <div class="mobile-menu-block">
