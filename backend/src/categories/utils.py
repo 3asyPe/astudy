@@ -1,0 +1,6 @@
+import enum
+
+
+class CategoryErrorMessages(enum.Enum):
+    CATEGORY_DOES_NOT_EXIST_ERROR = "CATEGORY_DOES_NOT_EXIST_ERROR"
+    REQUEST_FIELDS_ERROR = "REQUEST_FIELDS_ERROR"
