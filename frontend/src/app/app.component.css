@@ -2441,7 +2441,7 @@
     width: 105px;
   }
   .accordion.active .accordion-btn:after {
-    content: "Ð¡Ð²ÐµÑ€Ð½ÑƒÑ‚ÑŒ";
+    content: "Show less";
   }
   .accordion.active .accordion-btn:before {
     top: 8px;
@@ -2457,7 +2457,7 @@
     transition: 0.3s;
   }
   .accordion-btn:after {
-    content: "Ð Ð°Ð·Ð²ÐµÑ€Ð½ÑƒÑ‚ÑŒ";
+    content: "Show more";
   }
   .accordion-btn:before {
     content: '';
@@ -2605,7 +2605,7 @@
     position: relative;
   }
   .faq-wrap.faq-cource .faq-title p span:before {
-    content: 'â€¢';
+    content: '•';
     margin-right: 5px;
   }
   .faq-wrap.faq-cource .faq-title:before {
@@ -2889,7 +2889,7 @@
     margin-right: 7px;
   }
   .review-answer-info p span:after {
-    content: 'â€¢';
+    content: '•';
     margin-left: 7px;
   }
   .review-answer-content {

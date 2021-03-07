@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { CategoryComponent } from './category/category.component';
+import { CourseComponent } from './course/course.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { CategoryComponent } from './category/category.component';
     HeaderComponent,
     HomeComponent,
     AuthComponent,
-    CategoryComponent
+    CategoryComponent,
+    CourseComponent
   ],
   imports: [
     BrowserModule,
