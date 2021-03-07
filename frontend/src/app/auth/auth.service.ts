@@ -90,7 +90,6 @@ export class AuthService {
         }
 
         const parsedData = JSON.parse(userData)
-        console.log(parsedData)
         this.user.next(
             new User(
                 parsedData.email,
@@ -109,8 +108,6 @@ export class AuthService {
             authResponse.token
         );
         this.user.next(user)
-        console.log(user)
-        console.log(JSON.stringify(user))
         localStorage.setItem('userData', JSON.stringify(user));
     }
 

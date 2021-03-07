@@ -43,7 +43,6 @@ export class AuthComponent implements OnInit, OnDestroy {
   }
 
   onSignInSubmit(form: NgForm) {
-    console.log(form)
     this.userSub = this.authService.signin(
       form.value.email,
       form.value.password,
@@ -51,7 +50,6 @@ export class AuthComponent implements OnInit, OnDestroy {
   }
 
   onSignUpSubmit(form: NgForm) {
-    console.log(form)
     this.userSub = this.authService.signup(
       form.value.name,
       form.value.email, 

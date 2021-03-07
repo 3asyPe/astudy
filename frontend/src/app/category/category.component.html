@@ -9,14 +9,14 @@
         <h2 class="title title-left">{{ title }} courses</h2>
         <div class="courses-wrap">
             <div class="all-courses">
-                <a href="#" class="courses-block">
+                <a routerLink="/course/{{ course.slug }}" class="courses-block" *ngFor="let course of courses">
                     <div class="courses-photo">
-                        <img src="assets/images/courses-photo-1.jpg" alt="Alternate Text">
+                        <img src="http://localhost:8000{{ course.image }}" alt="Alternate Text">
                     </div>
                     <div class="courses-content">
                         <div class="courses-info">
-                            <h3>PHP v.7+ и MySQL с нуля</h3>
-                            <p class="courses-abut-info">Начните с основ и создайте полноценную CMS!</p>
+                            <h3>{{ course.title }}</h3>
+                            <p class="courses-abut-info">{{ course.subtitle }}</p>
                             <div class="cource-rating">
                                 <p class="count-star">4,5</p>
                                 <ul class="rating-list">
@@ -29,75 +29,12 @@
                                 <p class="rating-count">51</p>
                             </div>
                             <ul class="cource-info-list">
-                                <li>54 лекций</li>
-                                <li>Общая продолжительность 17 ч 35 мин</li>
-                            </ul>
-                            <span class="small-btn">Лидер продаж</span>
-                        </div>
-                        <div class="courses-price">
-                            <p>$ 52.99</p>
-                            <s>$ 123.99</s>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="courses-block">
-                    <div class="courses-photo">
-                        <img src="assets/images/courses-photo-2.jpg" alt="Alternate Text">
-                    </div>
-                    <div class="courses-content">
-                        <div class="courses-info">
-                            <h3>Основы PHP программирования для начинающих</h3>
-                            <p class="courses-abut-info">Начните с основ и создайте полноценную CMS!</p>
-                            <div class="cource-rating">
-                                <p class="count-star">4,5</p>
-                                <ul class="rating-list">
-                                    <li></li>
-                                    <li></li>
-                                    <li></li>
-                                    <li></li>
-                                    <li class="rating-half"></li>
-                                </ul>
-                                <p class="rating-count">51</p>
-                            </div>
-                            <ul class="cource-info-list">
-                                <li>54 лекций</li>
-                                <li>Общая продолжительность 17 ч 35 мин</li>
+                                <li>{{ course.lectures_count }} lectures</li>
+                                <li>{{ course.duration_time.hours }} hours {{ course.duration_time.minutes }} minutes total</li>
                             </ul>
                         </div>
                         <div class="courses-price">
-                            <p>$ 52.99</p>
-                            <s>$ 123.99</s>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="courses-block">
-                    <div class="courses-photo">
-                        <img src="assets/images/courses-photo-3.jpg" alt="Alternate Text">
-                    </div>
-                    <div class="courses-content">
-                        <div class="courses-info">
-                            <h3>PHP работа с массивами</h3>
-                            <p class="courses-abut-info">Начните с основ и создайте полноценную CMS!</p>
-                            <div class="cource-rating">
-                                <p class="count-star">4,5</p>
-                                <ul class="rating-list">
-                                    <li></li>
-                                    <li></li>
-                                    <li></li>
-                                    <li></li>
-                                    <li class="rating-half"></li>
-                                </ul>
-                                <p class="rating-count">51</p>
-                            </div>
-                            <ul class="cource-info-list">
-                                <li>54 лекций</li>
-                                <li>Общая продолжительность 17 ч 35 мин</li>
-                            </ul>
-                            <span class="green-btn">Новое</span>
-                        </div>
-                        <div class="courses-price">
-                            <p>$ 52.99</p>
-                            <s>$ 123.99</s>
+                            <p>$ {{ course.price }}</p>
                         </div>
                     </div>
                 </a>
