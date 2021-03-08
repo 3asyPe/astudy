@@ -5,3 +5,7 @@
 .btn-white.gray-border{
     margin-bottom: 10px;
 }
+
+.course-description-text{
+    white-space: pre-wrap;
+}

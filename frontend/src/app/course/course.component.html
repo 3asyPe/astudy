@@ -2,8 +2,8 @@
     <div class="container">
         <div class="cource-info-box">
             <div class="course-banner-block">
-                <h4>PHP Работа с графикой</h4>
-                <p class="cource-name">Работа с графическими объектами на PHP</p>
+                <h4>{{ title }}</h4>
+                <p class="cource-name">{{ subtitle }}</p>
                 <div class="cource-rating">
                     <p class="count-star">4,5</p>
                     <ul class="rating-list">
@@ -13,25 +13,25 @@
                         <li></li>
                         <li class="rating-half"></li>
                     </ul>
-                    <p class="rating-course">(51 оценка) 5 учеников</p>
+                    <p class="rating-course">(51 rate) {{ studentsCount }} students</p>
                 </div>
                 <div class="cource-main-info">
                     <p>
                         <img src="assets/images/cource-icon-1.svg" alt="Alternate Text">
-                        <span>Последнее обновление: 8/2018</span>
+                        <span>Last edit: 8/2018</span>
                     </p>
                     <p>
                         <img src="assets/images/cource-icon-2.svg" alt="Alternate Text">
-                        <span>русский</span>
+                        <span>English</span>
                     </p>
                 </div>
                 <div class="cource-btns">
                     <a href="#" class="white-icon-btn">
-                        <span>Добавить в желаемое</span>
+                        <span>Add to wishlist</span>
                         <img src="assets/images/like-icon.svg" alt="Alternate Text">
                     </a>
                     <a href="#" class="white-icon-btn">
-                        <span>Поделиться</span>
+                        <span>Share</span>
                         <img src="assets/images/share-white-icon.svg" alt="Alternate Text">
                     </a>
                 </div>
@@ -39,35 +39,35 @@
 
             <div class="about-cource">
                 <a href="#" class="cource-video-link">
-                    <img class="course-photo" src="assets/images/single-cource-photo-1.jpg" alt="Alternate Text">
+                    <img class="course-photo" src="http://localhost:8000{{ imageUrl }}" alt="Alternate Text">
                     <div class="cource-video-content">
                         <img src="assets/images/play.svg" alt="Alternate Text">
-                        <p>Просмотреть этот курс</p>
+                        <p>Preview this course</p>
                     </div>
                 </a>
                 <div class="about-cource-box">
                     <div class="about-cource-price">
-                        <b>11,99 $</b>
+                        <b>{{ price }} $</b>
                     </div>
-                    <a class="red-btn open-modal" data-openmodal="modal-basket">Добавить в корзину</a>
-                    <a href="#" class="btn-white gray-border">Купить сейчас</a>
-                    <h4>Этот курс включает:</h4>
+                    <a class="red-btn open-modal" data-openmodal="modal-basket">Add to cart</a>
+                    <a href="#" class="btn-white gray-border">Buy now</a>
+                    <h4>This course includes:</h4>
                     <ul class="include-list">
                         <li>
                             <img src="assets/images/include-icon-1.svg" alt="Alternate Text">
-                            <p>3ч видео по запросу</p>
+                            <p>{{ durationTime.hours }} hours on-demand video</p>
                         </li>
                         <li>
                             <img src="assets/images/include-icon-2.svg" alt="Alternate Text">
-                            <p>Полный пожизненный доступ</p>
+                            <p>Full lifetime access</p>
                         </li>
                         <li>
                             <img src="assets/images/include-icon-3.svg" alt="Alternate Text">
-                            <p>Доступ через мобильные устройства и телевизор</p>
+                            <p>Access on mobile and TV</p>
                         </li>
                         <li>
                             <img src="assets/images/include-icon-4.svg" alt="Alternate Text">
-                            <p>Сертификат об окончании</p>
+                            <p>Certificate of completion</p>
                         </li>
                     </ul>
                 </div>
@@ -79,87 +79,31 @@
     <div class="container">
         <div class="cource-left-box">
             <div class="cource-fist-box cource-gray-box">
-                <h3 class="title title-left">Чему вы научитесь</h3>
-                <div class="accordion" [ngClass]="{'active': openedGoalsList }">
+                <h3 class="title title-left">What you'll learn</h3>
+                <div class="accordion" [ngClass]="{'active': openedGoalsList || goals.length < 10 }">
                     <div class="accordion-content">
                         <ul class="what-learning-list">
-                            <li>Комфортная работа с Microsoft Excel</li>
-                            <li>Профессиональное форматирование таблиц</li>
-                            <li>Быть намного быстрее, выполняя обычные задачи</li>
-                            <li>Создавайте профессиональные диаграммы в Microsoft Excel</li>
-                            <li>Без труда работайте с большими объемами данных</li>
-                            <li>Понять принципы бухгалтерского учета и бухгалтерского учета</li>
-                            <li>Постройте прибыль и убыток компании с нуля</li>
-                            <li>Создайте баланс компании с нуля</li>
-                            <li>Провести анализ финансовой отчетности</li>
-                            <li>Понимать важность выбора времени с точки зрения</li>
-                            <li>Комфортная работа с Microsoft Excel</li>
-                            <li>Профессиональное форматирование таблиц</li>
-                            <li>Быть намного быстрее, выполняя обычные задачи</li>
-                            <li>Создавайте профессиональные диаграммы в Microsoft Excel</li>
-                            <li>Без труда работайте с большими объемами данных</li>
-                            <li>Понять принципы бухгалтерского учета и бухгалтерского учета</li>
-                            <li>Постройте прибыль и убыток компании с нуля</li>
-                            <li>Создайте баланс компании с нуля</li>
-                            <li>Провести анализ финансовой отчетности</li>
-                            <li>Понимать важность выбора времени с точки зрения</li>
+                            <li *ngFor="let goal of goals">{{ goal.goal }}</li>
                         </ul>
                     </div>
-                    <div class="accordion-btn" (click)="switchGoalsListOpenMode()"></div>
+                    <div class="accordion-btn" (click)="switchGoalsListOpenMode()" *ngIf="goals.length > 10"></div>
                 </div>
             </div>
 
             <div class="cource-box-content">
-                <h3 class="title title-left">Требования:</h3>
+                <h3 class="title title-left">Requirements:</h3>
                 <ul class="affiliate-list">
-                    <li>Абсолютно никакого опыта не требуется. Мы начнем с основ и постепенно будем наращивать ваши знания. Все в порядке.</li>
-                    <li>Вам понадобится Microsoft Excel 2010, 2013, 2016 или 2020.</li>
-                    <li>Вам понадобится Microsoft PowerPoint 2010, 2013, 2016 или 2020.</li>
+                    <li *ngFor="let requirement of requirements">{{ requirement.requirement }}</li>
                 </ul>
             </div>
 
             <div class="cource-box-content">
-                <h3 class="title title-left">Описание:</h3>
+                <h3 class="title title-left">Description:</h3>
                 <div class="accordion" [ngClass]="{'active': openedDescription}">
                     <div class="accordion-content">
                         <div class="cource-description">
-                            <h4>** Обновлено в августе 2020 года! **</h4>
-                            <p>
-                                «Если вы пытаетесь подготовиться к будущей карьере в области финансов, но все еще хотите усовершенствовать свои знания в этой области, курс« Полный курс финансового аналитика »может идеально вам подойти», -  Business Insider
-                            </p>
-                            <p>
-                                «Карьера финансового аналитика - одна из самых высокооплачиваемых вакансий начального уровня на рынке».
-                            </p>
-                            <p>
-                                «Даже на самых сложных рынках труда лучшие кандидаты находят отличные должности», -  Forbes
-                            </p>
-                            <p>
-                                Вам просто нужно найти способ приобрести практические навыки, которые дадут вам преимущество перед другими кандидатами.
-                            </p>
-                            <p>
-                                «Если вы пытаетесь подготовиться к будущей карьере в области финансов, но все еще хотите усовершенствовать свои знания в этой области, курс« Полный курс финансового аналитика »может идеально вам подойти», -  Business Insider
-                            </p>
-                            <p>
-                                «Карьера финансового аналитика - одна из самых высокооплачиваемых вакансий начального уровня на рынке».
-                            </p>
-                            <p>
-                                «Даже на самых сложных рынках труда лучшие кандидаты находят отличные должности», -  Forbes
-                            </p>
-                            <p>
-                                Вам просто нужно найти способ приобрести практические навыки, которые дадут вам преимущество перед другими кандидатами.
-                            </p>
-                            <p>
-                                «Если вы пытаетесь подготовиться к будущей карьере в области финансов, но все еще хотите усовершенствовать свои знания в этой области, курс« Полный курс финансового аналитика »может идеально вам подойти», -  Business Insider
-                            </p>
-                            <p>
-                                «Карьера финансового аналитика - одна из самых высокооплачиваемых вакансий начального уровня на рынке».
-                            </p>
-                            <p>
-                                «Даже на самых сложных рынках труда лучшие кандидаты находят отличные должности», -  Forbes
-                            </p>
-                            <p>
-                                Вам просто нужно найти способ приобрести практические навыки, которые дадут вам преимущество перед другими кандидатами.
-                            </p>
+                            <h4>** Edited in August 2020! **</h4>
+                            <p class="course-description-text">{{ description }}</p>
                         </div>
                     </div>
                     <div class="accordion-btn" (click)="switchDescriptionOpenMode()"></div>
@@ -167,7 +111,7 @@
             </div>
 
             <div class="cource-gray-box">
-                <h3 class="title title-left">Избраннный отзыв</h3>
+                <h3 class="title title-left">Featured review</h3>
 
                 <div class="reviews-single-box">
                     <div class="reviews-single-top">
