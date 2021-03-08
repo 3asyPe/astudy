@@ -54,6 +54,5 @@ def fetch_category_courses_api(request, *args, **kwargs):
         return Response({"error": CategoryErrorMessages.CATEGORY_DOES_NOT_EXIST_ERROR}, status=404)
 
     courses = get_courses_by_category(category=category)
-    logger.debug(f"COURSES-{courses}")
     serializer = CategoryCourseSerializer(courses, many=True)
     return Response(serializer.data, status=200)

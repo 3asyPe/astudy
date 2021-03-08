@@ -25,7 +25,7 @@ def get_course_api(request, *args, **kwargs):
         course = get_course_by_slug(slug=slug)
     except Course.DoesNotExist:
         logger.warning(f"Course with slug - {slug} doesn't exist")
-        return Response({"error": CourseErrorMessages.COURSE_DOES_NOT_EXIST_ERROR}, status=404)
+        return Response({"error": CourseErrorMessages.COURSE_DOES_NOT_EXIST_ERROR.value}, status=404)
     
     serializer = CourseSerializer(instance=course)
     return Response(serializer.data, status=200)
