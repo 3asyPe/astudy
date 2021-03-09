@@ -2,10 +2,13 @@ import datetime
 
 from app.utils import generate_unique_slug
 
+from categories.models import Category
+
+from django.core.validators import MaxValueValidator
 from django.db import models
 from django.db.models.signals import pre_save, post_save
 
-from categories.models import Category
+from ordered_model.models import OrderedModel
 
 from .utils import get_course_upload_image_path
 
@@ -18,20 +21,74 @@ class Course(models.Model):
     subtitle = models.CharField(max_length=150)
     price = models.DecimalField(decimal_places=2, max_digits=10, default=39.99)
     description = models.TextField(max_length=5000)
-    students_count = models.IntegerField(default=0)
-    lectures_count = models.IntegerField(default=0)
+    students_count = models.PositiveIntegerField(default=0)
+    lectures_count = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.title
 
 
-class CourseDurationTime(models.Model):
-    course = models.OneToOneField(Course, on_delete=models.CASCADE, related_name="duration_time")
-    hours = models.IntegerField(default=0)
-    minutes = models.IntegerField(default=0)
+class CourseContent(models.Model):
+    course = models.OneToOneField(Course, on_delete=models.CASCADE, related_name="content")
+    sections_count = models.PositiveIntegerField(default=0)
+    lectures_count = models.PositiveIntegerField(default=0)
+    articles_count = models.PositiveIntegerField(default=0)
+    resources_count = models.PositiveIntegerField(default=0)
+    assignments_count = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return self.course.__str__()
+        return f"{self.course.__str__()} | Content"
+
+
+class CourseSection(OrderedModel):
+    course_content = models.ForeignKey(CourseContent, on_delete=models.CASCADE, related_name="sections")
+    order_with_respect_to = 'course_content'
+    title = models.CharField(max_length=50)
+    lectures_count = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.course_content.__str__()} | Section - {self.title}"
+
+
+class CourseLecture(OrderedModel):
+    course_section = models.ForeignKey(CourseSection, on_delete=models.CASCADE, related_name="lectures")
+    order_with_respect_to = "course_section"
+    free_opened = models.BooleanField(default=False)
+    title = models.CharField(max_length=50)
+    description = models.CharField(max_length=255)
+    students_finished_count = models.PositiveIntegerField(default=0)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.course_section.__str__()} | Lecture - {self.title}"
+
+
+class CourseLectureDurationTime(models.Model):
+    course_lecture = models.OneToOneField(CourseLecture, on_delete=models.CASCADE, related_name="duration_time")
+    hours = models.PositiveIntegerField(default=0)
+    minutes = models.PositiveIntegerField(default=0, validators=[MaxValueValidator(60)])
+
+    def __str__(self):
+        return f"{self.course_lecture.__str__()} | duration time"
+
+
+class CourseSectionDurationTime(models.Model):
+    course_section = models.OneToOneField(CourseSection, on_delete=models.CASCADE, related_name="duration_time")
+    hours = models.PositiveIntegerField(default=0)
+    minutes = models.PositiveIntegerField(default=0, validators=[MaxValueValidator(60)])
+
+    def __str__(self):
+        return f"{self.course_section.__str__()} | duration time"
+
+
+class CourseDurationTime(models.Model):
+    course_content = models.OneToOneField(CourseContent, on_delete=models.CASCADE, related_name="duration_time")
+    hours = models.PositiveIntegerField(default=0)
+    minutes = models.PositiveIntegerField(default=0, validators=[MaxValueValidator(60)])
+
+    def __str__(self):
+        return f"{self.course_content.__str__()} | duration time"
 
 
 class CourseGoal(models.Model):

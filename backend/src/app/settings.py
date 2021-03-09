@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'corsheaders',
 
     # Thirdparty
+    'ordered_model',
     'rest_framework',
     'rest_framework.authtoken',
     

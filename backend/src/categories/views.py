@@ -32,7 +32,7 @@ def get_category_api(request, *args, **kwargs):
         category = get_category_by_slug(slug=slug)
     except Category.DoesNotExist:
         logger.warning(f"Category with slug - {slug} doesn't exist")
-        return Response({"error": CategoryErrorMessages.CATEGORY_DOES_NOT_EXIST_ERROR}, status=404)
+        return Response({"error": CategoryErrorMessages.CATEGORY_DOES_NOT_EXIST_ERROR.value}, status=404)
     
     serializer = CategorySerializer(instance=category)
     return Response(serializer.data, status=200)
@@ -51,7 +51,7 @@ def fetch_category_courses_api(request, *args, **kwargs):
         category = get_category_by_slug(slug=slug)
     except Category.DoesNotExist:
         logger.warning(f"Category with slug - {slug} doesn't exist")
-        return Response({"error": CategoryErrorMessages.CATEGORY_DOES_NOT_EXIST_ERROR}, status=404)
+        return Response({"error": CategoryErrorMessages.CATEGORY_DOES_NOT_EXIST_ERROR.value}, status=404)
 
     courses = get_courses_by_category(category=category)
     serializer = CategoryCourseSerializer(courses, many=True)

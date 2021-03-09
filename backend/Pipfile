@@ -11,6 +11,7 @@ djangorestframework = "*"
 psycopg2 = "*"
 django-cors-headers = "*"
 pillow = "*"
+django-ordered-model = "*"
 
 [requires]
 python_version = "3.9"
