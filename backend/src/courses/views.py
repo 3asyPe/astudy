@@ -13,7 +13,8 @@ logger = logging.getLogger(__name__)
 
 
 @api_view(["GET"])
-def get_course_api(request, *args, **kwargs):
+def get_course_info_api(request, *args, **kwargs):
+    """Api to get information about course wihout any real content like video/article..."""
     try:
         data = request.GET
         slug = data["slug"]

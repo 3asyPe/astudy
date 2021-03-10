@@ -21,12 +21,24 @@ def get_courses_by_category(category: Category) -> QuerySet[Course]:
     return courses
 
 
-def get_course_duration_time_by_course(course: Course) -> CourseDurationTime:
+def get_course_content_by_course(course: Course) -> CourseContent:
     qs = CourseContent.objects.filter(course=course)
     if not qs.exists():
         raise CourseContent.DoesNotExist()
-    course_content = qs.first()
+    return qs.first()
+
+
+def get_course_duration_time_by_course(course: Course) -> CourseDurationTime:
+    course_content = get_course_content_by_course(course=course)
     if hasattr(course_content, "duration_time") and course_content.duration_time is not None:
         return course_content.duration_time
     else:
         raise CourseDurationTime.DoesNotExist()
+
+
+def get_course_lectures_count_by_course(course: Course) -> int:
+    course_content = get_course_content_by_course(course=course)
+    if hasattr(course_content, "lectures_count") and course_content.lectures_count is not None:
+        return course_content.lectures_count
+    else:
+        raise AttributeError

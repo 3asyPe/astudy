@@ -19,11 +19,15 @@ class CourseSectionAdmin(OrderedModelAdmin):
     list_display = ('__str__', 'move_up_down_links')
 
 
+class CourseLecturesAdmin(OrderedModelAdmin):
+    list_display = ('__str__', 'move_up_down_links')
+
+
 admin.site.register(Course)
 admin.site.register(CourseContent)
 admin.site.register(CourseDurationTime)
 admin.site.register(CourseGoal)
-admin.site.register(CourseLecture)
+admin.site.register(CourseLecture, CourseLecturesAdmin)
 admin.site.register(CourseLectureDurationTime)
 admin.site.register(CourseRequirement)
 admin.site.register(CourseSection, CourseSectionAdmin)
