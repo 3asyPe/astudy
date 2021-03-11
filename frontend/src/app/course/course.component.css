@@ -9,3 +9,57 @@
 .course-description-text{
     white-space: pre-wrap;
 }
+
+.course-description{
+    margin-bottom: 30px;
+}
+
+.course-description h4{
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.faq-sub-top h3{
+    cursor: auto;
+}
+
+.faq-sub-top h3 span{
+    white-space: nowrap;
+}
+
+.faq-sub-top h3.active .faq-lecture-open-desc{
+    transform: rotate(0);
+}
+
+.faq-lecture-open-desc{
+    content: '';
+    width: 24px;
+    height: 24px;
+    background-image: url(/assets/images/circle-arrow.svg);
+    background-size: cover;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: rotate(180deg);
+    transition: 0.5s;
+}
+
+.hidden-accordion{
+    mask-image: linear-gradient(#fff,#fff,rgba(255,255,255,0));
+    -webkit-mask-image: linear-gradient(#fff,#fff,rgba(255,255,255,0));
+}
+
+.hidden-description{
+    max-height: 330px;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.hidden-goal{
+    display: none;
+}

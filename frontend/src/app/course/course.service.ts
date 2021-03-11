@@ -30,10 +30,9 @@ export class CourseService {
                     course.price,
                     course.description,
                     course.students_count,
-                    course.lectures_count,
-                    course.duration_time,
                     course.goals,
                     course.requirements,
+                    course.content
                 )
             })
         )

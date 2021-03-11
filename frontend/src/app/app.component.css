@@ -1130,12 +1130,6 @@
     border-top: 1px solid #E6E6E6;
     transition: 0.3s;
   }
-  .faq-title span:before {
-    content: '(';
-  }
-  .faq-title span:after {
-    content: ')';
-  }
   .faq-title:before {
     content: '';
     width: 15px;
@@ -2417,10 +2411,10 @@
     background-color: rgba(250, 250, 250, 0.6);
   }
   .accordion .accordion-content {
-    height: 325px;
+    max-height: 330px;
     overflow: hidden;
     position: relative;
-    margin-bottom: 35px;
+    margin-bottom: 30px;
   }
   .accordion .accordion-content:before {
     content: '';
@@ -2432,7 +2426,7 @@
     background-color: rgba(255, 255, 255, 0.7);
   }
   .accordion.active .accordion-content {
-    height: auto;
+    max-height: none;
   }
   .accordion.active .accordion-content:before {
     display: none;
@@ -2634,22 +2628,6 @@
   }
   .faq-sub-top h3 span {
     padding-left: 7px;
-  }
-  .faq-sub-top h3:before {
-    content: '';
-    width: 24px;
-    height: 24px;
-    background-image: url("/assets/images/circle-arrow.svg");
-    background-size: cover;
-    border-radius: 50%;
-    position: absolute;
-    top: 0;
-    right: 0;
-    transform: rotate(180deg);
-    transition: 0.5s;
-  }
-  .faq-sub-top h3.active:before {
-    transform: rotate(0);
   }
   .faq-cource-info {
     display: flex;

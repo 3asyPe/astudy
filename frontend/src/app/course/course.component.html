@@ -59,7 +59,7 @@
                     <ul class="include-list">
                         <li>
                             <img src="assets/images/include-icon-1.svg" alt="Alternate Text">
-                            <p>{{ durationTime.hours }} hours on-demand video</p>
+                            <p>{{ durationTime.hours }}<span *ngIf="durationTime.minutes > 15">.5</span> hours on-demand video</p>
                         </li>
                         <li>
                             <img src="assets/images/include-icon-2.svg" alt="Alternate Text">
@@ -84,10 +84,13 @@
         <div class="cource-left-box">
             <div class="cource-fist-box cource-gray-box">
                 <h3 class="title title-left">What you'll learn</h3>
-                <div class="accordion" [ngClass]="{'active': openedGoalsList || goals.length < 10 }">
-                    <div class="accordion-content">
+                <div class="accordion" [ngClass]="{'active': openedGoalsList || goals.length <= 10 }">
+                    <div class="accordion-content-goals" [ngClass]="{'hidden-accordion': !openedGoalsList && goals.length > 10 }" >
                         <ul class="what-learning-list">
-                            <li *ngFor="let goal of goals">{{ goal.goal }}</li>
+                            <li *ngFor="let goal of goals; index as i" [ngClass]="{
+                                'almost-hidden-goal': !openedGoalsList && ( i === 8 || i === 9 ),
+                                'hidden-goal': !openedGoalsList && i > 9
+                            }">{{ goal.goal }}</li>
                         </ul>
                     </div>
                     <div class="accordion-btn" (click)="switchGoalsListOpenMode()" *ngIf="goals.length > 10"></div>
@@ -104,13 +107,13 @@
             <div class="cource-box-content">
                 <h3 class="title title-left">Description:</h3>
                 <div class="accordion" [ngClass]="{'active': openedDescription}">
-                    <div class="accordion-content">
-                        <div class="cource-description">
+                    <div class="accordion-content-description" [ngClass]="{'hidden-accordion hidden-description': !openedDescription && descriptionel.offsetHeight > 330}" >
+                        <div class="course-description">
                             <h4>** Edited in August 2020! **</h4>
-                            <p class="course-description-text">{{ description }}</p>
+                            <p class="course-description-text" #descriptionel>{{ description }}</p>
                         </div>
                     </div>
-                    <div class="accordion-btn" (click)="switchDescriptionOpenMode()"></div>
+                    <div class="accordion-btn" (click)="switchDescriptionOpenMode()" *ngIf="descriptionel.offsetHeight > 330"></div>
                 </div>
             </div>
 
@@ -158,444 +161,42 @@
 
             <div class="cource-box-content">
                 <div class="faq-wrap faq-cource">
-                    <div class="faq-block">
-                        <div class="faq-title">
-                            <h3>Введение</h3>
+                    <div class="faq-block" #sectionel *ngFor="let section of sections; index as i" [ngStyle]="{'display' : openedAllSections || i < 10  ? 'block' : 'none'}">
+                        <div class="faq-title" (click)="openSection(sectionel)">
+                            <h3>{{ section.title }}</h3>
                             <p>
-                                4 лекции
-                                <span>52 минуты</span>
+                                {{ section.lectures_count }} lectures
+                                <span>{{ section.duration_time.hours }}hr {{ section.duration_time.minutes }}min</span>
                             </p>
                         </div>
-                        <div class="faq-info">
-                            <div class="faq-sub">
+                        <div class="faq-info" style="display: none"
+                             [@openCloseSection]="sectionel.classList.contains('faq-active')"
+                             (@openCloseSection.start)="$event.element.style.display = 'block'"
+                             (@openCloseSection.done)="$event.element.style.display = ($event.toState ? 'block' : 'none')">
+                            <div class="faq-sub" *ngFor="let lecture of section.lectures">
                                 <div class="faq-sub-top">
-                                    <h3 class="faq-cource-name">
+                                    <h3 class="faq-cource-name" #lecturenameel>
                                         <img src="assets/images/play-small.svg" alt="Alternate Text">
-                                        <span>Введение в курс</span>
+                                        <span>{{ lecture.title }}</span>
+                                        <button class="faq-lecture-open-desc" *ngIf="lecture.description" (click)="openLectureDescription(lecturenameel)"></button>
                                     </h3>
                                     <div class="faq-cource-info">
-                                        <a href="#">Предпросмотр</a>
-                                        <p>07:06</p>
+                                        <a href="#">Preview</a>
+                                        <p> <span *ngIf="lecture.duration_time.hours">{{ lecture.duration_time.hours | number:"2.0" }}:</span>{{ lecture.duration_time.minutes | number:'2.0' }}:{{ lecture.duration_time.seconds | number:'2.0' }}</p>
                                     </div>
                                 </div>
-                                <div class="faq-sub-content">
-                                    <p>Это ознакомительный урок, в котором я опишу о чем будет курс и как он будет проходить. Опишу структуру курса, какие материалы будут прилагаться к каждому занятию.</p>
-                                </div>
-                            </div>
-                            <div class="faq-sub">
-                                <div class="faq-sub-top">
-                                    <h3 class="faq-cource-name">
-                                        <img src="assets/images/play-small.svg" alt="Alternate Text">
-                                        <span>Введение в курс</span>
-                                    </h3>
-                                    <div class="faq-cource-info">
-                                        <a href="#">Предпросмотр</a>
-                                        <p>07:06</p>
-                                    </div>
-                                </div>
-                                <div class="faq-sub-content">
-                                    <p>Это ознакомительный урок, в котором я опишу о чем будет курс и как он будет проходить. Опишу структуру курса, какие материалы будут прилагаться к каждому занятию.</p>
-                                </div>
-                            </div>
-                            <div class="faq-sub">
-                                <div class="faq-sub-top">
-                                    <h3 class="faq-cource-name">
-                                        <img src="assets/images/question-icon.svg" alt="Alternate Text">
-                                        <span>Введение в курс</span>
-                                    </h3>
-                                    <div class="faq-cource-info">
-                                        <a href="#">Предпросмотр</a>
-                                        <p>07:06</p>
-                                    </div>
-                                </div>
-                                <div class="faq-sub-content">
-                                    <p>Это ознакомительный урок, в котором я опишу о чем будет курс и как он будет проходить. Опишу структуру курса, какие материалы будут прилагаться к каждому занятию.</p>
-                                </div>
-                            </div>
-                            <div class="faq-sub">
-                                <div class="faq-sub-top">
-                                    <h3 class="faq-cource-name">
-                                        <img src="assets/images/play-small.svg" alt="Alternate Text">
-                                        <span>Введение в курс</span>
-                                    </h3>
-                                    <div class="faq-cource-info">
-                                        <a href="#">Предпросмотр</a>
-                                        <p>07:06</p>
-                                    </div>
-                                </div>
-                                <div class="faq-sub-content">
-                                    <p>Это ознакомительный урок, в котором я опишу о чем будет курс и как он будет проходить. Опишу структуру курса, какие материалы будут прилагаться к каждому занятию.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="faq-block">
-                        <div class="faq-title">
-                            <h3>Основы языка PHP</h3>
-                            <p>
-                                4 лекции
-                                <span>52 минуты</span>
-                            </p>
-                        </div>
-                        <div class="faq-info">
-                            <div class="faq-sub">
-                                <div class="faq-sub-top">
-                                    <h3 class="faq-cource-name">
-                                        <img src="assets/images/play-small.svg" alt="Alternate Text">
-                                        <span>Введение в курс</span>
-                                    </h3>
-                                    <div class="faq-cource-info">
-                                        <a href="#">Предпросмотр</a>
-                                        <p>07:06</p>
-                                    </div>
-                                </div>
-                                <div class="faq-sub-content">
-                                    <p>Это ознакомительный урок, в котором я опишу о чем будет курс и как он будет проходить. Опишу структуру курса, какие материалы будут прилагаться к каждому занятию.</p>
-                                </div>
-                            </div>
-                            <div class="faq-sub">
-                                <div class="faq-sub-top">
-                                    <h3 class="faq-cource-name">
-                                        <img src="assets/images/play-small.svg" alt="Alternate Text">
-                                        <span>Введение в курс</span>
-                                    </h3>
-                                    <div class="faq-cource-info">
-                                        <a href="#">Предпросмотр</a>
-                                        <p>07:06</p>
-                                    </div>
-                                </div>
-                                <div class="faq-sub-content">
-                                    <p>Это ознакомительный урок, в котором я опишу о чем будет курс и как он будет проходить. Опишу структуру курса, какие материалы будут прилагаться к каждому занятию.</p>
-                                </div>
-                            </div>
-                            <div class="faq-sub">
-                                <div class="faq-sub-top">
-                                    <h3 class="faq-cource-name">
-                                        <img src="assets/images/question-icon.svg" alt="Alternate Text">
-                                        <span>Введение в курс</span>
-                                    </h3>
-                                    <div class="faq-cource-info">
-                                        <a href="#">Предпросмотр</a>
-                                        <p>07:06</p>
-                                    </div>
-                                </div>
-                                <div class="faq-sub-content">
-                                    <p>Это ознакомительный урок, в котором я опишу о чем будет курс и как он будет проходить. Опишу структуру курса, какие материалы будут прилагаться к каждому занятию.</p>
-                                </div>
-                            </div>
-                            <div class="faq-sub">
-                                <div class="faq-sub-top">
-                                    <h3 class="faq-cource-name">
-                                        <img src="assets/images/play-small.svg" alt="Alternate Text">
-                                        <span>Введение в курс</span>
-                                    </h3>
-                                    <div class="faq-cource-info">
-                                        <a href="#">Предпросмотр</a>
-                                        <p>07:06</p>
-                                    </div>
-                                </div>
-                                <div class="faq-sub-content">
-                                    <p>Это ознакомительный урок, в котором я опишу о чем будет курс и как он будет проходить. Опишу структуру курса, какие материалы будут прилагаться к каждому занятию.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="faq-block">
-                        <div class="faq-title">
-                            <h3>Практика по созданию простой CMS</h3>
-                            <p>
-                                4 лекции
-                                <span>52 минуты</span>
-                            </p>
-                        </div>
-                        <div class="faq-info">
-                            <div class="faq-sub">
-                                <div class="faq-sub-top">
-                                    <h3 class="faq-cource-name">
-                                        <img src="assets/images/play-small.svg" alt="Alternate Text">
-                                        <span>Введение в курс</span>
-                                    </h3>
-                                    <div class="faq-cource-info">
-                                        <a href="#">Предпросмотр</a>
-                                        <p>07:06</p>
-                                    </div>
-                                </div>
-                                <div class="faq-sub-content">
-                                    <p>Это ознакомительный урок, в котором я опишу о чем будет курс и как он будет проходить. Опишу структуру курса, какие материалы будут прилагаться к каждому занятию.</p>
-                                </div>
-                            </div>
-                            <div class="faq-sub">
-                                <div class="faq-sub-top">
-                                    <h3 class="faq-cource-name">
-                                        <img src="assets/images/play-small.svg" alt="Alternate Text">
-                                        <span>Введение в курс</span>
-                                    </h3>
-                                    <div class="faq-cource-info">
-                                        <a href="#">Предпросмотр</a>
-                                        <p>07:06</p>
-                                    </div>
-                                </div>
-                                <div class="faq-sub-content">
-                                    <p>Это ознакомительный урок, в котором я опишу о чем будет курс и как он будет проходить. Опишу структуру курса, какие материалы будут прилагаться к каждому занятию.</p>
-                                </div>
-                            </div>
-                            <div class="faq-sub">
-                                <div class="faq-sub-top">
-                                    <h3 class="faq-cource-name">
-                                        <img src="assets/images/question-icon.svg" alt="Alternate Text">
-                                        <span>Введение в курс</span>
-                                    </h3>
-                                    <div class="faq-cource-info">
-                                        <a href="#">Предпросмотр</a>
-                                        <p>07:06</p>
-                                    </div>
-                                </div>
-                                <div class="faq-sub-content">
-                                    <p>Это ознакомительный урок, в котором я опишу о чем будет курс и как он будет проходить. Опишу структуру курса, какие материалы будут прилагаться к каждому занятию.</p>
-                                </div>
-                            </div>
-                            <div class="faq-sub">
-                                <div class="faq-sub-top">
-                                    <h3 class="faq-cource-name">
-                                        <img src="assets/images/play-small.svg" alt="Alternate Text">
-                                        <span>Введение в курс</span>
-                                    </h3>
-                                    <div class="faq-cource-info">
-                                        <a href="#">Предпросмотр</a>
-                                        <p>07:06</p>
-                                    </div>
-                                </div>
-                                <div class="faq-sub-content">
-                                    <p>Это ознакомительный урок, в котором я опишу о чем будет курс и как он будет проходить. Опишу структуру курса, какие материалы будут прилагаться к каждому занятию.</p>
+                                <div class="faq-sub-content" *ngIf="lecture.description"
+                                     [@openCloseLectureDescription]="lecturenameel.classList.contains('active')"
+                                     (@openCloseLectureDescription.start)="$event.element.style.display = 'block'"
+                                     (@openCloseLectureDescription.done)="$event.element.style.display = ($event.toState ? 'block' : 'none')">
+                                    <p>{{ lecture.description }}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <a class="show-more-cource btn-blue big-blue-btn" (click)="openAllSections()" [ngStyle]="{'display' : openedAllSections ? 'none' : 'flex'}">Еще 1 раздела</a>
-
-                <div class="faq-cource-hide" [ngStyle]="{'display' : openedAllSections ? 'block' : 'none'}">
-
-                    <div class="faq-wrap faq-cource">
-                        <div class="faq-block">
-                            <div class="faq-title">
-                                <h3>Введение</h3>
-                                <p>
-                                    4 лекции
-                                    <span>52 минуты</span>
-                                </p>
-                            </div>
-                            <div class="faq-info">
-                                <div class="faq-sub">
-                                    <div class="faq-sub-top">
-                                        <h3 class="faq-cource-name">
-                                            <img src="assets/images/play-small.svg" alt="Alternate Text">
-                                            <span>Введение в курс</span>
-                                        </h3>
-                                        <div class="faq-cource-info">
-                                            <a href="#">Предпросмотр</a>
-                                            <p>07:06</p>
-                                        </div>
-                                    </div>
-                                    <div class="faq-sub-content">
-                                        <p>Это ознакомительный урок, в котором я опишу о чем будет курс и как он будет проходить. Опишу структуру курса, какие материалы будут прилагаться к каждому занятию.</p>
-                                    </div>
-                                </div>
-                                <div class="faq-sub">
-                                    <div class="faq-sub-top">
-                                        <h3 class="faq-cource-name">
-                                            <img src="assets/images/play-small.svg" alt="Alternate Text">
-                                            <span>Введение в курс</span>
-                                        </h3>
-                                        <div class="faq-cource-info">
-                                            <a href="#">Предпросмотр</a>
-                                            <p>07:06</p>
-                                        </div>
-                                    </div>
-                                    <div class="faq-sub-content">
-                                        <p>Это ознакомительный урок, в котором я опишу о чем будет курс и как он будет проходить. Опишу структуру курса, какие материалы будут прилагаться к каждому занятию.</p>
-                                    </div>
-                                </div>
-                                <div class="faq-sub">
-                                    <div class="faq-sub-top">
-                                        <h3 class="faq-cource-name">
-                                            <img src="assets/images/question-icon.svg" alt="Alternate Text">
-                                            <span>Введение в курс</span>
-                                        </h3>
-                                        <div class="faq-cource-info">
-                                            <a href="#">Предпросмотр</a>
-                                            <p>07:06</p>
-                                        </div>
-                                    </div>
-                                    <div class="faq-sub-content">
-                                        <p>Это ознакомительный урок, в котором я опишу о чем будет курс и как он будет проходить. Опишу структуру курса, какие материалы будут прилагаться к каждому занятию.</p>
-                                    </div>
-                                </div>
-                                <div class="faq-sub">
-                                    <div class="faq-sub-top">
-                                        <h3 class="faq-cource-name">
-                                            <img src="assets/images/play-small.svg" alt="Alternate Text">
-                                            <span>Введение в курс</span>
-                                        </h3>
-                                        <div class="faq-cource-info">
-                                            <a href="#">Предпросмотр</a>
-                                            <p>07:06</p>
-                                        </div>
-                                    </div>
-                                    <div class="faq-sub-content">
-                                        <p>Это ознакомительный урок, в котором я опишу о чем будет курс и как он будет проходить. Опишу структуру курса, какие материалы будут прилагаться к каждому занятию.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="faq-block">
-                            <div class="faq-title">
-                                <h3>Работа с сетью</h3>
-                                <p>
-                                    4 лекции
-                                    <span>52 минуты</span>
-                                </p>
-                            </div>
-                            <div class="faq-info">
-                                <div class="faq-sub">
-                                    <div class="faq-sub-top">
-                                        <h3 class="faq-cource-name">
-                                            <img src="assets/images/play-small.svg" alt="Alternate Text">
-                                            <span>Введение в курс</span>
-                                        </h3>
-                                        <div class="faq-cource-info">
-                                            <a href="#">Предпросмотр</a>
-                                            <p>07:06</p>
-                                        </div>
-                                    </div>
-                                    <div class="faq-sub-content">
-                                        <p>Это ознакомительный урок, в котором я опишу о чем будет курс и как он будет проходить. Опишу структуру курса, какие материалы будут прилагаться к каждому занятию.</p>
-                                    </div>
-                                </div>
-                                <div class="faq-sub">
-                                    <div class="faq-sub-top">
-                                        <h3 class="faq-cource-name">
-                                            <img src="assets/images/play-small.svg" alt="Alternate Text">
-                                            <span>Введение в курс</span>
-                                        </h3>
-                                        <div class="faq-cource-info">
-                                            <a href="#">Предпросмотр</a>
-                                            <p>07:06</p>
-                                        </div>
-                                    </div>
-                                    <div class="faq-sub-content">
-                                        <p>Это ознакомительный урок, в котором я опишу о чем будет курс и как он будет проходить. Опишу структуру курса, какие материалы будут прилагаться к каждому занятию.</p>
-                                    </div>
-                                </div>
-                                <div class="faq-sub">
-                                    <div class="faq-sub-top">
-                                        <h3 class="faq-cource-name">
-                                            <img src="assets/images/question-icon.svg" alt="Alternate Text">
-                                            <span>Введение в курс</span>
-                                        </h3>
-                                        <div class="faq-cource-info">
-                                            <a href="#">Предпросмотр</a>
-                                            <p>07:06</p>
-                                        </div>
-                                    </div>
-                                    <div class="faq-sub-content">
-                                        <p>Это ознакомительный урок, в котором я опишу о чем будет курс и как он будет проходить. Опишу структуру курса, какие материалы будут прилагаться к каждому занятию.</p>
-                                    </div>
-                                </div>
-                                <div class="faq-sub">
-                                    <div class="faq-sub-top">
-                                        <h3 class="faq-cource-name">
-                                            <img src="assets/images/play-small.svg" alt="Alternate Text">
-                                            <span>Введение в курс</span>
-                                        </h3>
-                                        <div class="faq-cource-info">
-                                            <a href="#">Предпросмотр</a>
-                                            <p>07:06</p>
-                                        </div>
-                                    </div>
-                                    <div class="faq-sub-content">
-                                        <p>Это ознакомительный урок, в котором я опишу о чем будет курс и как он будет проходить. Опишу структуру курса, какие материалы будут прилагаться к каждому занятию.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="faq-block">
-                            <div class="faq-title">
-                                <h3>Дополнительные возможности PHP</h3>
-                                <p>
-                                    4 лекции
-                                    <span>52 минуты</span>
-                                </p>
-                            </div>
-                            <div class="faq-info">
-                                <div class="faq-sub">
-                                    <div class="faq-sub-top">
-                                        <h3 class="faq-cource-name">
-                                            <img src="assets/images/play-small.svg" alt="Alternate Text">
-                                            <span>Введение в курс</span>
-                                        </h3>
-                                        <div class="faq-cource-info">
-                                            <a href="#">Предпросмотр</a>
-                                            <p>07:06</p>
-                                        </div>
-                                    </div>
-                                    <div class="faq-sub-content">
-                                        <p>Это ознакомительный урок, в котором я опишу о чем будет курс и как он будет проходить. Опишу структуру курса, какие материалы будут прилагаться к каждому занятию.</p>
-                                    </div>
-                                </div>
-                                <div class="faq-sub">
-                                    <div class="faq-sub-top">
-                                        <h3 class="faq-cource-name">
-                                            <img src="assets/images/play-small.svg" alt="Alternate Text">
-                                            <span>Введение в курс</span>
-                                        </h3>
-                                        <div class="faq-cource-info">
-                                            <a href="#">Предпросмотр</a>
-                                            <p>07:06</p>
-                                        </div>
-                                    </div>
-                                    <div class="faq-sub-content">
-                                        <p>Это ознакомительный урок, в котором я опишу о чем будет курс и как он будет проходить. Опишу структуру курса, какие материалы будут прилагаться к каждому занятию.</p>
-                                    </div>
-                                </div>
-                                <div class="faq-sub">
-                                    <div class="faq-sub-top">
-                                        <h3 class="faq-cource-name">
-                                            <img src="assets/images/question-icon.svg" alt="Alternate Text">
-                                            <span>Введение в курс</span>
-                                        </h3>
-                                        <div class="faq-cource-info">
-                                            <a href="#">Предпросмотр</a>
-                                            <p>07:06</p>
-                                        </div>
-                                    </div>
-                                    <div class="faq-sub-content">
-                                        <p>Это ознакомительный урок, в котором я опишу о чем будет курс и как он будет проходить. Опишу структуру курса, какие материалы будут прилагаться к каждому занятию.</p>
-                                    </div>
-                                </div>
-                                <div class="faq-sub">
-                                    <div class="faq-sub-top">
-                                        <h3 class="faq-cource-name">
-                                            <img src="assets/images/play-small.svg" alt="Alternate Text">
-                                            <span>Введение в курс</span>
-                                        </h3>
-                                        <div class="faq-cource-info">
-                                            <a href="#">Предпросмотр</a>
-                                            <p>07:06</p>
-                                        </div>
-                                    </div>
-                                    <div class="faq-sub-content">
-                                        <p>Это ознакомительный урок, в котором я опишу о чем будет курс и как он будет проходить. Опишу структуру курса, какие материалы будут прилагаться к каждому занятию.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                </div>
+                <a class="show-more-cource btn-blue big-blue-btn" (click)="openAllSections()" [ngStyle]="{'display' : openedAllSections || sectionsCount < 10 ? 'none' : 'flex'}">Еще 1 раздела</a>
             </div>
 
             <div class="cource-box-content">

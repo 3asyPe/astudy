@@ -1,13 +1,57 @@
-import { Component, OnInit } from '@angular/core';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { Observable } from 'rxjs';
 import { Course } from './course.model';
 import { CourseService } from './course.service';
 
 @Component({
   selector: 'app-course',
   templateUrl: './course.component.html',
-  styleUrls: ['./course.component.css']
+  styleUrls: ['./course.component.css'],
+  animations: [
+    trigger('openCloseSection', [
+      state('true', style({
+        "max-height": "200px",
+        width: "100%",
+        overflow: "hidden",
+        padding: "20px 40px",
+        opacity: 1,
+      })),
+      state('false', style({
+        "max-height": "0px",
+        width: "0",
+        overflow: "hidden",
+        padding: "0",
+        opacity: 0,
+      })),
+      transition('true => false', [
+        animate('0.4s ease')
+      ]),
+      transition('false => true', [
+        animate('0.4s ease')
+      ]),
+    ]),
+    trigger('openCloseLectureDescription', [
+      state('true', style({
+        "max-height": "100px",
+        overflow: "hidden",
+        "padding": "8px 0",
+        opacity: 1,
+      })),
+      state('false', style({
+        "max-height": "0px",
+        overflow: "hidden",
+        padding: "0",
+        opacity: 0,
+      })),
+      transition('true => false', [
+        animate('0.3s ease')
+      ]),
+      transition('false => true', [
+        animate('0.3s ease')
+      ]),
+    ]),
+  ],
 })
 export class CourseComponent implements OnInit {
 
@@ -18,7 +62,11 @@ export class CourseComponent implements OnInit {
   price = 39.99
   description = "Some description"
   studentsCount = 123
+  sectionsCount = 3
   lecturesCount = 35
+  articlesCount = 0
+  resourcesCount = 0
+  assignmentsCount = 0
   durationTime = {
     hours: 8,
     minutes: 35
@@ -35,12 +83,55 @@ export class CourseComponent implements OnInit {
     {requirement: "Some requirement number 3"},
     {requirement: "Some requirement number 4"},
   ]
+  sections = [
+    {
+      title: "introduction",
+      lectures_count: 3,
+      duration_time: {
+        hours: 1,
+        minutes: 25
+      },
+      lectures: [
+        {
+          "free_opened": true,
+          "title": "Course Introduction",
+          "description": "Welcome to this course! Let me introduce myself and explain what the course is about!",
+          "duration_time": {
+              "hours": 0,
+              "minutes": 5,
+              "seconds": 12
+          }
+        },
+        {
+            "free_opened": false,
+            "title": "Software",
+            "description": null,
+            "duration_time": {
+                "hours": 0,
+                "minutes": 13,
+                "seconds": 52
+            }
+        },
+        {
+            "free_opened": false,
+            "title": "System setup",
+            "description": null,
+            "duration_time": {
+                "hours": 0,
+                "minutes": 21,
+                "seconds": 15
+            }
+        }
+      ]
+    }
+  ]
 
   openedGoalsList = false;
   openedDescription = false;
   openedAllSections = false;
   
   constructor(private courseService: CourseService,
+              private _changeDetectionRef : ChangeDetectorRef,
               private route: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -54,20 +145,50 @@ export class CourseComponent implements OnInit {
 
   fetchCourseInfo(){
     this.courseService.fetchCourseInfo(this.slug).subscribe(
-      course => {
-        this.slug = course.slug
-        this.title = course.title
-        this.subtitle = course.subtitle
-        this.imageUrl = course.image
-        this.price = course.price
-        this.description = course.description
-        this.studentsCount = course.students_count
-        this.lecturesCount = course.lectures_count
-        this.durationTime = course.duration_time
-        this.goals = course.goals
-        this.requirements = course.requirements
-      }
+      course => this.parseCourseResponse(course)
     )
+  }
+
+  parseCourseResponse(courseRes: Course) {
+    this.slug = courseRes.slug
+    this.title = courseRes.title
+    this.subtitle = courseRes.subtitle
+    this.imageUrl = courseRes.image
+    this.price = courseRes.price
+    this.description = courseRes.description
+    this.studentsCount = courseRes.students_count
+    this.goals = courseRes.goals
+    this.requirements = courseRes.requirements
+
+    const content = courseRes.content
+
+    this.sectionsCount = content.sections_count
+    this.lecturesCount = content.lectures_count
+    this.articlesCount = content.articles_count
+    this.resourcesCount = content.resources_count
+    this.assignmentsCount = content.assignments_count
+    this.durationTime = content.duration_time
+    
+    const sections = content.sections
+
+    this.sections = sections
+    this._changeDetectionRef.detectChanges();
+  }
+
+  openSection(section: HTMLElement){
+    if(section.classList.contains("faq-active")){
+      section.classList.remove("faq-active")
+    } else {
+      section.classList.add("faq-active")
+    }
+  }
+
+  openLectureDescription(lecturename: HTMLElement){
+    if(lecturename.classList.contains("active")){
+      lecturename.classList.remove("active")
+    } else {
+      lecturename.classList.add("active")
+    }
   }
 
   switchGoalsListOpenMode() {

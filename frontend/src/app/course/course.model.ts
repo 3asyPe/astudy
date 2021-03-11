@@ -10,9 +10,30 @@ export class Course {
         public price: number,
         public description: string,
         public students_count: number,
-        public lectures_count: number,
-        public duration_time: Time,
         public goals: {goal: string}[],
         public requirements: {requirement: string}[],
+        public content: {
+            sections_count: number,
+            lectures_count: number,
+            articles_count: number,
+            resources_count: number,
+            assignments_count: number,
+            duration_time: Time,
+            sections: {
+                title: string,
+                lectures_count: number,
+                duration_time: Time,
+                lectures: {
+                    free_opened: boolean,
+                    title: string,
+                    description: string|null,
+                    duration_time: {
+                        hours: number,
+                        minutes: number,
+                        seconds: number
+                    }
+                }[]
+            }[]
+        }
     ) { }
 }
