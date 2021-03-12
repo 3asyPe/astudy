@@ -80,7 +80,7 @@ class CourseContentSerializer(serializers.ModelSerializer):
 
 
 class CourseSerializer(serializers.ModelSerializer):
-    """ Contains full information for first page of course
+    """ Contains full information for the first page of the course
         without any real lecture content like video/article/assignment
     """
     content = CourseContentSerializer()

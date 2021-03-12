@@ -1,4 +1,5 @@
 import datetime
+import logging
 
 from categories.models import Category
 
@@ -8,6 +9,9 @@ from django.db import models
 from ordered_model.models import OrderedModel
 
 from .utils import get_course_upload_image_path
+
+
+logger = logging.getLogger(__name__)
 
 
 class Course(models.Model):
@@ -25,12 +29,23 @@ class Course(models.Model):
 
 
 class CourseContent(models.Model):
-    course = models.OneToOneField(Course, on_delete=models.CASCADE, related_name="content")
+    course = models.OneToOneField(Course, on_delete=models.CASCADE,related_name="content")
     sections_count = models.PositiveIntegerField(default=0)
     lectures_count = models.PositiveIntegerField(default=0)
     articles_count = models.PositiveIntegerField(default=0)
     resources_count = models.PositiveIntegerField(default=0)
     assignments_count = models.PositiveIntegerField(default=0)
+
+    def recount_sections(self):
+        self.sections_count = self.sections.all().count()
+        self.save()
+
+    def recount_lectures(self):
+        lectures_count = 0
+        for section in self.sections.all():
+            lectures_count += section.lectures_count
+        self.lectures_count = lectures_count
+        self.save()
 
     def __str__(self):
         return f"{self.course.__str__()} | Content"
@@ -41,6 +56,10 @@ class CourseSection(OrderedModel):
     order_with_respect_to = 'course_content'
     title = models.CharField(max_length=50)
     lectures_count = models.PositiveIntegerField(default=0)
+
+    def recount_lectures(self):
+        self.lectures_count = self.lectures.all().count()
+        self.save()
 
     def __str__(self):
         return f"{self.course_content.__str__()} | Section - {self.title}"
