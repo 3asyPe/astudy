@@ -6,6 +6,8 @@ from .models import (
     Course,
     CourseContent,
     CourseDurationTime,
+    CourseLectureDurationTime,
+    CourseSectionDurationTime,
 )
 
 
@@ -42,3 +44,12 @@ def get_course_lectures_count_by_course(course: Course) -> int:
         return course_content.lectures_count
     else:
         raise AttributeError
+
+
+def get_course_lecture_duration_times_by_section_duration_time(
+        sec_dur_time: CourseSectionDurationTime
+    ) -> QuerySet[CourseLectureDurationTime]:
+    course_section = sec_dur_time.course_section
+    lectures = course_section.lectures.all()
+    duration_times = CourseLectureDurationTime.objects.filter(course_lecture__in=lectures)
+    return duration_times
