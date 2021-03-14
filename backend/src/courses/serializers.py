@@ -4,15 +4,16 @@ from rest_framework import serializers
 
 from .models import (
     Course, 
-    CourseContent,
-    CourseDurationTime,
+    CourseContent, 
+    CourseDurationTime, 
     CourseGoal,
-    CourseLecture,
+    CourseLecture, 
     CourseLectureDurationTime,
-    CourseRequirement,
+    CourseRequirement, 
     CourseSection,
-    CourseSectionDurationTime,
+    CourseSectionDurationTime
 )
+
 from.selectors import (
     get_course_duration_time_by_course,
     get_course_lectures_count_by_course,
@@ -89,9 +90,19 @@ class CourseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Course
-        fields = ["slug", "category", "image", "title", "subtitle", "price",
-                  "description", "students_count", "goals", "requirements",
-                  "content"]
+        fields = [
+            "slug", 
+            "category", 
+            "image", 
+            "title", 
+            "subtitle", 
+            "price",
+            "description", 
+            "students_count", 
+            "goals", 
+            "requirements",
+            "content"
+        ]
 
 
 class CategoryCourseSerializer(serializers.ModelSerializer):
@@ -100,8 +111,15 @@ class CategoryCourseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Course
-        fields = ["slug", "image", "title", "subtitle", "price", "lectures_count",
-                  "duration_time"]
+        fields = [
+            "slug", 
+            "image", 
+            "title", 
+            "subtitle", 
+            "price", 
+            "lectures_count",
+            "duration_time"
+        ]
 
     def get_duration_time(self, obj):
         try:
@@ -122,3 +140,15 @@ class CategoryCourseSerializer(serializers.ModelSerializer):
         except AttributeError:
             logger.warning("Course lectures count field doesn't exist and won't be set to serialized course object")
             return None
+
+
+class CartCourseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Course
+        fields = [
+            "slug", 
+            "image", 
+            "title", 
+            "subtitle", 
+            "price",
+        ]

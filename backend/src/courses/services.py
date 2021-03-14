@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 def recalculate_course_duration_time_tree_by_lecture(instance: CourseLecture):
-    """Recounting in this order is important"""
+    """Recalculating in this order is important"""
     instance.recalculate_duration_time()
 
     course_section = instance.course_section
@@ -26,7 +26,7 @@ def recalculate_course_duration_time_tree_by_lecture(instance: CourseLecture):
 
 
 def recalculate_course_content_tree_by_lecture(instance: CourseLecture):
-    """Recounting in this order is important"""
+    """Recalculating in this order is important"""
     course_section = instance.course_section
     course_section.recalculate_lectures()
 

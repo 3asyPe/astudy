@@ -1,0 +1,6 @@
+import enum
+
+
+class CartErrorMessages(enum.Enum):
+    CART_ALREADY_EXISTS_ERROR = "CART_ALREADY_EXISTS_ERROR"
+    REQUEST_FIELDS_ERROR = "REQUEST_FIELDS_ERROR"
