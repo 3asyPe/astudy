@@ -1,10 +1,10 @@
 import logging
 
-from courses.selectors import get_courses_by_category
-from courses.serializers import CategoryCourseSerializer
-
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+
+from courses.services import CourseSelector
+from courses.serializers import CategoryCourseSerializer
 
 from .models import Category
 from .selectors import (
@@ -53,6 +53,6 @@ def fetch_category_courses_api(request, *args, **kwargs):
         logger.warning(f"Category with slug - {slug} doesn't exist")
         return Response({"error": CategoryErrorMessages.CATEGORY_DOES_NOT_EXIST_ERROR.value}, status=404)
 
-    courses = get_courses_by_category(category=category)
+    courses = CourseSelector.get_courses_by_category(category=category)
     serializer = CategoryCourseSerializer(courses, many=True)
     return Response(serializer.data, status=200)

@@ -2,7 +2,7 @@ import logging
 
 from rest_framework import serializers
 
-from .models import (
+from courses.models import (
     Course, 
     CourseContent, 
     CourseDurationTime, 
@@ -13,11 +13,7 @@ from .models import (
     CourseSection,
     CourseSectionDurationTime
 )
-
-from.selectors import (
-    get_course_duration_time_by_course,
-    get_course_lectures_count_by_course,
-)
+from courses.services import CourseSelector
 
 
 logger = logging.getLogger(__name__)
@@ -123,23 +119,21 @@ class CategoryCourseSerializer(serializers.ModelSerializer):
 
     def get_duration_time(self, obj):
         try:
-            return CourseDurationTimeSerializer(get_course_duration_time_by_course(course=obj)).data
+            return CourseDurationTimeSerializer(
+                CourseSelector.get_course_duration_time_by_course(course=obj)
+            ).data
         except CourseContent.DoesNotExist:
             logger.warning("Course content doesn't exist so duration time won't be set to serialized course object")
-            return None
-        except CourseDurationTime:
+        except CourseDurationTime.DoesNotExist:
             logger.warning("Course duration time doesn't exist and won't be set to serialized course object")
-            return None
+        return None
 
     def get_lectures_count(self, obj):
         try:
-            return get_course_lectures_count_by_course(course=obj)
+            return CourseSelector.get_course_lectures_count_by_course(course=obj)
         except CourseContent.DoesNotExist:
             logger.warning("Course content doesn't exist so lectures count field won't be set to serialized course object")
-            return None
-        except AttributeError:
-            logger.warning("Course lectures count field doesn't exist and won't be set to serialized course object")
-            return None
+        return None
 
 
 class CartCourseSerializer(serializers.ModelSerializer):

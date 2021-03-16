@@ -3,10 +3,10 @@ import logging
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from .models import Course
-from .selectors import get_course_by_slug
-from .serializers import CourseSerializer
-from .utils import CourseErrorMessages
+from courses.services import CourseSelector
+from courses.models import Course
+from courses.serializers import CourseSerializer
+from courses.utils import CourseErrorMessages
 
 
 logger = logging.getLogger(__name__)
@@ -23,7 +23,7 @@ def get_course_info_api(request, *args, **kwargs):
         return Response({"error": CourseErrorMessages.REQUEST_FIELDS_ERROR.value}, status=400)
     
     try:
-        course = get_course_by_slug(slug=slug)
+        course = CourseSelector.get_course_by_slug(slug=slug)
     except Course.DoesNotExist:
         logger.warning(f"Course with slug - {slug} doesn't exist")
         return Response({"error": CourseErrorMessages.COURSE_DOES_NOT_EXIST_ERROR.value}, status=404)

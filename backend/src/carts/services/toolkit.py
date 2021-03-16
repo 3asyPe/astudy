@@ -4,7 +4,7 @@ from django.conf import settings
 
 from carts.models import Cart
 from carts.services.creator import CartCreator
-from courses.selectors import get_course_by_slug
+from courses.services import CourseSelector
 
 
 logger = logging.getLogger(__name__)
@@ -40,14 +40,14 @@ class CartToolkit:
 
     @staticmethod
     def add_course_to_cart(cart: Cart, course_slug: str) -> Cart:
-        course = get_course_by_slug(slug=course_slug)
+        course = CourseSelector.get_course_by_slug(slug=course_slug)
         if course not in cart.courses.all():
             cart.courses.add(course)
         return cart
         
     @staticmethod
     def remove_course_from_cart(cart: Cart, course_slug: str) -> Cart:
-        course = get_course_by_slug(slug=course_slug)
+        course = CourseSelector.get_course_by_slug(slug=course_slug)
         if course in cart.courses.all():
             cart.courses.remove(course)
         return cart
