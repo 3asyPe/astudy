@@ -23,5 +23,14 @@ class Cart(models.Model):
     def get_courses_count(self):
         return self.courses.all().count()
 
+    def update_totals(self):
+        courses = self.courses.all()
+        total = 0
+        for course in courses:
+            total += course.price
+        if self.subtotal != total:
+            self.subtotal = total
+            self.save()
+
     def __str__(self):
         return f"{self.user.__str__()} | id - {self.id} | active - {self.active} | total - {self.total}"
