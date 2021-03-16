@@ -1,11 +1,11 @@
 from django.core.validators import MaxValueValidator
 from django.db import models
 
-from courses.models import CourseSection
+from ordered_model.models import OrderedModel
 
 
 class CourseLecture(OrderedModel):
-    course_section = models.ForeignKey(CourseSection, on_delete=models.CASCADE, related_name="lectures")
+    course_section = models.ForeignKey("courses.CourseSection", on_delete=models.CASCADE, related_name="lectures")
     order_with_respect_to = "course_section"
     free_opened = models.BooleanField(default=False)
     title = models.CharField(max_length=50)

@@ -1,12 +1,11 @@
 from django.core.validators import MaxValueValidator
 from django.db import models
 
-from courses.models import Course, CourseSectionDurationTime
 from courses.utils import update_duration_time_hours_minutes
 
 
 class CourseContent(models.Model):
-    course = models.OneToOneField(Course, on_delete=models.CASCADE,related_name="content")
+    course = models.OneToOneField("courses.Course", on_delete=models.CASCADE,related_name="content")
     sections_count = models.PositiveIntegerField(default=0)
     lectures_count = models.PositiveIntegerField(default=0)
     articles_count = models.PositiveIntegerField(default=0)
@@ -37,6 +36,8 @@ class CourseDurationTime(models.Model):
     minutes = models.PositiveIntegerField(default=0, validators=[MaxValueValidator(60)])
 
     def recalculate(self):
+        from courses.models import CourseSectionDurationTime
+        
         sections = self.course_content.sections.all()
         duration_times = CourseSectionDurationTime.objects.filter(course_section__in=sections)
         hours, minutes = 0, 0

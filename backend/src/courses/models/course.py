@@ -1,12 +1,11 @@
 from django.db import models
 
-from categories.models import Category
 from courses.utils import get_course_upload_image_path
 
 
 class Course(models.Model):
     slug = models.SlugField(max_length=70, unique=True, blank=True)
-    category = models.ForeignKey(Category, related_name="courses", on_delete=models.SET_NULL, blank=True, null=True)
+    category = models.ForeignKey("categories.Category", related_name="courses", on_delete=models.SET_NULL, blank=True, null=True)
     image = models.ImageField(upload_to=get_course_upload_image_path)
     title = models.CharField(max_length=70)
     subtitle = models.CharField(max_length=150)
