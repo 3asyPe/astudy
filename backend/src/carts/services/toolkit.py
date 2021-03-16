@@ -53,6 +53,11 @@ class CartToolkit:
         return cart
 
     @staticmethod
+    def check_on_course_in_cart(cart: Cart, course_slug: str) -> bool:
+        course = CourseSelector.get_course_by_slug(slug=course_slug)
+        return course in cart.courses.all()
+
+    @staticmethod
     def _create_new_cart(user=None) -> Cart:
         return CartCreator(user=user)()
 

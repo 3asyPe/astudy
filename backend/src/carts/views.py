@@ -60,3 +60,19 @@ def get_cart_courses_count_api(request, *args, **kwargs):
     user = request.user
     cart = CartToolkit.load_cart(user=user, cart_id=cart_id)
     return Response({"cart_courses_count": cart.get_courses_count()}, status=200)
+
+
+@api_view(["GET"])
+def check_on_course_already_in_cart(request, *args, **kwargs):
+    try:
+        data = request.GET
+        cart_id = int(data.get("cart_id")) if data.get("cart_id") is not None else None
+        course_slug = data["course_slug"]
+    except KeyError:
+        logger.error("Request object doesn't have a slug field")
+        return Response({"error": CartErrorMessages.REQUEST_FIELDS_ERROR.value}, status=400)
+    
+    user = request.user
+    cart = CartToolkit.load_cart(user=user, cart_id=cart_id)
+    course_already_in_cart = CartToolkit.check_on_course_in_cart(cart=cart, course_slug=course_slug)
+    return Response({"course_already_in_cart": course_already_in_cart}, status=200)
