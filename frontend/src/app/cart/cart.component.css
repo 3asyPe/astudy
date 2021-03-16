@@ -1,0 +1,4 @@
+.nav-pages-list li{
+    display: flex;
+    align-items: center;
+}

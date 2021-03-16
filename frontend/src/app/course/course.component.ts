@@ -1,6 +1,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
+import { CartService } from '../cart/cart.service';
 import { Course } from './course.model';
 import { CourseService } from './course.service';
 
@@ -125,12 +126,14 @@ export class CourseComponent implements OnInit {
       ]
     }
   ]
+  alreadyInCart = false;
 
   openedGoalsList = false;
   openedDescription = false;
   openedAllSections = false;
   
-  constructor(private courseService: CourseService,
+  constructor(private cartService: CartService,
+              private courseService: CourseService,
               private _changeDetectionRef : ChangeDetectorRef,
               private route: ActivatedRoute) { }
 
@@ -145,7 +148,10 @@ export class CourseComponent implements OnInit {
 
   fetchCourseInfo(){
     this.courseService.fetchCourseInfo(this.slug).subscribe(
-      course => this.parseCourseResponse(course)
+      course => {
+        this.parseCourseResponse(course)
+        this.checkOnCourseAleadyInCart()
+      }
     )
   }
 
@@ -173,6 +179,26 @@ export class CourseComponent implements OnInit {
 
     this.sections = sections
     this._changeDetectionRef.detectChanges();
+  }
+
+  addCourseToCart(){
+    if (!this.slug){
+      return
+    } 
+
+    this.cartService.addCourseToCart(this.slug).subscribe(
+      response => {
+        this.alreadyInCart = true
+      }
+    )
+  }
+
+  checkOnCourseAleadyInCart(){
+    this.cartService.checkOnCourseAleadyInCart(this.slug).subscribe(
+      response => {
+        this.alreadyInCart = response.course_already_in_cart
+      }
+    )
   }
 
   openSection(section: HTMLElement){

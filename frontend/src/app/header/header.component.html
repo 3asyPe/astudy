@@ -60,7 +60,7 @@
         <ul class="header-icons-btn">
             <li *ngIf="user !== null"><a href="#" class="header-bell"><img src="assets/images/bell-icon.svg" alt="Alternate Text"></a></li>
             <li *ngIf="user !== null"><a href="#" class="header-like"><img src="assets/images/header-like.svg" alt="Alternate Text"></a></li>
-            <li><a href="basket.html" class="header-basket"><img src="assets/images/basket-icon.svg" alt="Alternate Text"></a></li>
+            <li><a routerLink="/cart" class="header-basket"><img src="assets/images/basket-icon.svg" alt="Alternate Text"></a></li>
         </ul>
         <a href="#" class="btn-empty header-btn-empty">Feedback</a>
         <a class="btn-blue header-btn-blue open-modal" (click)="onOpenAuthModal()" *ngIf="user === null">Personal account</a>
@@ -84,7 +84,7 @@
                             <a class="user-link" href="#">My courses</a>
                             <span class="user-link-count">1</span>
                         </li>
-                        <li><a class="user-link" href="#">My cart</a></li>
+                        <li><a class="user-link" routerLink="/cart">My cart</a></li>
                         <li><a class="user-link" href="#">Wishlist</a></li>
                     </ul>
                     <ul class="user-links">
@@ -139,7 +139,7 @@
                                     <a href="#">My courses</a>
                                     <span class="user-link-count">1</span>
                                 </li>
-                                <li><a href="#">My cart</a></li>
+                                <li><a routerLink="/cart">My cart</a></li>
                                 <li><a href="#">Wishlist</a></li>
                             </ul>
                             <ul class="user-links">

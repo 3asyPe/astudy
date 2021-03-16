@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewEncapsulation  } from '@angular/core';
 import { AuthService } from './auth/auth.service';
+import { CartService } from './cart/cart.service';
 
 @Component({
   selector: 'app-root',
@@ -10,9 +11,11 @@ import { AuthService } from './auth/auth.service';
 export class AppComponent implements OnInit{
   title = 'AStudy';
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService,
+              private cartService: CartService) { }
 
   ngOnInit(){
     this.authService.autoLogin()
+    this.cartService.getCartCoursesCount()
   }
 }

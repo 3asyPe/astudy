@@ -1,0 +1,62 @@
+<section class="basket-banner">
+    <div class="container">
+        <ul class="nav-pages-list white">
+            <li><a routerLink="/"><img src="assets/images//home-white-icon.svg" alt="Alternate Text"></a></li>
+            <li><a>Cart</a></li>
+        </ul>
+        <h3>Shopping Cart</h3>
+    </div>
+</section>
+<section class="section-wrap basket-box">
+    <div class="container">
+        <div class="basket-wrap">
+            <div class="basket-list">
+                <h3 *ngIf="courses.length !== 1">{{ courses.length }} Courses in Cart</h3>
+                <h3 *ngIf="courses.length === 1">{{ courses.length }} Course in Cart</h3>
+                <div class="basket-list-container">
+                    <div class="basket-block" *ngFor="let course of courses; index as i">
+                        <a class="basket-photo" routerLink="/course/{{ course.slug }}">
+                            <img src="http://localhost:8000{{ course.image }}" alt="Alternate Text">
+                        </a>
+                        <a class="basket-description" routerLink="/course/{{ course.slug }}">
+                            <h3>{{ course.title }}</h3>
+                            <p>{{ course.subtitle }}</p>
+                        </a>
+                        <ul class="basket-settings-list">
+                            <li><a (click)="removeCourseFromCart(course.slug, i)">Remove</a></li>
+                            <li><a>Save for later</a></li>
+                            <li><a>Move to Wishlist</a></li>
+                        </ul>
+                        <a class="basket-price" routerLink="/course/{{ course.slug }}">{{ course.price }}$</a>
+                    </div>
+                </div>
+
+                <div class="basket-bottom-info">
+                    <h4>Saved for later</h4>
+                    <p>You haven't saved any courses for later.</p>
+                </div>
+
+                <div class="basket-bottom-info">
+                    <h4>Recently wishlisted</h4>
+                    <p>You haven't added any courses to your wishlist.</p>
+                </div>
+            </div>
+            <div class="basket-info">
+                <h6>Total:</h6>
+                <p class="basket-all-sum">{{ subtotal }}$</p>
+                <a href="#" class="btn-blue">Checkout</a>
+                <div class="coupon-block">
+                    <input type="text" name="coupon" value="UDEMYKEEPLEARNING">
+                    <button>Apply</button>
+                </div>
+                <div class="coupon-box">
+                    <div class="coupon-close">×</div>
+                    <div class="coupon-info">
+                        <h6>Coupon is applied</h6>
+                        <p>UDEMYKEEPLEARNING</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

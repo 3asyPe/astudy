@@ -2290,7 +2290,7 @@
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 0px 0px 5px 5px;
   }
-  .about-cource-box .red-btn {
+  .about-cource-box .add-to-cart-btn {
     margin-bottom: 10px;
   }
   .about-cource-box h4 {
@@ -2598,9 +2598,16 @@
     padding-left: 5px;
     position: relative;
   }
+  .faq-wrap.faq-cource .faq-title p span span{
+    padding-left: 0;
+  }
   .faq-wrap.faq-cource .faq-title p span:before {
     content: '•';
     margin-right: 5px;
+  }
+  .faq-wrap.faq-cource .faq-title p span span:before{
+    content: '';
+    margin-right: 0;
   }
   .faq-wrap.faq-cource .faq-title:before {
     right: auto;

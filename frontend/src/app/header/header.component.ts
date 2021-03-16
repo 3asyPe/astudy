@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user.model';
+import { CartService } from '../cart/cart.service';
 
 @Component({
   selector: 'app-header',
@@ -13,14 +14,23 @@ export class HeaderComponent implements OnInit, OnDestroy {
   menuOpened = false;
   mobileNextMenuOpened = false;
   user: User|null = null;
+  cartCoursesCount = 0;
+  cartCoursesSub!: Subscription;
   private userSub!: Subscription;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService,
+              private cartService: CartService) { }
 
   ngOnInit(): void {
     this.userSub = this.authService.user.subscribe(
       user => {
         this.user = user
+      }
+    )
+    this.cartCoursesSub = this.cartService.cartCoursesCount.subscribe(
+      count => {
+        this.cartCoursesCount = count
+        console.log(this.cartCoursesCount)
       }
     )
   }
@@ -62,7 +72,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.authService.user.unsubscribe()
+    this.userSub.unsubscribe()
+    this.cartCoursesSub.unsubscribe()
   }
 
 }
