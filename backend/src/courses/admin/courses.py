@@ -28,6 +28,7 @@ class CourseAdmin(admin.ModelAdmin):
         "title", 
         "price", 
         "students_count",
+        "published",
     ]
 
     list_display_links = [
@@ -59,6 +60,7 @@ class CourseAdmin(admin.ModelAdmin):
                 "description", 
                 "price",
                 "duration_time",
+                "published",
             ]
         }),
         ("Counts", {
@@ -76,6 +78,10 @@ class CourseAdmin(admin.ModelAdmin):
     inlines = [
         CourseGoalInline,
         CourseRequirementInline,
+    ]
+
+    list_filter = [
+        "published"
     ]
 
     def image_tag(self, obj):

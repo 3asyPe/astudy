@@ -18,13 +18,16 @@ class CourseSelector:
     @classmethod
     def get_course_by_slug(cls, slug: str) -> Course:
         qs = Course.objects.filter(slug=slug)
-        if not qs.exists():
-            raise Course.DoesNotExist()
-        return qs.first()
+        if qs.exists():
+            if not qs.filter(published=True).exists():
+                logger.warning(f"There was an attempt to get an unpublished course with slug - {slug}")
+                raise Course.DoesNotExist()
+            return qs.first()
+        raise Course.DoesNotExist()
     
     @classmethod
     def get_courses_by_category(cls, category: Category) -> QuerySet[Course]:
-        courses = Course.objects.filter(category=category)
+        courses = Course.objects.filter(category=category, published=True)
         return courses
 
     @classmethod

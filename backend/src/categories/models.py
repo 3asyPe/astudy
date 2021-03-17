@@ -7,6 +7,7 @@ from django.db.models.signals import pre_save, post_save
 class Category(models.Model):
     slug = models.SlugField(max_length=50, blank=True, unique=True)
     title = models.CharField(max_length=50)
+    active = models.BooleanField(default=True)
 
     class Meta:
         verbose_name = ("Category")

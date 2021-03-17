@@ -17,6 +17,18 @@ class CourseInline(admin.StackedInline):
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
+    list_display = [
+        "id",
+        "title",
+        "active"
+    ]
+
+    list_display_links = [
+        "id",
+        "title",
+        "active"
+    ]
+
     inlines = [
         CourseInline
     ]

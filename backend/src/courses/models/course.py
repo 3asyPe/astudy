@@ -12,6 +12,7 @@ class Course(models.Model):
     price = models.DecimalField(decimal_places=2, max_digits=10, default=39.99)
     description = models.TextField(max_length=5000)
     students_count = models.PositiveIntegerField(default=0)
+    published = models.BooleanField(default=True)
 
     class Meta:
         verbose_name = ("Course")
