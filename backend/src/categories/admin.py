@@ -9,6 +9,10 @@ class CourseInline(admin.StackedInline):
     fields = ["slug", "title", "subtitle"]
     show_change_link = True
     extra = 0
+    can_delete = False
+
+    def has_add_permission(self, request, obj=None):
+        return False
 
 
 @admin.register(Category)
