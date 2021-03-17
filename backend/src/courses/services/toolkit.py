@@ -15,8 +15,8 @@ logger = logging.getLogger(__name__)
 
 
 class CourseToolkit:
-    @staticmethod
-    def recalculate_course_duration_time_tree_by_lecture(instance: CourseLecture):
+    @classmethod
+    def recalculate_course_duration_time_tree_by_lecture(cls, instance: CourseLecture):
         """Recalculating in this order is important"""
         instance.recalculate_duration_time()
 
@@ -30,8 +30,8 @@ class CourseToolkit:
 
         logger.info("Course duration time tree was recalculated successfully")
 
-    @staticmethod
-    def recalculate_course_content_tree_by_lecture(instance: CourseLecture):
+    @classmethod
+    def recalculate_course_content_tree_by_lecture(cls, instance: CourseLecture):
         """Recalculating in this order is important"""
         course_section = instance.course_section
         course_section.recalculate_lectures()
@@ -41,18 +41,18 @@ class CourseToolkit:
 
         logger.info("Course content tree was recalculated successfully")
 
-    @staticmethod
-    def create_course_content(course: Course) -> CourseContent:
+    @classmethod
+    def create_course_content(cls, course: Course) -> CourseContent:
         return CourseContent.objects.get_or_create(course=course)
 
-    @staticmethod
-    def create_course_duration_time(course_content: CourseContent) -> CourseDurationTime:
+    @classmethod
+    def create_course_duration_time(cls, course_content: CourseContent) -> CourseDurationTime:
         return CourseDurationTime.objects.get_or_create(course_content=course_content)
 
-    @staticmethod
-    def create_course_section_duration_time(course_section: CourseSection) -> CourseSectionDurationTime:
+    @classmethod
+    def create_course_section_duration_time(cls, course_section: CourseSection) -> CourseSectionDurationTime:
         return CourseSectionDurationTime.objects.get_or_create(course_section=course_section)
 
-    @staticmethod
-    def create_course_lecture_duration_time(course_lecture: CourseLecture) -> CourseLectureDurationTime:
+    @classmethod
+    def create_course_lecture_duration_time(cls, course_lecture: CourseLecture) -> CourseLectureDurationTime:
         return CourseLectureDurationTime.objects.get_or_create(course_lecture=course_lecture)
