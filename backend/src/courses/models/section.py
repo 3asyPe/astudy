@@ -12,6 +12,10 @@ class CourseSection(OrderedModel):
     title = models.CharField(max_length=50)
     lectures_count = models.PositiveIntegerField(default=0)
 
+    class Meta:
+        verbose_name = ("Section")
+        verbose_name_plural = ("Sections")
+
     def recalculate_lectures(self):
         self.lectures_count = self.lectures.all().count()
         self.save()
@@ -27,6 +31,10 @@ class CourseSectionDurationTime(models.Model):
     course_section = models.OneToOneField(CourseSection, on_delete=models.CASCADE, related_name="duration_time")
     hours = models.PositiveIntegerField(default=0)
     minutes = models.PositiveIntegerField(default=0, validators=[MaxValueValidator(60)])
+
+    class Meta:
+        verbose_name = ("Section | Duration time")
+        verbose_name_plural = ("Sections | Duration times")
 
     def recalculate(self):
         from courses.models import CourseLectureDurationTime

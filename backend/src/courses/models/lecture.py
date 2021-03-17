@@ -14,6 +14,10 @@ class CourseLecture(OrderedModel):
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        verbose_name = ("Lecture")
+        verbose_name_plural = ("Lectures")
+
     def recalculate_duration_time(self):
         self.duration_time.recalculate()
 
@@ -26,6 +30,10 @@ class CourseLectureDurationTime(models.Model):
     hours = models.PositiveIntegerField(default=0)
     minutes = models.PositiveIntegerField(default=0, validators=[MaxValueValidator(60)])
     seconds = models.PositiveIntegerField(default=0, validators=[MaxValueValidator(60)])
+
+    class Meta:
+        verbose_name = ("Lecture | Duration time")
+        verbose_name_plural = ("Lectures | Duration times")
 
     def recalculate(self):
         pass

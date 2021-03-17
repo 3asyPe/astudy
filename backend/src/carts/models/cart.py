@@ -20,6 +20,10 @@ class Cart(models.Model):
     updated = models.DateTimeField(auto_now=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        verbose_name = ("Cart")
+        verbose_name_plural = ("Carts")
+
     def get_courses_count(self):
         return self.courses.all().count()
 

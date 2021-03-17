@@ -13,6 +13,10 @@ class Course(models.Model):
     description = models.TextField(max_length=5000)
     students_count = models.PositiveIntegerField(default=0)
 
+    class Meta:
+        verbose_name = ("Course")
+        verbose_name_plural = ("Courses")
+
     def __str__(self):
         return self.title
 
@@ -21,6 +25,10 @@ class CourseGoal(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="goals")
     goal = models.CharField(max_length=255)
 
+    class Meta:
+        verbose_name = ("Goal")
+        verbose_name_plural = ("Goals")
+
     def __str__(self):
         return f"{self.course.__str__()} - {self.goal}"
 
@@ -28,6 +36,10 @@ class CourseGoal(models.Model):
 class CourseRequirement(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="requirements")
     requirement = models.CharField(max_length=255)
+
+    class Meta:
+        verbose_name = ("Requirement")
+        verbose_name_plural = ("Requirements")
 
     def __str__(self):
         return f"{self.course.__str__()} - {self.requirement}"

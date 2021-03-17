@@ -12,6 +12,10 @@ class CourseContent(models.Model):
     resources_count = models.PositiveIntegerField(default=0)
     assignments_count = models.PositiveIntegerField(default=0)
 
+    class Meta:
+        verbose_name = ("Content")
+        verbose_name_plural = ("Contents")
+
     def recalculate_sections(self):
         self.sections_count = self.sections.all().count()
         self.save()
@@ -34,6 +38,10 @@ class CourseDurationTime(models.Model):
     course_content = models.OneToOneField(CourseContent, on_delete=models.CASCADE, related_name="duration_time")
     hours = models.PositiveIntegerField(default=0)
     minutes = models.PositiveIntegerField(default=0, validators=[MaxValueValidator(60)])
+
+    class Meta:
+        verbose_name = ("Duration time")
+        verbose_name_plural = ("Duration times")
 
     def recalculate(self):
         from courses.models import CourseSectionDurationTime
