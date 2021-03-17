@@ -36,8 +36,8 @@ class CourseContent(models.Model):
 
 class CourseDurationTime(models.Model):
     course_content = models.OneToOneField(CourseContent, on_delete=models.CASCADE, related_name="duration_time")
-    hours = models.PositiveIntegerField(default=0)
-    minutes = models.PositiveIntegerField(default=0, validators=[MaxValueValidator(60)])
+    hours = models.PositiveIntegerField(default=0, verbose_name="Hours")
+    minutes = models.PositiveIntegerField(default=0, validators=[MaxValueValidator(60)], verbose_name="Minutes")
 
     class Meta:
         verbose_name = ("Duration time")
