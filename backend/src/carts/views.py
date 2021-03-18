@@ -1,11 +1,12 @@
 import logging
 
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from .serializers import CartSerializer
-from .services import CartToolkit
-from .utils import CartErrorMessages
+from carts.serializers import CartSerializer, WishlistSerializer
+from carts.services import CartToolkit, WishlistToolkit
+from carts.utils import CartErrorMessages
 
 
 logger = logging.getLogger(__name__)
@@ -18,6 +19,15 @@ def load_cart_api(request, *args, **kwargs):
     user = request.user
     cart = CartToolkit.load_cart(user=user, cart_id=cart_id)
     serializer = CartSerializer(instance=cart)
+    return Response(serializer.data, status=200)
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def load_wishlist_api(request, *args, **kwargs):
+    user = request.user
+    wishlist = WishlistToolkit.load_wishlist(user=user)
+    serializer = WishlistSerializer(instance=wishlist)
     return Response(serializer.data, status=200)
 
 
@@ -59,7 +69,10 @@ def get_cart_courses_count_api(request, *args, **kwargs):
     cart_id = int(data.get("cart_id")) if data.get("cart_id") is not None else None
     user = request.user
     cart = CartToolkit.load_cart(user=user, cart_id=cart_id)
-    return Response({"cart_courses_count": cart.get_courses_count()}, status=200)
+    return Response({
+        "cart_courses_count": cart.get_courses_count(), 
+        "cart_id": cart.id,
+    }, status=200)
 
 
 @api_view(["GET"])
