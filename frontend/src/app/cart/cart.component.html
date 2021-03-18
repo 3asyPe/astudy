@@ -29,6 +29,9 @@
                         </ul>
                         <a class="basket-price" routerLink="/course/{{ course.slug }}">{{ course.price }}$</a>
                     </div>
+                    <div *ngIf="courses.length === 0" class="basket-empty-box">
+                        <p>Your cart is empty. Keep shopping to find a course!</p>
+                    </div>
                 </div>
 
                 <div class="basket-bottom-info">

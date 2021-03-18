@@ -6,3 +6,21 @@
     margin-top: 0;
     padding-top: 30px;
 }
+
+.header-img-link{
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.desc-link-count{
+    position: absolute;
+    top: -1px;
+    right: -1px;
+
+    width: 15px;
+    height: 15px;
+    font-size: 10px;
+}

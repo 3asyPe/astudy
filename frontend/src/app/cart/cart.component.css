@@ -2,3 +2,19 @@
     display: flex;
     align-items: center;
 }
+
+.basket-empty-box{
+    border: 1px solid #E6E6E6;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 200px;
+}
+
+.basket-empty-box p{
+    font-size: 16px;
+    line-height: 1.4;
+    color: #8D8D96;
+}
