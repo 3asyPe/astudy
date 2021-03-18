@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
 import { CartService } from './cart.service';
 
 @Component({
@@ -8,6 +9,8 @@ import { CartService } from './cart.service';
   styleUrls: ['./cart.component.css']
 })
 export class CartComponent implements OnInit, OnDestroy {
+
+  private userSub!: Subscription;
 
   courses: {
       slug: string,
@@ -19,10 +22,15 @@ export class CartComponent implements OnInit, OnDestroy {
   subtotal = 0.00
   total = 0.00
 
-  constructor(private cartService: CartService) { }
+  constructor(private authService: AuthService, 
+              private cartService: CartService) { }
 
   ngOnInit(): void {
-    this.fetchCartData()
+    this.userSub = this.authService.user.subscribe(
+      user => {
+        this.fetchCartData()
+      }
+    )
   }
 
   fetchCartData(){

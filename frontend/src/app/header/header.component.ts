@@ -30,7 +30,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.cartCoursesSub = this.cartService.cartCoursesCount.subscribe(
       count => {
         this.cartCoursesCount = count
-        console.log(this.cartCoursesCount)
       }
     )
   }

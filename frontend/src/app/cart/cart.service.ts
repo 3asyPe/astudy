@@ -1,7 +1,8 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
+import { Injectable, OnInit } from "@angular/core";
+import { BehaviorSubject, Subscription } from "rxjs";
 import { tap } from "rxjs/operators";
+import { AuthService } from "../auth/auth.service";
 
 @Injectable({
     providedIn: "root",
@@ -13,9 +14,21 @@ export class CartService{
     private cartGetCartCoursesCountUrl = "http://localhost:8000/api/cart/count/"
     private cartCheckOnCourseAlreadyInCart = "http://localhost:8000/api/cart/checkalreadyin/"
 
+    private userSub!:Subscription;
+
     cartCoursesCount = new BehaviorSubject<number>(0)
 
-    constructor(private http: HttpClient){ }
+    constructor(private http: HttpClient,
+                private authService: AuthService,){ }
+
+    manuallyInitializeService(){
+        this.userSub = this.authService.user.subscribe(
+            user => {
+                console.log(user)
+                this.getCartCoursesCount()
+            }
+        )
+    }
 
     fetchCartData(){
         const cartId =  localStorage.getItem('cartId')
@@ -86,7 +99,10 @@ export class CartService{
         if (cartId || cartId === "0"){
             params = params.set("cart_id", cartId)
         }
-        this.http.get<{cart_courses_count: number}>(
+        this.http.get<{
+            cart_courses_count: number,
+            cart_id: number,
+        }>(
             this.cartGetCartCoursesCountUrl,
             {
                 params: params
@@ -94,6 +110,7 @@ export class CartService{
         ).subscribe(
             response => {
                 this.cartCoursesCount.next(response.cart_courses_count)
+                localStorage.setItem('cartId', response.cart_id.toString());
             }
         )
     }
