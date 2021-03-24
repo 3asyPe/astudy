@@ -13,6 +13,7 @@ import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { CategoryComponent } from './category/category.component';
 import { CourseComponent } from './course/course.component';
 import { CartComponent } from './cart/cart.component';
+import { CartWishlistComponent } from './cart/cart-wishlist/cart-wishlist.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { CartComponent } from './cart/cart.component';
     AuthComponent,
     CategoryComponent,
     CourseComponent,
-    CartComponent
+    CartComponent,
+    CartWishlistComponent
   ],
   imports: [
     BrowserModule,

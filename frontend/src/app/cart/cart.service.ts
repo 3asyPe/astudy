@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
-import { Injectable, OnInit } from "@angular/core";
+import { Injectable} from "@angular/core";
 import { BehaviorSubject, Subscription } from "rxjs";
 import { tap } from "rxjs/operators";
 import { AuthService } from "../auth/auth.service";
@@ -17,6 +17,13 @@ export class CartService{
     private userSub!:Subscription;
 
     cartCoursesCount = new BehaviorSubject<number>(0)
+    newCourse = new BehaviorSubject<{
+        slug: string,
+        image: string,
+        title: string,
+        subtitle: string,
+        price: number
+    }|null>(null)
 
     constructor(private http: HttpClient,
                 private authService: AuthService,){ }
@@ -24,18 +31,13 @@ export class CartService{
     manuallyInitializeService(){
         this.userSub = this.authService.user.subscribe(
             user => {
-                console.log(user)
                 this.getCartCoursesCount()
             }
         )
     }
 
     fetchCartData(){
-        const cartId =  localStorage.getItem('cartId')
-        let params = new HttpParams()
-        if (cartId || cartId === "0"){
-            params = params.set("cart_id", cartId)
-        }
+        let params = this.createParamsWithIncludedCartId()
         return this.http.get<{
             id: number, 
             courses: {
@@ -60,12 +62,8 @@ export class CartService{
     }
 
     addCourseToCart(courseSlug: string){
-        const cartId =  localStorage.getItem('cartId')
-        let params = new HttpParams()
+        let params = this.createParamsWithIncludedCartId()
         params = params.set("course_slug", courseSlug)
-        if (cartId || cartId === "0"){
-            params = params.set("cart_id", cartId)
-        }
         return this.http.post<{}>(
             this.cartAddCourseUrl,
             params,
@@ -77,12 +75,8 @@ export class CartService{
     }
 
     removeCourseFromCart(courseSlug: string){
-        const cartId =  localStorage.getItem('cartId')
-        let params = new HttpParams()
+        let params = this.createParamsWithIncludedCartId()
         params = params.set("course_slug", courseSlug)
-        if (cartId || cartId === "0"){
-            params = params.set("cart_id", cartId)
-        }
         return this.http.post<{}>(
             this.cartRemoveCourseUrl,
             params,
@@ -94,11 +88,7 @@ export class CartService{
     }
 
     getCartCoursesCount(){
-        const cartId =  localStorage.getItem('cartId')
-        let params = new HttpParams()
-        if (cartId || cartId === "0"){
-            params = params.set("cart_id", cartId)
-        }
+        let params = this.createParamsWithIncludedCartId()
         this.http.get<{
             cart_courses_count: number,
             cart_id: number,
@@ -116,11 +106,7 @@ export class CartService{
     }
 
     checkOnCourseAleadyInCart(courseSlug: string){
-        const cartId =  localStorage.getItem('cartId')
-        let params = new HttpParams()
-        if (cartId || cartId === "0"){
-            params = params.set("cart_id", cartId)
-        }
+        let params = this.createParamsWithIncludedCartId()
         params = params.set("course_slug", courseSlug)
         return this.http.get<{course_already_in_cart: boolean}>(
             this.cartCheckOnCourseAlreadyInCart,
@@ -128,5 +114,14 @@ export class CartService{
                 params: params
             }
         )
+    }
+
+    createParamsWithIncludedCartId(){
+        const cartId =  localStorage.getItem('cartId')
+        let params = new HttpParams()
+        if (cartId || cartId === "0"){
+            params = params.set("cart_id", cartId)
+        }
+        return params
     }
 }

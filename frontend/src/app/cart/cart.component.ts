@@ -1,6 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
+import { User } from '../auth/user.model';
+import { CartWishlistComponent } from './cart-wishlist/cart-wishlist.component';
+import { CartWishlistService } from './cart-wishlist/cart-wishlist.service';
 import { CartService } from './cart.service';
 
 @Component({
@@ -11,6 +14,8 @@ import { CartService } from './cart.service';
 export class CartComponent implements OnInit, OnDestroy {
 
   private userSub!: Subscription;
+  private updateSub!: Subscription;
+  user: User|null = null;
 
   courses: {
       slug: string,
@@ -23,12 +28,21 @@ export class CartComponent implements OnInit, OnDestroy {
   total = 0.00
 
   constructor(private authService: AuthService, 
-              private cartService: CartService) { }
+              private cartService: CartService,
+              private wishlistService: CartWishlistService) { }
 
   ngOnInit(): void {
     this.userSub = this.authService.user.subscribe(
       user => {
+        this.user = user
         this.fetchCartData()
+      }
+    )
+    this.updateSub = this.cartService.newCourse.subscribe(
+      newCourse => {
+        if(newCourse){
+          this.courses.push(newCourse)
+        }
       }
     )
   }
@@ -43,6 +57,16 @@ export class CartComponent implements OnInit, OnDestroy {
     )
   }
 
+  moveCourseToWishlist(courseSlug: string, courseIndex: number){
+    this.wishlistService.addCourseToWishlist(courseSlug).subscribe(
+      response => {
+        this.wishlistService.newCourse.next(this.courses[courseIndex])
+        this.courses.splice(courseIndex, 1)
+        this.cartService.getCartCoursesCount()
+      }
+    )
+  }
+
   removeCourseFromCart(courseSlug: string, courseIndex: number){
     this.cartService.removeCourseFromCart(courseSlug).subscribe(
       response => {
@@ -52,7 +76,8 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-    
+    this.userSub.unsubscribe()
+    this.updateSub.unsubscribe()
   }
 
 }

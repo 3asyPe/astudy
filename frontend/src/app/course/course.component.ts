@@ -1,6 +1,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
+import { CartWishlistService } from '../cart/cart-wishlist/cart-wishlist.service';
 import { CartService } from '../cart/cart.service';
 import { Course } from './course.model';
 import { CourseService } from './course.service';
@@ -127,12 +128,16 @@ export class CourseComponent implements OnInit {
     }
   ]
   alreadyInCart = false;
+  alraedyInWihlist = false;
+
+  addToWishlistIsLoading = false
 
   openedGoalsList = false;
   openedDescription = false;
   openedAllSections = false;
   
   constructor(private cartService: CartService,
+              private wishlistService: CartWishlistService,
               private courseService: CourseService,
               private _changeDetectionRef : ChangeDetectorRef,
               private route: ActivatedRoute) { }
@@ -151,6 +156,7 @@ export class CourseComponent implements OnInit {
       course => {
         this.parseCourseResponse(course)
         this.checkOnCourseAleadyInCart()
+        this.checkOnCourseAlreadyInWishlist()
       }
     )
   }
@@ -189,6 +195,7 @@ export class CourseComponent implements OnInit {
     this.cartService.addCourseToCart(this.slug).subscribe(
       response => {
         this.alreadyInCart = true
+        this.alraedyInWihlist = false
       }
     )
   }
@@ -197,6 +204,39 @@ export class CourseComponent implements OnInit {
     this.cartService.checkOnCourseAleadyInCart(this.slug).subscribe(
       response => {
         this.alreadyInCart = response.course_already_in_cart
+      }
+    )
+  }
+
+  addOrRemoveCourseToWishlist(){
+    if (!this.slug){
+      return
+    }
+
+    this.addToWishlistIsLoading = true
+
+    if (!this.alraedyInWihlist){ 
+      this.wishlistService.addCourseToWishlist(this.slug).subscribe(
+        response => {
+          this.alreadyInCart = false
+          this.alraedyInWihlist = true
+          this.addToWishlistIsLoading = false
+        }
+      )
+    } else {
+      this.wishlistService.removeCourseFromWishlist(this.slug).subscribe(
+        response => {
+          this.alraedyInWihlist = false
+          this.addToWishlistIsLoading = false
+        }
+      )
+    }
+  }
+
+  checkOnCourseAlreadyInWishlist(){
+    this.wishlistService.checkOnCourseAlreadyInWishlist(this.slug).subscribe(
+      response => {
+        this.alraedyInWihlist = response.course_already_in_wishlist
       }
     )
   }

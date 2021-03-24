@@ -30,14 +30,16 @@
                     </p>
                 </div>
                 <div class="cource-btns">
-                    <a href="#" class="white-icon-btn">
-                        <span>Add to wishlist</span>
-                        <img src="assets/images/like-icon.svg" alt="Alternate Text">
-                    </a>
-                    <a href="#" class="white-icon-btn">
+                    <button class="white-icon-btn" (click)="addOrRemoveCourseToWishlist()" [disabled]="addToWishlistIsLoading">
+                        <span *ngIf="!alraedyInWihlist">Add to wishlist</span>
+                        <span *ngIf="alraedyInWihlist">Wishlisted</span>
+                        <img *ngIf="!alraedyInWihlist" src="assets/images/like-icon.svg" alt="Alternate Text">
+                        <img *ngIf="alraedyInWihlist" src="assets/images/active-like-icon.png" alt="Alternate Text">
+                    </button>
+                    <button href="#" class="white-icon-btn">
                         <span>Share</span>
                         <img src="assets/images/share-white-icon.svg" alt="Alternate Text">
-                    </a>
+                    </button>
                 </div>
             </div>
 

@@ -86,3 +86,7 @@
 .black-btn {
     background-color: #272726;
 }
+
+.active-like{
+    fill: white;
+}
