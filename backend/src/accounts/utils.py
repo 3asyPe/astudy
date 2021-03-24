@@ -11,6 +11,8 @@ class AccountErrorMessages(enum.Enum):
     CREDENTIALS_ERROR = "CREDENTIALS_ERROR"
     REQUEST_FIELDS_ERROR = "REQUEST_FIELDS_ERROR"
 
+    USER_IS_NOT_AUTHENTICATED_ERROR = "USER_IS_NOT_AUTHENTICATED_ERROR"
+
 
 def new_password_is_correct(password: str) -> bool:
     return re.fullmatch(r'[A-Za-z0-9@#$%^&_+=]{8,}', password)

@@ -44,6 +44,9 @@ def add_course_to_cart_api(request, *args, **kwargs):
     user = request.user
     cart = CartToolkit.load_cart(user=user, cart_id=cart_id)
     cart = CartToolkit.add_course_to_cart(cart=cart, course_slug=course_slug)
+
+    wishlist = WishlistToolkit.load_wishlist(user=user)
+    WishlistToolkit.remove_course_from_wishlist(wishlist=wishlist, course_slug=course_slug)
     return Response({}, status=200)
 
 
@@ -63,6 +66,40 @@ def remove_course_from_cart_api(request, *args, **kwargs):
     return Response({}, status=200)
 
 
+@api_view(["POST"])
+def add_course_to_wishlist_api(request, *args, **kwargs):
+    try:
+        data = request.POST
+        cart_id = int(data.get("cart_id")) if data.get("cart_id") is not None else None
+        course_slug = data["course_slug"]
+    except KeyError:
+        logger.error("Request object doesn't have a slug field")
+        return Response({"error": CartErrorMessages.REQUEST_FIELDS_ERROR.value}, status=400)
+
+    user = request.user
+    wishlist = WishlistToolkit.load_wishlist(user=user)
+    WishlistToolkit.add_course_to_wishlist(wishlist=wishlist, course_slug=course_slug)
+
+    cart = CartToolkit.load_cart(user=user, cart_id=cart_id)
+    cart = CartToolkit.remove_course_from_cart(cart=cart, course_slug=course_slug)
+    return Response({}, status=200)
+
+
+@api_view(["POST"])
+def remove_course_from_wishlist(request, *args, **kwargs):
+    try:
+        data = request.POST
+        course_slug = data["course_slug"]
+    except KeyError:
+        logger.error("Request object doesn't have a slug field")
+        return Response({"error": CartErrorMessages.REQUEST_FIELDS_ERROR.value}, status=400)
+
+    user = request.user
+    wishlist = WishlistToolkit.load_wishlist(user=user)
+    WishlistToolkit.remove_course_from_wishlist(wishlist=wishlist, course_slug=course_slug)
+    return Response({}, status=200)
+
+
 @api_view(["GET"])
 def get_cart_courses_count_api(request, *args, **kwargs):
     data = request.GET
@@ -76,7 +113,7 @@ def get_cart_courses_count_api(request, *args, **kwargs):
 
 
 @api_view(["GET"])
-def check_on_course_already_in_cart(request, *args, **kwargs):
+def check_on_course_already_in_cart_api(request, *args, **kwargs):
     try:
         data = request.GET
         cart_id = int(data.get("cart_id")) if data.get("cart_id") is not None else None
@@ -89,3 +126,18 @@ def check_on_course_already_in_cart(request, *args, **kwargs):
     cart = CartToolkit.load_cart(user=user, cart_id=cart_id)
     course_already_in_cart = CartToolkit.check_on_course_in_cart(cart=cart, course_slug=course_slug)
     return Response({"course_already_in_cart": course_already_in_cart}, status=200)
+
+
+@api_view(["GET"])
+def check_on_course_already_in_wishlist_api(request, *args, **kwargs):
+    try:
+        data = request.GET
+        course_slug = data["course_slug"]
+    except KeyError:
+        logger.error("Request object doesn't have a slug field")
+        return Response({"error": CartErrorMessages.REQUEST_FIELDS_ERROR.value}, status=400)
+
+    user = request.user
+    wishlist = WishlistToolkit.load_wishlist(user=user)
+    course_already_in_wishlist = WishlistToolkit.check_on_course_in_wishlist(wishlist=wishlist, course_slug=course_slug)
+    return Response({"course_already_in_wishlist": course_already_in_wishlist}, status=200)

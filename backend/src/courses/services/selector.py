@@ -11,6 +11,7 @@ from courses.models import (
     CourseSectionDurationTime,
 )
 
+
 logger = logging.getLogger(__name__)
 
 

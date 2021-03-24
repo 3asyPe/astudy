@@ -2,7 +2,7 @@ from courses.serializers import CartCourseSerializer
 
 from rest_framework import serializers
 
-from .models import Cart
+from carts.models import Cart, Wishlist
 
 
 class CartSerializer(serializers.ModelSerializer):
@@ -15,4 +15,14 @@ class CartSerializer(serializers.ModelSerializer):
             "courses",
             "subtotal",
             "total",
+        ]
+
+
+class WishlistSerializer(serializers.ModelSerializer):
+    courses = CartCourseSerializer(many=True)
+
+    class Meta:
+        model = Wishlist
+        fields = [
+            "courses",
         ]

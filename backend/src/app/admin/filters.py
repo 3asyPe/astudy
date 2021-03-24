@@ -1,7 +1,5 @@
 from django.contrib import admin
 
-from .models import Cart
-
 
 class UserFilter(admin.SimpleListFilter):
     title = "User"
@@ -20,25 +18,3 @@ class UserFilter(admin.SimpleListFilter):
             return queryset.exclude(user=None)
         if self.value().lower() == "no_user":
             return queryset.filter(user=None)
-
-
-@admin.register(Cart)
-class CartAdmin(admin.ModelAdmin):
-    list_display = [
-        'id', 
-        'user', 
-        'total', 
-        'active',
-    ]
-
-    list_display_links = [
-        'id',
-        'user',
-        'total',
-        'active'
-    ]
-
-    list_filter = [
-        'active',
-        UserFilter
-    ]
