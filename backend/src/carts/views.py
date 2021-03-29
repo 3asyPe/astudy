@@ -45,8 +45,9 @@ def add_course_to_cart_api(request, *args, **kwargs):
     cart = CartToolkit.load_cart(user=user, cart_id=cart_id)
     cart = CartToolkit.add_course_to_cart(cart=cart, course_slug=course_slug)
 
-    wishlist = WishlistToolkit.load_wishlist(user=user)
-    WishlistToolkit.remove_course_from_wishlist(wishlist=wishlist, course_slug=course_slug)
+    if user.is_authenticated:
+        wishlist = WishlistToolkit.load_wishlist(user=user)
+        WishlistToolkit.remove_course_from_wishlist(wishlist=wishlist, course_slug=course_slug)
     return Response({}, status=200)
 
 
