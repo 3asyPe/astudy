@@ -56,7 +56,6 @@ export class CartWishlistComponent implements OnInit, OnDestroy {
       response => {
         this.cartService.newCourse.next(this.courses[courseIndex])
         this.courses.splice(courseIndex, 1)
-        this.cartService.getCartCoursesCount()
       }
     )
   }

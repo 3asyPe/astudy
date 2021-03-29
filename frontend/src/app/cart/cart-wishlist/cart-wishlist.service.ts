@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
+import { tap } from "rxjs/operators";
 import { CartService } from "../cart.service";
 
 @Injectable({
@@ -37,6 +38,12 @@ export class CartWishlistService{
         return this.http.post<{}>(
             this.wishlistAddCourseUrl,
             params,
+        ).pipe(
+            tap(
+                response => {
+                    this.cartService.getCartCoursesCount()
+                }
+            )
         )
     }
 
@@ -46,6 +53,12 @@ export class CartWishlistService{
         return this.http.post<{}>(
             this.wishlistRemoveCourseUrl,
             params
+        ).pipe(
+            tap(
+                response => {
+                    this.cartService.getCartCoursesCount()
+                }
+            )
         )
     }
 
