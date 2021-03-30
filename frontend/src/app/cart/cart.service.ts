@@ -37,7 +37,7 @@ export class CartService{
     }
 
     fetchCartData(){
-        let params = this.createParamsWithIncludedCartId()
+        let params = this.createParams()
         return this.http.get<{
             id: number, 
             courses: {
@@ -62,7 +62,7 @@ export class CartService{
     }
 
     addCourseToCart(courseSlug: string){
-        let params = this.createParamsWithIncludedCartId()
+        let params = this.createParams()
         params = params.set("course_slug", courseSlug)
         return this.http.post<{}>(
             this.cartAddCourseUrl,
@@ -75,7 +75,7 @@ export class CartService{
     }
 
     removeCourseFromCart(courseSlug: string){
-        let params = this.createParamsWithIncludedCartId()
+        let params = this.createParams()
         params = params.set("course_slug", courseSlug)
         return this.http.post<{}>(
             this.cartRemoveCourseUrl,
@@ -88,7 +88,7 @@ export class CartService{
     }
 
     getCartCoursesCount(){
-        let params = this.createParamsWithIncludedCartId()
+        let params = this.createParams()
         this.http.get<{
             cart_courses_count: number,
             cart_id: number,
@@ -106,7 +106,7 @@ export class CartService{
     }
 
     checkOnCourseAleadyInCart(courseSlug: string){
-        let params = this.createParamsWithIncludedCartId()
+        let params = this.createParams()
         params = params.set("course_slug", courseSlug)
         return this.http.get<{course_already_in_cart: boolean}>(
             this.cartCheckOnCourseAlreadyInCart,
@@ -116,11 +116,15 @@ export class CartService{
         )
     }
 
-    createParamsWithIncludedCartId(){
+    createParams(){
         const cartId =  localStorage.getItem('cartId')
+        const savedForLaterId = localStorage.getItem('savedForLaterId')
         let params = new HttpParams()
         if (cartId || cartId === "0"){
             params = params.set("cart_id", cartId)
+        }
+        if (savedForLaterId || savedForLaterId === "0"){
+            params = params.set("saved_for_later_id", savedForLaterId)
         }
         return params
     }

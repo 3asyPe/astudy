@@ -24,7 +24,7 @@
                         </a>
                         <ul class="basket-settings-list">
                             <li><a (click)="removeCourseFromCart(course.slug, i)">Remove</a></li>
-                            <li><a>Save for later</a></li>
+                            <li><a (click)="moveCourseToSavedForLater(course.slug, i)">Save for later</a></li>
                             <li *ngIf="user"><a (click)="moveCourseToWishlist(course.slug, i)">Move to Wishlist</a></li>
                         </ul>
                         <a class="basket-price" routerLink="/course/{{ course.slug }}">{{ course.price }}$</a>
@@ -34,10 +34,7 @@
                     </div>
                 </div>
 
-                <div class="basket-bottom-info">
-                    <h4>Saved for later</h4>
-                    <p>You haven't saved any courses for later.</p>
-                </div>
+                <app-saved-for-later></app-saved-for-later>
 
                 <app-cart-wishlist *ngIf="user"></app-cart-wishlist>
             </div>

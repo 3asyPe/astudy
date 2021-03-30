@@ -33,7 +33,7 @@ export class CartWishlistService{
     }
 
     addCourseToWishlist(courseSlug: string){
-        let params = this.cartService.createParamsWithIncludedCartId()
+        let params = this.cartService.createParams()
         params = params.set("course_slug", courseSlug)
         return this.http.post<{}>(
             this.wishlistAddCourseUrl,
@@ -48,7 +48,7 @@ export class CartWishlistService{
     }
 
     removeCourseFromWishlist(courseSlug: string){
-        let params = this.cartService.createParamsWithIncludedCartId()
+        let params = this.cartService.createParams()
         params = params.set("course_slug", courseSlug)
         return this.http.post<{}>(
             this.wishlistRemoveCourseUrl,
@@ -63,7 +63,7 @@ export class CartWishlistService{
     }
 
     checkOnCourseAlreadyInWishlist(courseSlug: string){
-        let params = this.cartService.createParamsWithIncludedCartId()
+        let params = this.cartService.createParams()
         params = params.set("course_slug", courseSlug)
         return this.http.get<{course_already_in_wishlist: boolean}>(
             this.wishlistCheckOnCourseAlreadyInWishlist,

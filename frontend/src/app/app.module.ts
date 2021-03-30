@@ -14,6 +14,7 @@ import { CategoryComponent } from './category/category.component';
 import { CourseComponent } from './course/course.component';
 import { CartComponent } from './cart/cart.component';
 import { CartWishlistComponent } from './cart/cart-wishlist/cart-wishlist.component';
+import { SavedForLaterComponent } from './cart/saved-for-later/saved-for-later.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { CartWishlistComponent } from './cart/cart-wishlist/cart-wishlist.compon
     CategoryComponent,
     CourseComponent,
     CartComponent,
-    CartWishlistComponent
+    CartWishlistComponent,
+    SavedForLaterComponent
   ],
   imports: [
     BrowserModule,

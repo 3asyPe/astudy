@@ -1,0 +1,18 @@
+<div class="basket-bottom-info">
+    <h4>Saved for later</h4>
+    <div class="basket-block" *ngFor="let course of courses; index as i">
+        <a class="basket-photo" routerLink="/course/{{ course.slug }}">
+            <img src="http://localhost:8000{{ course.image }}" alt="Alternate Text">
+        </a>
+        <a class="basket-description" routerLink="/course/{{ course.slug }}">
+            <h3>{{ course.title }}</h3>
+            <p>{{ course.subtitle }}</p>
+        </a>
+        <ul class="basket-settings-list">
+            <li><a (click)="removeCourseFromSavedForLater(course.slug, i)">Remove</a></li>
+            <li><a (click)="moveCourseToCart(course.slug, i)">Move to Cart</a></li>
+        </ul>
+        <a class="basket-price" routerLink="/course/{{ course.slug }}">{{ course.price }}$</a>
+    </div>
+    <p *ngIf="courses.length === 0">You haven't saved any courses for later.</p>
+</div>

@@ -5,6 +5,7 @@ import { User } from '../auth/user.model';
 import { CartWishlistComponent } from './cart-wishlist/cart-wishlist.component';
 import { CartWishlistService } from './cart-wishlist/cart-wishlist.service';
 import { CartService } from './cart.service';
+import { SavedForLaterService } from './saved-for-later/saved-for-later.service';
 
 @Component({
   selector: 'app-cart',
@@ -29,7 +30,8 @@ export class CartComponent implements OnInit, OnDestroy {
 
   constructor(private authService: AuthService, 
               private cartService: CartService,
-              private wishlistService: CartWishlistService) { }
+              private wishlistService: CartWishlistService,
+              private savedForLaterService: SavedForLaterService,) { }
 
   ngOnInit(): void {
     this.userSub = this.authService.user.subscribe(
@@ -61,6 +63,15 @@ export class CartComponent implements OnInit, OnDestroy {
     this.wishlistService.addCourseToWishlist(courseSlug).subscribe(
       response => {
         this.wishlistService.newCourse.next(this.courses[courseIndex])
+        this.courses.splice(courseIndex, 1)
+      }
+    )
+  }
+
+  moveCourseToSavedForLater(courseSlug: string, courseIndex: number){
+    this.savedForLaterService.addCourseToSavedForLater(courseSlug).subscribe(
+      response => {
+        this.savedForLaterService.newCourse.next(this.courses[courseIndex])
         this.courses.splice(courseIndex, 1)
       }
     )
