@@ -14,4 +14,8 @@ urlpatterns = [
     path('api/wishlist/add/', views.add_course_to_wishlist_api),
     path('api/wishlist/remove/', views.remove_course_from_wishlist),
     path('api/wishlist/checkalreadyin/', views.check_on_course_already_in_wishlist_api),
+
+    path('api/savedforlater/get/', views.load_saved_for_later_api),
+    path('api/savedforlater/add/', views.add_course_to_saved_for_later_api),
+    path('api/savedforlater/remove/', views.remove_course_from_saved_for_later),
 ]

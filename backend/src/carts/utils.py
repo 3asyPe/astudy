@@ -8,3 +8,7 @@ class CartErrorMessages(enum.Enum):
 
 class WishlistErrorMessages(enum.Enum):
     WISHLIST_ALREADY_EXISTS_ERROR = "WISHLIST_ALREADY_EXISTS_ERROR"
+
+
+class SavedForLaterErrorMessages(enum.Enum):
+    SAVED_FOR_LATER_LIST_ALREADY_EXISTS_ERROR = "SAVED_FOR_LATER_LIST_ALREADY_EXISTS_ERROR"

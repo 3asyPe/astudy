@@ -24,10 +24,8 @@ class CartCreator:
             return cart
         raise ValidationError(CartErrorMessages.CART_ALREADY_EXISTS_ERROR.value)
 
-
     def create(self) -> Cart:
         return Cart.objects.create(user=self.user)
-
 
     def _allowed_to_create(self) -> bool:
         if self.user is not None:

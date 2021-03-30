@@ -2,7 +2,7 @@ from courses.serializers import CartCourseSerializer
 
 from rest_framework import serializers
 
-from carts.models import Cart, Wishlist
+from carts.models import Cart, Wishlist, SavedForLater
 
 
 class CartSerializer(serializers.ModelSerializer):
@@ -24,5 +24,16 @@ class WishlistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Wishlist
         fields = [
+            "courses",
+        ]
+
+
+class SavedForLaterSerializer(serializers.ModelSerializer):
+    courses = CartCourseSerializer(many=True)
+     
+    class Meta:
+        model = SavedForLater
+        fields = [
+            "id",
             "courses",
         ]

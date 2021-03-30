@@ -45,7 +45,6 @@ class CartToolkit:
             cart = cls._create_new_cart(user=user)
         return cart
 
-
     @classmethod
     def add_course_to_cart(cls, cart: Cart, course_slug: str) -> Cart:
         course = CourseSelector.get_course_by_slug(slug=course_slug)
@@ -53,14 +52,12 @@ class CartToolkit:
             cart.courses.add(course)
         return cart
 
-
     @classmethod
     def remove_course_from_cart(cls, cart: Cart, course_slug: str) -> Cart:
         course = CourseSelector.get_course_by_slug(slug=course_slug)
         if course in cart.courses.all():
             cart.courses.remove(course)
         return cart
-
 
     @classmethod
     def check_on_course_in_cart(cls, cart: Cart, course_slug: str) -> bool:
