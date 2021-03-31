@@ -5,7 +5,13 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from carts.serializers import CartSerializer, WishlistSerializer, SavedForLaterSerializer
-from carts.services import CartToolkit, WishlistToolkit, SavedForLaterToolkit
+from carts.services import (
+    CartToolkit, 
+    CartListsToolkit,
+    CartListsSelector,
+    WishlistToolkit, 
+    SavedForLaterToolkit,
+)
 from carts.utils import CartErrorMessages
 
 
@@ -14,10 +20,10 @@ logger = logging.getLogger(__name__)
 
 @api_view(["GET"])
 def load_cart_api(request, *args, **kwargs):
-    data = request.GET
-    cart_id = int(data.get("cart_id")) if data.get("cart_id") is not None else None
     user = request.user
-    cart = CartToolkit.load_cart(user=user, cart_id=cart_id)
+    ids = CartListsToolkit.get_cart_lists_ids_from_request(request)
+    cart_lists = CartListsSelector.get_cart_lists_by_user_and_ids(user=request.user, ids=ids)
+    cart = cart_lists["cart"]
     serializer = CartSerializer(instance=cart)
     return Response(serializer.data, status=200)
 
@@ -44,71 +50,51 @@ def load_saved_for_later_api(request, *args, **kwargs):
 @api_view(["POST"])
 def add_course_to_cart_api(request, *args, **kwargs):
     try:
-        data = request.POST
-        cart_id = int(data.get("cart_id")) if data.get("cart_id") is not None else None
-        saved_for_later_id = int(data.get("saved_for_later_id")) if data.get("saved_for_later_id") is not None else None
-        course_slug = data["course_slug"]
+        course_slug = request.POST["course_slug"]
     except KeyError:
         logger.error("Request object doesn't have a slug field")
         return Response({"error": CartErrorMessages.REQUEST_FIELDS_ERROR.value}, status=400)
     
     user = request.user
-    cart = CartToolkit.load_cart(user=user, cart_id=cart_id)
-    cart = CartToolkit.add_course_to_cart(cart=cart, course_slug=course_slug)
+    ids = CartListsToolkit.get_cart_lists_ids_from_request(request)
+    cart_lists = CartListsSelector.get_cart_lists_by_user_and_ids(user=request.user, ids=ids)
 
-    saved_for_later = SavedForLaterToolkit.load_saved_for_later(user=user, saved_for_later_id=saved_for_later_id)
-    SavedForLaterToolkit.remove_course_from_saved_for_later(s_list=saved_for_later, course_slug=course_slug)
-
-    if user.is_authenticated:
-        wishlist = WishlistToolkit.load_wishlist(user=user)
-        WishlistToolkit.remove_course_from_wishlist(wishlist=wishlist, course_slug=course_slug)
+    cart = CartToolkit.add_course_to_cart(cart=cart_lists["cart"], course_slug=course_slug)
+    CartListsToolkit.delete_duplicates_excluding_instance(course_slug=course_slug, instance=cart, **cart_lists)
     return Response({}, status=200)
 
 
 @api_view(["POST"])
 def add_course_to_wishlist_api(request, *args, **kwargs):
     try:
-        data = request.POST
-        cart_id = int(data.get("cart_id")) if data.get("cart_id") is not None else None
-        saved_for_later_id = int(data.get("saved_for_later_id")) if data.get("saved_for_later_id") is not None else None
-        course_slug = data["course_slug"]
+        course_slug = request.POST["course_slug"]
     except KeyError:
         logger.error("Request object doesn't have a slug field")
         return Response({"error": CartErrorMessages.REQUEST_FIELDS_ERROR.value}, status=400)
 
     user = request.user
-    wishlist = WishlistToolkit.load_wishlist(user=user)
-    WishlistToolkit.add_course_to_wishlist(wishlist=wishlist, course_slug=course_slug)
+    ids = CartListsToolkit.get_cart_lists_ids_from_request(request)
+    cart_lists = CartListsSelector.get_cart_lists_by_user_and_ids(user=request.user, ids=ids)
 
-    cart = CartToolkit.load_cart(user=user, cart_id=cart_id)
-    cart = CartToolkit.remove_course_from_cart(cart=cart, course_slug=course_slug)
-
-    saved_for_later = SavedForLaterToolkit.load_saved_for_later(user=user, saved_for_later_id=saved_for_later_id)
-    SavedForLaterToolkit.remove_course_from_saved_for_later(s_list=saved_for_later, course_slug=course_slug)
+    wishlist = WishlistToolkit.add_course_to_wishlist(wishlist=cart_lists["wishlist"], course_slug=course_slug)
+    CartListsToolkit.delete_duplicates_excluding_instance(course_slug=course_slug, instance=wishlist, **cart_lists)
     return Response({}, status=200)
 
 
 @api_view(["POST"])
 def add_course_to_saved_for_later_api(request, *args, **kwargs):
     try:
-        data = request.POST
-        cart_id = int(data.get("cart_id")) if data.get("cart_id") is not None else None
-        saved_for_later_id = int(data.get("saved_for_later_id")) if data.get("saved_for_later_id") is not None else None
-        course_slug = data["course_slug"]
+        course_slug = request.POST["course_slug"]
     except KeyError:
         logger.error("Request object doesn't have a slug field")
         return Response({"error": CartErrorMessages.REQUEST_FIELDS_ERROR.value}, status=400)
 
     user = request.user
-    saved_for_later = SavedForLaterToolkit.load_saved_for_later(user=user, saved_for_later_id=saved_for_later_id)
-    SavedForLaterToolkit.add_course_to_saved_for_later(s_list=saved_for_later, course_slug=course_slug)
+    ids = CartListsToolkit.get_cart_lists_ids_from_request(request)
+    cart_lists = CartListsSelector.get_cart_lists_by_user_and_ids(user=request.user, ids=ids)
 
-    if user.is_authenticated:
-        wishlist = WishlistToolkit.load_wishlist(user=user)
-        WishlistToolkit.remove_course_from_wishlist(wishlist=wishlist, course_slug=course_slug)
-
-    cart = CartToolkit.load_cart(user=user, cart_id=cart_id)
-    cart = CartToolkit.remove_course_from_cart(cart=cart, course_slug=course_slug)
+    saved_for_later = SavedForLaterToolkit.add_course_to_saved_for_later(s_list=cart_lists["saved_for_later"], course_slug=course_slug)
+    CartListsToolkit.delete_duplicates_excluding_instance(course_slug=course_slug, instance=saved_for_later, **cart_lists)
     return Response({}, status=200)
 
 
