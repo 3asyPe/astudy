@@ -41,7 +41,7 @@
             <div class="basket-info">
                 <h6>Total:</h6>
                 <p class="basket-all-sum">{{ subTotal }}$</p>
-                <a href="#" class="btn-blue">Checkout</a>
+                <button class="btn-blue btn-checkout" [disabled]="courses.length === 0">Checkout</button>
                 <div class="coupon-block">
                     <input type="text" name="coupon" value="UDEMYKEEPLEARNING">
                     <button>Apply</button>
