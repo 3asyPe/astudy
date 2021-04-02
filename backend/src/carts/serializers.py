@@ -18,6 +18,16 @@ class CartSerializer(serializers.ModelSerializer):
         ]
 
 
+class CartOnlyInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cart
+        fields = [
+            "id",
+            "subtotal",
+            "total",
+        ]
+
+
 class WishlistSerializer(serializers.ModelSerializer):
     courses = CartCourseSerializer(many=True)
 
