@@ -19,8 +19,6 @@ class CartListsToolkit:
         *args, 
         **kwargs
     ):
-        logger.debug(instance)
-        logger.debug(kwargs)
         course = CourseSelector.get_course_by_slug(slug=course_slug)
 
         cart = kwargs.get("cart")
