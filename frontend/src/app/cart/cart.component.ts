@@ -16,6 +16,8 @@ export class CartComponent implements OnInit, OnDestroy {
 
   private userSub!: Subscription;
   private updateSub!: Subscription;
+  private totalSub!: Subscription;
+  private subTotalSub!: Subscription;
   user: User|null = null;
 
   courses: {
@@ -25,7 +27,7 @@ export class CartComponent implements OnInit, OnDestroy {
       subtitle: string,
       price: number
   }[] = []
-  subtotal = 0.00
+  subTotal = 0.00
   total = 0.00
 
   constructor(private authService: AuthService, 
@@ -47,13 +49,23 @@ export class CartComponent implements OnInit, OnDestroy {
         }
       }
     )
+    this.totalSub = this.cartService.total.subscribe(
+      total => {
+        this.total = total
+      }
+    )
+    this.subTotalSub = this.cartService.subTotal.subscribe(
+      subTotal => {
+        this.subTotal = subTotal
+      }
+    )
   }
 
   fetchCartData(){
     this.cartService.fetchCartData().subscribe(
       response => {
         this.courses = response.courses
-        this.subtotal = response.subtotal
+        this.subTotal = response.subtotal
         this.total = response.total
       }
     )
@@ -88,6 +100,8 @@ export class CartComponent implements OnInit, OnDestroy {
   ngOnDestroy(){
     this.userSub.unsubscribe()
     this.updateSub.unsubscribe()
+    this.totalSub.unsubscribe()
+    this.subTotalSub.unsubscribe()
   }
 
 }

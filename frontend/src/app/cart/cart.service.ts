@@ -24,6 +24,8 @@ export class CartService{
         subtitle: string,
         price: number
     }|null>(null)
+    subTotal = new BehaviorSubject<number>(0.00)
+    total = new BehaviorSubject<number>(0.00)
 
     constructor(private http: HttpClient,
                 private authService: AuthService,){ }
@@ -64,12 +66,17 @@ export class CartService{
     addCourseToCart(courseSlug: string){
         let params = this.createParams()
         params = params.set("course_slug", courseSlug)
-        return this.http.post<{}>(
+        return this.http.post<{
+            id: number,
+            subtotal: number,
+            total: number,
+        }>(
             this.cartAddCourseUrl,
             params,
         ).pipe(
             tap(response => {
                 this.getCartCoursesCount()
+                this.handleCartInfoResponse(response)
             })
         )
     }
@@ -77,12 +84,17 @@ export class CartService{
     removeCourseFromCart(courseSlug: string){
         let params = this.createParams()
         params = params.set("course_slug", courseSlug)
-        return this.http.post<{}>(
+        return this.http.post<{
+            id: number,
+            subtotal: number,
+            total: number,
+        }>(
             this.cartRemoveCourseUrl,
             params,
         ).pipe(
             tap(response => {
                 this.getCartCoursesCount()
+                this.handleCartInfoResponse(response)
             })
         )
     }
@@ -114,6 +126,15 @@ export class CartService{
                 params: params
             }
         )
+    }
+
+    handleCartInfoResponse(response: {
+        id: number,
+        subtotal: number,
+        total: number,
+    }){
+        this.subTotal.next(response.subtotal)
+        this.total.next(response.total)
     }
 
     createParams(){

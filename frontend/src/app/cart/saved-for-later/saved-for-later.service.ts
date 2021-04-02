@@ -43,13 +43,18 @@ export class SavedForLaterService{
     addCourseToSavedForLater(courseSlug: string){
         let params = this.cartService.createParams()
         params = params.set("course_slug", courseSlug)
-        return this.http.post<{}>(
+        return this.http.post<{
+            id: number,
+            subtotal: number,
+            total: number,
+        }>(
             this.savedForLaterAddCourseUrl,
             params
         ).pipe(
             tap(
                 response => {
                     this.cartService.getCartCoursesCount()
+                    this.cartService.handleCartInfoResponse(response)
                 }
             )
         )
