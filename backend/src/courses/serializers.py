@@ -14,6 +14,7 @@ from courses.models import (
     CourseSectionDurationTime
 )
 from courses.services import CourseSelector
+from discounts.services import DiscountSelector
 
 
 logger = logging.getLogger(__name__)
@@ -137,6 +138,8 @@ class CategoryCourseSerializer(serializers.ModelSerializer):
 
 
 class CartCourseSerializer(serializers.ModelSerializer):
+    discount = serializers.SerializerMethodField()
+
     class Meta:
         model = Course
         fields = [
@@ -145,4 +148,12 @@ class CartCourseSerializer(serializers.ModelSerializer):
             "title", 
             "subtitle", 
             "price",
+            "discount",
         ]
+
+    def get_discount(self, obj):
+        cart = self.context["cart"]
+        discount = DiscountSelector.get_discount_for_course_or_nothing(course=obj, cart=cart)
+        if discount is None:
+            return None
+        return discount.serialize()

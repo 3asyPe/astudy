@@ -10,6 +10,7 @@ urlpatterns = [
     path('', include('carts.urls')),
     path('', include('categories.urls')),
     path('', include('courses.urls')),
+    path('', include('discounts.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

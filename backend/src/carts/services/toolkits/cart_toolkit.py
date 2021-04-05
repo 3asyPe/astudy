@@ -5,6 +5,7 @@ from django.conf import settings
 from carts.models import Cart
 from carts.services import CartCreator
 from courses.services import CourseSelector
+from discounts.services import DiscountSelector
 
 
 logger = logging.getLogger(__name__)
@@ -63,6 +64,25 @@ class CartToolkit:
     def check_on_course_in_cart(cls, cart: Cart, course_slug: str) -> bool:
         course = CourseSelector.get_course_by_slug(slug=course_slug)
         return course in cart.courses.all()
+
+    @classmethod
+    def update_cart_totals(cls, cart: Cart) -> Cart:
+        courses = CourseSelector.get_courses_by_cart(cart=cart)
+        subtotal = 0
+        total = 0
+        for course in courses:
+            subtotal += course.price
+            discount = DiscountSelector.get_discount_for_course_or_nothing(course=course, cart=cart)
+            if discount is None:
+                total += course.price
+            else:
+                total += discount.new_price
+        cart.subtotal = subtotal
+        cart.total = total
+        cart.save()
+
+        logger.debug("Cart totals were updated successfully")
+        return cart
 
     @classmethod
     def _create_new_cart(cls, user=None) -> Cart:

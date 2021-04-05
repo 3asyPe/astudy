@@ -2,6 +2,7 @@ import logging
 
 from django.db.models.query import QuerySet
 
+from carts.models import Cart
 from categories.models import Category
 from courses.models import (
     Course,
@@ -30,6 +31,10 @@ class CourseSelector:
     def get_courses_by_category(cls, category: Category) -> QuerySet[Course]:
         courses = Course.objects.filter(category=category, published=True)
         return courses
+
+    @classmethod
+    def get_courses_by_cart(cls, cart: Cart) -> QuerySet[Course]:
+        return Course.objects.filter(cart=cart, published=True)
 
     @classmethod
     def get_course_content_by_course(cls, course: Course) -> CourseContent:
