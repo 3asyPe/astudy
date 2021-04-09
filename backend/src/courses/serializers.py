@@ -152,7 +152,9 @@ class CartCourseSerializer(serializers.ModelSerializer):
         ]
 
     def get_discount(self, obj):
-        cart = self.context["cart"]
+        cart = self.context.get("cart")
+        if cart is None:
+            return None
         discount = DiscountSelector.get_discount_for_course_or_nothing(course=obj, cart=cart)
         if discount is None:
             return None

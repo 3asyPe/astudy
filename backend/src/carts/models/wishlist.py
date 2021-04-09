@@ -7,7 +7,7 @@ User = settings.AUTH_USER_MODEL
 
 class Wishlist(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    courses = models.ManyToManyField("courses.Course", blank=True)
+    courses = models.ManyToManyField("courses.Course", blank=True, related_name="wishlist")
     updated = models.DateTimeField(auto_now=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 

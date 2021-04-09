@@ -44,6 +44,8 @@ class CartToolkit:
                 cart = cart_by_id
         else:
             cart = cls._create_new_cart(user=user)
+            
+        cart.update_totals()
         return cart
 
     @classmethod

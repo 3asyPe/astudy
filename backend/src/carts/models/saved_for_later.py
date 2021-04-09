@@ -7,7 +7,7 @@ User = settings.AUTH_USER_MODEL
 
 class SavedForLater(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
-    courses = models.ManyToManyField("courses.Course", blank=True)
+    courses = models.ManyToManyField("courses.Course", blank=True, related_name="saved_for_later")
     updated = models.DateTimeField(auto_now=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 

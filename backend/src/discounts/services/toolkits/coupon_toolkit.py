@@ -9,6 +9,7 @@ class CouponToolkit:
     @classmethod
     def apply_coupon(cls, code: str, cart: Cart) -> Optional[Cart]:
         applied_coupon = AppliedCouponCreator(code=code, cart=cart)()
+        cart.update_totals()
         return applied_coupon
 
     @classmethod
@@ -17,3 +18,4 @@ class CouponToolkit:
         if qs.exists():
             applied_coupon = qs.first()
             applied_coupon.delete()
+            cart.update_totals()

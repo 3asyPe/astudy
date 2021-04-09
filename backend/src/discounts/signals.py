@@ -25,13 +25,13 @@ def coupon_pre_save_receiver(sender, instance: Coupon, *args, **kwargs):
             logger.debug(f"Applied coupons of coupon - {instance} were activated/deactived")
 
 
-@receiver(post_save, sender=AppliedCoupon)
-def applied_coupon_post_save_receiver(sender, instance: AppliedCoupon, *args, **kwargs):
-    cart = instance.cart
-    CartToolkit.update_cart_totals(cart=cart)
+# @receiver(post_save, sender=AppliedCoupon)
+# def applied_coupon_post_save_receiver(sender, instance: AppliedCoupon, *args, **kwargs):
+#     cart = instance.cart
+#     CartToolkit.update_cart_totals(cart=cart)
 
 
-@receiver(post_delete, sender=AppliedCoupon)
-def applied_coupon_post_delete_receiver(sender, instance: AppliedCoupon, *args, **kwargs):
-    cart = instance.cart
-    CartToolkit.update_cart_totals(cart=cart)
+# @receiver(post_delete, sender=AppliedCoupon)
+# def applied_coupon_post_delete_receiver(sender, instance: AppliedCoupon, *args, **kwargs):
+#     cart = instance.cart
+#     CartToolkit.update_cart_totals(cart=cart)

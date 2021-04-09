@@ -7,6 +7,7 @@ from app.errors import ValidationError
 from carts.services import (
     CartToolkit,
     CartListsToolkit,
+    CartListsSelector,
 )
 from carts.serializers import CartDiscountsInfoSerializer
 from discounts.services import CouponToolkit
@@ -24,9 +25,12 @@ def apply_coupon_api(request, *args, **kwargs):
         logger.error("Request object doesn't have a coupon code")
         return Response({"error": DiscountErrorMessages.REQUEST_FIELDS_ERROR.value}, status=400)
 
-    user = request.user
     ids = CartListsToolkit.get_cart_lists_ids_from_request(request)
-    cart = CartToolkit.load_cart(user=user, cart_id=ids["cart_id"])
+    cart_lists = CartListsSelector.get_cart_lists_by_user_and_ids(user=request.user, ids=ids)
+
+    cart = cart_lists["cart"]
+    wishlist = cart_lists["wishlist"]
+    saved_for_later=cart_lists["saved_for_later"]
 
     try:
         CouponToolkit.apply_coupon(code=coupon_code, cart=cart)
@@ -34,7 +38,11 @@ def apply_coupon_api(request, *args, **kwargs):
         logger.debug(exc)
         return Response({"error": str(exc)}, status=400)
 
-    serializer = CartDiscountsInfoSerializer(instance=cart)
+    context={
+        "saved_for_later": saved_for_later,
+        "wishlist": wishlist,
+    }
+    serializer = CartDiscountsInfoSerializer(instance=cart, context=context)
     
     return Response(serializer.data, status=200)
 
@@ -48,12 +56,19 @@ def remove_applied_coupon_api(request, *args, **kwargs):
         logger.error("Request object doesn't have a coupon code")
         return Response({"error": DiscountErrorMessages.REQUEST_FIELDS_ERROR.value}, status=400)
     
-    user = request.user
     ids = CartListsToolkit.get_cart_lists_ids_from_request(request)
-    cart = CartToolkit.load_cart(user=user, cart_id=ids["cart_id"])
+    cart_lists = CartListsSelector.get_cart_lists_by_user_and_ids(user=request.user, ids=ids)
+
+    cart = cart_lists["cart"]
+    wishlist = cart_lists["wishlist"]
+    saved_for_later=cart_lists["saved_for_later"]
 
     CouponToolkit.remove_applied_coupon(code=coupon_code, cart=cart)
 
-    serializer = CartDiscountsInfoSerializer(instance=cart)
+    context={
+        "saved_for_later": saved_for_later,
+        "wishlist": wishlist,
+    }
+    serializer = CartDiscountsInfoSerializer(instance=cart, context=context)
 
     return Response(serializer.data, status=200)

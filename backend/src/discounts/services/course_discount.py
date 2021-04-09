@@ -1,10 +1,10 @@
 import logging
 
 from decimal import Decimal
-from typing import Optional
+from typing import Optional, Union
 
 from app.errors import DiscountDoesNotExistError
-from carts.models import Cart
+from carts.models import Cart, SavedForLater, Wishlist
 from courses.models import Course
 from discounts.models import AppliedCoupon
 
@@ -35,12 +35,16 @@ class CourseDiscount:
         }
 
     def apply_coupons(self) -> None:
-        coupons = AppliedCoupon.objects.filter(cart=self.cart, active=True)
+        coupons = AppliedCoupon.objects.filter(cart=self.cart, coupon__applicable_to__in=[self.course], active=True)
+        logger.debug(f"course-{self.course}")
+        logger.debug(f"coupons-{coupons}")
         max_discount = 0
         max_discount_coupon = None
         for coupon in coupons:
             if coupon.is_active and coupon.discount > max_discount:
                 max_discount_coupon = coupon 
+                max_discount = coupon.discount
+        logger.debug(f"applied - {max_discount_coupon}")
         self.applied_coupon = max_discount_coupon
     
     def count_price(self) -> None:

@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from carts.serializers import (
+    CartDiscountsInfoSerializer,
     CartSerializer, 
     CartOnlyInfoSerializer,
     WishlistSerializer, 
@@ -37,18 +38,22 @@ def load_cart_api(request, *args, **kwargs):
 @permission_classes([IsAuthenticated])
 def load_wishlist_api(request, *args, **kwargs):
     user = request.user
-    wishlist = WishlistToolkit.load_wishlist(user=user)
-    serializer = WishlistSerializer(instance=wishlist)
+    ids = CartListsToolkit.get_cart_lists_ids_from_request(request)
+    cart_lists = CartListsSelector.get_cart_lists_by_user_and_ids(user=request.user, ids=ids)
+    wishlist = cart_lists["wishlist"]
+    cart = cart_lists["cart"]
+    serializer = WishlistSerializer(instance=wishlist, context={"cart": cart})
     return Response(serializer.data, status=200)
 
 
 @api_view(["GET"])
 def load_saved_for_later_api(request, *args, **kwargs):
-    data = request.GET
-    saved_for_later_id = int(data.get("saved_for_later_id")) if data.get("saved_for_later_id") is not None else None
     user = request.user
-    saved_for_later = SavedForLaterToolkit.load_saved_for_later(user=user, saved_for_later_id=saved_for_later_id)
-    serializer = SavedForLaterSerializer(instance=saved_for_later)
+    ids = CartListsToolkit.get_cart_lists_ids_from_request(request)
+    cart_lists = CartListsSelector.get_cart_lists_by_user_and_ids(user=request.user, ids=ids)
+    saved_for_later =  cart_lists["saved_for_later"]
+    cart = cart_lists["cart"]
+    serializer = SavedForLaterSerializer(instance=saved_for_later, context={"cart": cart})
     return Response(serializer.data, status=200)
 
 
