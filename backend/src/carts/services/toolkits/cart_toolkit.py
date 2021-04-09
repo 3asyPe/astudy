@@ -82,8 +82,6 @@ class CartToolkit:
         cart.subtotal = subtotal
         cart.total = total
         cart.save()
-
-        logger.debug("Cart totals were updated successfully")
         return cart
 
     @classmethod

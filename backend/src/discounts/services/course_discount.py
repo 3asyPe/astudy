@@ -36,15 +36,12 @@ class CourseDiscount:
 
     def apply_coupons(self) -> None:
         coupons = AppliedCoupon.objects.filter(cart=self.cart, coupon__applicable_to__in=[self.course], active=True)
-        logger.debug(f"course-{self.course}")
-        logger.debug(f"coupons-{coupons}")
         max_discount = 0
         max_discount_coupon = None
         for coupon in coupons:
             if coupon.is_active and coupon.discount > max_discount:
                 max_discount_coupon = coupon 
                 max_discount = coupon.discount
-        logger.debug(f"applied - {max_discount_coupon}")
         self.applied_coupon = max_discount_coupon
     
     def count_price(self) -> None:
@@ -55,8 +52,6 @@ class CourseDiscount:
 
     @classmethod
     def get_or_nothing(cls, course: Course, cart: Cart):
-        logger.debug(f"COURSE-{course}")
-        logger.debug(f"CART-{cart}")
         try:
             return cls.get(course=course, cart=cart)
         except DiscountDoesNotExistError:

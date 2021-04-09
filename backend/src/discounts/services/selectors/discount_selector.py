@@ -29,16 +29,12 @@ class DiscountSelector:
     def get_discounts_for_wishlist(cls, cart: Cart, wishlist: Wishlist) -> List[CourseDiscount]:
         courses = CourseSelector.get_courses_by_wishlist(wishlist=wishlist)
         discounts = [CourseDiscount.get_or_nothing(course=course, cart=cart) for course in courses.iterator()]
-        logger.debug(f"Wishlist courses - {courses}")
-        logger.debug(f"Wishlist discounts - {discounts}")
         return discounts
 
     @classmethod
     def get_discounts_for_saved_for_later(cls, cart: Cart, saved_for_later: SavedForLater) -> List[SavedForLater]:
         courses = CourseSelector.get_courses_by_saved_for_later(saved_for_later=saved_for_later)
         discounts = [CourseDiscount.get_or_nothing(course=course, cart=cart) for course in courses.iterator()]
-        logger.debug(f"Saved for later courses - {courses}")
-        logger.debug(f"Saved for later discounts - {discounts}")
         return discounts
 
     @classmethod
