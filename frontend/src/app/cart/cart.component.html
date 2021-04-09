@@ -32,6 +32,7 @@
                                 <div class="basket-price">{{ course.discount ? course.discount.new_price : course.price}}$</div>
                                 <div class="basket-new-price" *ngIf="course.discount">{{ course.price}}$</div>
                             </div>
+                            <svg-icon class="hidden" *ngIf="!course.discount" src="assets/images/price-tag.svg" [svgStyle]="{'width.px': 20, 'height.px': 20, 'fill': '#6f85bd', 'margin': '0 5px 0 8px'}"></svg-icon>
                             <svg-icon [tooltip]="course.discount.applied_coupon" *ngIf="course.discount" src="assets/images/price-tag.svg" [svgStyle]="{'width.px': 20, 'height.px': 20, 'fill': '#6f85bd', 'margin': '0 5px 0 8px'}"></svg-icon>
                         </a>
                     </div>

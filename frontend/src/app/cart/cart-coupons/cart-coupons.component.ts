@@ -1,5 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/auth/auth.service';
 import { CartCouponsService } from './cart-coupons.service';
 
 @Component({
@@ -9,12 +10,14 @@ import { CartCouponsService } from './cart-coupons.service';
 })
 export class CartCouponsComponent implements OnInit, OnDestroy {
 
+  private userSub!: Subscription
   private couponsSub!: Subscription
 
   coupons: {code: string}[] = []
   error = false
 
-  constructor(private cartCouponsService: CartCouponsService) { }
+  constructor(private authService: AuthService,
+              private cartCouponsService: CartCouponsService) { }
 
   ngOnInit(): void {
     this.couponsSub = this.cartCouponsService.coupons.subscribe(
@@ -35,8 +38,7 @@ export class CartCouponsComponent implements OnInit, OnDestroy {
         this.coupons.push({code: code})
       },
       (error) => {
-        console.log(error)
-        if (error.error === "INVALID_APPLIED_COUPON_ERROR"){
+        if (error.error.error === "INVALID_APPLIED_COUPON_ERROR"){
           this.error = true
         }
       }

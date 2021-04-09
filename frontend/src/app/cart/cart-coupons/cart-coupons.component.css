@@ -5,4 +5,19 @@
 .coupon-error{
     font-size: 11px;
     color: #612012;
+    padding: 5px;
+}
+
+.coupon-header{
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid #E6E6E6;
+    padding: 10px 0 20px;
+    margin-top: 10px;
+}
+
+.coupon-block{
+    border: none;
+    padding: 0;
+    margin: 0;
 }
