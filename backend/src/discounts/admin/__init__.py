@@ -1,0 +1,2 @@
+from discounts.admin.coupons import CouponAdmin
+from discounts.admin.applied_coupons import AppliedCouponAdmin
