@@ -12,7 +12,13 @@
             <li><a (click)="removeCourseFromSavedForLater(course.slug, i)">Remove</a></li>
             <li><a (click)="moveCourseToCart(course.slug, i)">Move to Cart</a></li>
         </ul>
-        <a class="basket-price" routerLink="/course/{{ course.slug }}">{{ course.price }}$</a>
+        <a routerLink="/course/{{ course.slug }}" class="basket-course-price-box">
+            <div class="basket-course-prices">
+                <div class="basket-price">{{ course.discount ? course.discount.new_price : course.price}}$</div>
+                <div class="basket-new-price" *ngIf="course.discount">{{ course.price}}$</div>
+            </div>
+            <svg-icon [tooltip]="course.discount.applied_coupon" *ngIf="course.discount" src="assets/images/price-tag.svg" [svgStyle]="{'width.px': 20, 'height.px': 20, 'fill': '#6f85bd', 'margin': '0 5px 0 8px'}"></svg-icon>
+        </a>
     </div>
     <p *ngIf="courses.length === 0">You haven't saved any courses for later.</p>
 </div>

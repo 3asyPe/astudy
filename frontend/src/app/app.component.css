@@ -3126,13 +3126,11 @@
     color: #284aa0;
   }
   .basket-price {
-    width: 12%;
     text-align: center;
     font-weight: bold;
     font-size: 16px;
     color: #1C1E26;
     align-self: flex-start;
-    padding-top: 15px;
   }
   .basket-list-container {
     margin-bottom: 40px;
@@ -3161,7 +3159,7 @@
     font-weight: bold;
     font-size: 28px;
     color: #1C1E26;
-    margin: 7px 0 17px;
+    margin: 10px 0 17px;
   }
   .coupon-block {
     display: flex;
@@ -8063,3 +8061,47 @@
         display:block;
     }
 }  
+
+
+
+
+.tooltip {
+  position: absolute;
+  max-width: 90%;
+  font-size: 14px;
+  text-align: center;
+  color: #f8f8f2;
+  padding: 5px;
+  background: #1e1e1f;
+  z-index: 1000;
+  opacity: 0;
+}
+
+.tooltip_show {
+  opacity: 1;
+}
+
+.basket-course-price-tag{
+  width: 15px;
+  height: 15px;
+}
+
+.basket-price{
+  font-size: 18px;
+}
+
+.basket-new-price{
+  text-decoration: line-through;
+  color: black;
+}
+
+.basket-course-price-box{
+  display: flex;
+  align-items: flex-start;
+  height: 100%;
+}
+
+.basket-course-prices{
+  display: flex;
+  flex-direction: column;
+}

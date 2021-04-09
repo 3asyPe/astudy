@@ -3,6 +3,8 @@ import { Injectable} from "@angular/core";
 import { BehaviorSubject, Subscription } from "rxjs";
 import { tap } from "rxjs/operators";
 import { AuthService } from "../auth/auth.service";
+import { CartWishlistService } from "./cart-wishlist/cart-wishlist.service";
+import { SavedForLaterService } from "./saved-for-later/saved-for-later.service";
 
 @Injectable({
     providedIn: "root",
@@ -22,10 +24,20 @@ export class CartService{
         image: string,
         title: string,
         subtitle: string,
-        price: number
+        price: number,
+        discount: {
+            applied_coupon: string,
+            course_slug: string,
+            new_price: number,
+        }|null,
     }|null>(null)
     subTotal = new BehaviorSubject<number>(0.00)
     total = new BehaviorSubject<number>(0.00)
+    discounts = new BehaviorSubject<{
+        course_slug: string,
+        new_price: number,
+        applied_coupon: string,
+    }[]>([])
 
     constructor(private http: HttpClient,
                 private authService: AuthService,){ }
@@ -47,7 +59,15 @@ export class CartService{
                 image: string,
                 title: string,
                 subtitle: string,
-                price: number
+                price: number,
+                discount: {
+                    applied_coupon: string,
+                    course_slug: string,
+                    new_price: number,
+                }|null
+            }[],
+            applied_coupons: {
+                code: string
             }[],
             subtotal: number,
             total: number,
@@ -135,6 +155,22 @@ export class CartService{
     }){
         this.subTotal.next(response.subtotal)
         this.total.next(response.total)
+        
+    }
+
+    handleCartDiscountsResponse(response: {
+        cartDiscounts: {
+            course_slug: string,
+            new_price: number,
+            applied_coupon: string,
+        }[],
+        subtotal: number,
+        total: number,
+    }){
+        console.log(response)
+        this.subTotal.next(response.subtotal)
+        this.total.next(response.total)
+        this.discounts.next(response.cartDiscounts)
     }
 
     createParams(){

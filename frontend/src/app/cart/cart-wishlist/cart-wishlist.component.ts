@@ -13,13 +13,19 @@ export class CartWishlistComponent implements OnInit, OnDestroy {
 
   private userSub!: Subscription
   private updateSub!: Subscription
+  private discountsSub!: Subscription;
 
   courses: {
     slug: string,
     image: string,
     title: string,
     subtitle: string,
-    price: number
+    price: number,
+    discount: {
+      applied_coupon: string,
+      course_slug: string,
+      new_price: number,
+    }|null
   }[] = []
 
   constructor(private authService: AuthService,
@@ -39,6 +45,11 @@ export class CartWishlistComponent implements OnInit, OnDestroy {
         if(newCourse){
           this.courses.push(newCourse)
         }
+      }
+    )
+    this.discountsSub = this.wishlistService.discounts.subscribe(
+      discounts => {
+        this.setUpDiscounts(discounts)
       }
     )
   }
@@ -68,9 +79,30 @@ export class CartWishlistComponent implements OnInit, OnDestroy {
     )
   }
 
+  setUpDiscounts(discounts: {
+    course_slug: string,
+    new_price: number,
+    applied_coupon: string,
+  }[]){
+    this.courses.forEach(course => {
+      let reached = false
+      for (let discount of discounts){
+        if (course.slug === discount.course_slug){
+          course.discount = discount
+          reached = true
+          break
+        }
+      }
+      if (!reached){
+        course.discount = null
+      }
+    })
+  }
+
   ngOnDestroy(){
     this.userSub.unsubscribe()
     this.updateSub.unsubscribe()
+    this.discountsSub.unsubscribe()
   }
 
 }

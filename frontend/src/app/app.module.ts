@@ -1,6 +1,8 @@
+import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TooltipModule } from 'ng2-tooltip-directive';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,6 +17,8 @@ import { CourseComponent } from './course/course.component';
 import { CartComponent } from './cart/cart.component';
 import { CartWishlistComponent } from './cart/cart-wishlist/cart-wishlist.component';
 import { SavedForLaterComponent } from './cart/saved-for-later/saved-for-later.component';
+import { CartCouponsComponent } from './cart/cart-coupons/cart-coupons.component';
+import { TooltipDirective } from './shared/tooltip.directive';
 
 @NgModule({
   declarations: [
@@ -26,7 +30,8 @@ import { SavedForLaterComponent } from './cart/saved-for-later/saved-for-later.c
     CourseComponent,
     CartComponent,
     CartWishlistComponent,
-    SavedForLaterComponent
+    SavedForLaterComponent,
+    CartCouponsComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,6 +39,8 @@ import { SavedForLaterComponent } from './cart/saved-for-later/saved-for-later.c
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
+    AngularSvgIconModule.forRoot(),
+    TooltipModule,
   ],
   providers: [
     {

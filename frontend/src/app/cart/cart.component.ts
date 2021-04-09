@@ -1,8 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+
 import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user.model';
-import { CartWishlistComponent } from './cart-wishlist/cart-wishlist.component';
+import { CartCouponsService } from './cart-coupons/cart-coupons.service';
 import { CartWishlistService } from './cart-wishlist/cart-wishlist.service';
 import { CartService } from './cart.service';
 import { SavedForLaterService } from './saved-for-later/saved-for-later.service';
@@ -18,6 +19,7 @@ export class CartComponent implements OnInit, OnDestroy {
   private updateSub!: Subscription;
   private totalSub!: Subscription;
   private subTotalSub!: Subscription;
+  private discountsSub!: Subscription;
   user: User|null = null;
 
   courses: {
@@ -25,13 +27,22 @@ export class CartComponent implements OnInit, OnDestroy {
       image: string,
       title: string,
       subtitle: string,
-      price: number
+      price: number,
+      discount: {
+        applied_coupon: string,
+        course_slug: string,
+        new_price: number,
+      }|null
+  }[] = []
+  appliedCoupons: {
+    code: string
   }[] = []
   subTotal = 0.00
   total = 0.00
 
   constructor(private authService: AuthService, 
               private cartService: CartService,
+              private cartCouponsServices: CartCouponsService,
               private wishlistService: CartWishlistService,
               private savedForLaterService: SavedForLaterService,) { }
 
@@ -59,6 +70,11 @@ export class CartComponent implements OnInit, OnDestroy {
         this.subTotal = subTotal
       }
     )
+    this.discountsSub = this.cartService.discounts.subscribe(
+      discounts => {
+        this.setUpDiscounts(discounts)
+      }
+    )
   }
 
   fetchCartData(){
@@ -67,6 +83,7 @@ export class CartComponent implements OnInit, OnDestroy {
         this.courses = response.courses
         this.subTotal = response.subtotal
         this.total = response.total
+        this.cartCouponsServices.coupons.next(response.applied_coupons)
       }
     )
   }
@@ -97,11 +114,32 @@ export class CartComponent implements OnInit, OnDestroy {
     )
   }
 
+  setUpDiscounts(discounts: {
+    course_slug: string,
+    new_price: number,
+    applied_coupon: string,
+  }[]){
+    this.courses.forEach(course => {
+      let reached = false
+      for (let discount of discounts){
+        if (course.slug === discount.course_slug){
+          course.discount = discount
+          reached = true
+          break
+        }
+      }
+      if (!reached){
+        course.discount = null
+      }
+    })
+  }
+
   ngOnDestroy(){
     this.userSub.unsubscribe()
     this.updateSub.unsubscribe()
     this.totalSub.unsubscribe()
     this.subTotalSub.unsubscribe()
+    this.discountsSub.unsubscribe()
   }
 
 }

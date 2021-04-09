@@ -28,3 +28,21 @@
 .btn-checkout:disabled{
     background-color: #6a92f7;
 }
+
+.basket-sums{
+    display: flex;
+}
+
+.basket-all-sum{
+    line-height: 1;
+    display: flex;
+    align-items: flex-end;
+}
+
+.basket-all-sub-sum{
+    text-decoration: line-through;
+    line-height: 1;
+    margin: 10px 3px 20px;
+    display: flex;
+    align-items: flex-end;
+}

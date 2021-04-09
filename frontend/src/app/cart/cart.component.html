@@ -27,7 +27,13 @@
                             <li><a (click)="moveCourseToSavedForLater(course.slug, i)">Save for later</a></li>
                             <li *ngIf="user"><a (click)="moveCourseToWishlist(course.slug, i)">Move to Wishlist</a></li>
                         </ul>
-                        <a class="basket-price" routerLink="/course/{{ course.slug }}">{{ course.price }}$</a>
+                        <a routerLink="/course/{{ course.slug }}" class="basket-course-price-box">
+                            <div class="basket-course-prices">
+                                <div class="basket-price">{{ course.discount ? course.discount.new_price : course.price}}$</div>
+                                <div class="basket-new-price" *ngIf="course.discount">{{ course.price}}$</div>
+                            </div>
+                            <svg-icon [tooltip]="course.discount.applied_coupon" *ngIf="course.discount" src="assets/images/price-tag.svg" [svgStyle]="{'width.px': 20, 'height.px': 20, 'fill': '#6f85bd', 'margin': '0 5px 0 8px'}"></svg-icon>
+                        </a>
                     </div>
                     <div *ngIf="courses.length === 0" class="basket-empty-box">
                         <p>Your cart is empty. Keep shopping to find a course!</p>
@@ -38,21 +44,15 @@
 
                 <app-cart-wishlist *ngIf="user"></app-cart-wishlist>
             </div>
+            
             <div class="basket-info">
                 <h6>Total:</h6>
-                <p class="basket-all-sum">{{ subTotal }}$</p>
+                <div class="basket-sums">
+                    <p class="basket-all-sum">{{ total }}$</p>
+                    <p class="basket-all-sub-sum" *ngIf="total !== subTotal">{{ subTotal }}$</p>
+                </div>
                 <button class="btn-blue btn-checkout" [disabled]="courses.length === 0">Checkout</button>
-                <div class="coupon-block">
-                    <input type="text" name="coupon" value="UDEMYKEEPLEARNING">
-                    <button>Apply</button>
-                </div>
-                <div class="coupon-box">
-                    <div class="coupon-close">×</div>
-                    <div class="coupon-info">
-                        <h6>Coupon is applied</h6>
-                        <p>UDEMYKEEPLEARNING</p>
-                    </div>
-                </div>
+                <app-cart-coupons></app-cart-coupons>
             </div>
         </div>
     </div>

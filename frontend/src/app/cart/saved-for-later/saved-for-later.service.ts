@@ -13,6 +13,11 @@ export class SavedForLaterService{
     private savedForLaterRemoveCourseUrl = "http://localhost:8000/api/savedforlater/remove/"
 
     newCourse = new BehaviorSubject<any>(false)
+    discounts = new BehaviorSubject<{
+        course_slug: string,
+        new_price: number,
+        applied_coupon: string,
+    }[]>([])
 
     constructor(private http: HttpClient,
                 private cartService: CartService){ }
@@ -27,6 +32,11 @@ export class SavedForLaterService{
                 title: string,
                 subtitle: string,
                 price: number,
+                discount: {
+                    applied_coupon: string,
+                    course_slug: string,
+                    new_price: number,
+                }|null,
             }[]
         }>(
             this.savedForLaterGetUrl,
@@ -66,12 +76,16 @@ export class SavedForLaterService{
         return this.http.post<{}>(
             this.savedForLaterRemoveCourseUrl,
             params,
-        ).pipe(
-            tap(
-                response => {
-                    this.cartService.getCartCoursesCount()
-                }
-            )
         )
+    }
+
+    handleSavedForLaterDiscountsResponse(response: {
+        savedForLaterDiscounts: {
+            course_slug: string,
+            new_price: number,
+            applied_coupon: string,
+        }[]
+    }){
+        this.discounts.next(response.savedForLaterDiscounts)
     }
 }

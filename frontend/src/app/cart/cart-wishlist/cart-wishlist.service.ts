@@ -14,6 +14,11 @@ export class CartWishlistService{
     private wishlistCheckOnCourseAlreadyInWishlist = "http://localhost:8000/api/wishlist/checkalreadyin/"
 
     newCourse = new BehaviorSubject<any>(false)
+    discounts = new BehaviorSubject<{
+        course_slug: string,
+        new_price: number,
+        applied_coupon: string,
+    }[]>([])
 
     constructor(private http: HttpClient,
                 private cartService: CartService){ }
@@ -26,6 +31,11 @@ export class CartWishlistService{
                 title: string,
                 subtitle: string,
                 price: number,
+                discount: {
+                    applied_coupon: string,
+                    course_slug: string,
+                    new_price: number,
+                }|null,
             }[]
         }>(
             this.wishlistGetUrl,
@@ -58,12 +68,6 @@ export class CartWishlistService{
         return this.http.post<{}>(
             this.wishlistRemoveCourseUrl,
             params
-        ).pipe(
-            tap(
-                response => {
-                    this.cartService.getCartCoursesCount()
-                }
-            )
         )
     }
 
@@ -76,6 +80,16 @@ export class CartWishlistService{
                 params: params
             }
         )
+    }
+
+    handleWishlistDiscountsResponse(response: {
+        wishlistDiscounts: {
+            course_slug: string,
+            new_price: number,
+            applied_coupon: string,
+        }[]
+    }){
+        this.discounts.next(response.wishlistDiscounts)
     }
 
 }

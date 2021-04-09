@@ -1,0 +1,14 @@
+<div class="coupon-block">
+    <input type="text" name="coupon" placeholder="Enter Coupon" #couponInput>
+    <button (click)="applyCoupon(couponInput.value)" (input)="onInput()">Apply</button>
+    <p class="coupon-error" *ngIf="error">The coupon code entered is not valid. Perhaps you used the wrong coupon code?</p>
+</div>
+<div class="coupons-box" >
+    <div class="coupon-box" *ngFor="let coupon of coupons; index as i">
+        <div class="coupon-close" (click)="removeCoupon(coupon.code, i)">×</div>
+        <div class="coupon-info">
+            <h6>Coupon is applied</h6>
+            <p>{{ coupon.code }}</p>
+        </div>
+    </div>
+</div>
