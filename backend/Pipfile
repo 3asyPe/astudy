@@ -12,6 +12,9 @@ psycopg2 = "*"
 django-cors-headers = "*"
 pillow = "*"
 django-ordered-model = "*"
+pytest = "*"
+pytest-django = "*"
+pytest-xdist = "*"
 
 [requires]
 python_version = "3.9"
