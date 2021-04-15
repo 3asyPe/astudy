@@ -1,0 +1,38 @@
+version: 2.1
+
+orbs:
+  python: circleci/python@0.2.1
+
+jobs:
+  build-and-test:
+    working_directory: ~/astudy
+    executor: python/default
+    steps:
+      - checkout
+      - run: sudo chown -R circleci:circleci /usr/local/bin
+      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.9/site-packages
+      - restore_cache:
+          key: deps-{{ checksum "backend/requirements.txt" }}
+      - run: 
+          command:
+            cd backend;
+            sudo pip install pipenv
+            pipenv install -r requirements.txt;
+      - save_cache:
+          key: deps-{{ checksum "backend/requirements.txt" }}
+          paths:
+            - "backend/.venv"
+            - "/usr/local/bin"
+            - "/usr/local/lib/python3.9/site-packages"
+
+      - run:
+          command: mv backend/src/app/.env.ci backend/src/app/.env
+
+      - run:
+          command: cd backend; make test
+          name: Test
+
+workflows:
+  main:
+    jobs:
+      - build-and-test
