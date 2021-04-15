@@ -1,8 +1,14 @@
+import environ
 import os
 
 from pathlib import Path
 
-from . import secret
+
+env = environ.Env(
+    DEBUG=(bool, True)
+)
+environ.Env.read_env()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -15,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'gdsc@@f!dfqtc0!!8u!28)e*a&_3e667ji_qe5ja+8ldl)p89p'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env("DEBUG")
 
 ALLOWED_HOSTS = ["localhost"]
 
@@ -93,16 +99,8 @@ WSGI_APPLICATION = 'app.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'astudy',
-        'USER': secret.DATABASE_USER,
-        'PASSWORD': secret.DATABASE_PASSWORD,
-        'HOST': 'localhost',
-        'POST': '5432',
-    }
+    'default': env.db()
 }
-
 
 
 # Password validation

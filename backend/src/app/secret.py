@@ -1,2 +1,0 @@
-DATABASE_USER = 'easype'
-DATABASE_PASSWORD = 'Alex_123'

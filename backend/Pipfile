@@ -15,6 +15,7 @@ django-ordered-model = "*"
 pytest = "*"
 pytest-django = "*"
 pytest-xdist = "*"
+django-environ = "*"
 
 [requires]
 python_version = "3.9"
