@@ -16,6 +16,7 @@ pytest = "*"
 pytest-django = "*"
 pytest-xdist = "*"
 django-environ = "*"
+mixer = "*"
 
 [requires]
 python_version = "3.9"

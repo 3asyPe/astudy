@@ -7,11 +7,11 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from .serializers import (
+from accounts.api.validators import (
     UserCreateSerializer,
     AuthCustomTokenSerializer
 )
-from .services import (
+from accounts.services import (
     create_user,
     get_or_creat_token,
 )
@@ -60,14 +60,3 @@ def create_account_api(request, *args, **kwargs):
         'email': user.email,
         'admin': user.is_admin,
     }, status=201)
-
-
-@api_view(["GET"])
-@permission_classes([IsAuthenticated])
-def test_authentication(request, *args, **kwargs):
-    logger.debug(f"User - {request.user}")
-    logger.debug(f"Auth - {request.auth}")
-    if request.user:
-        return Response({}, status=200)
-    else:
-        return Response({}, status=400)

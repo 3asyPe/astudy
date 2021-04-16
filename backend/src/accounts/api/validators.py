@@ -1,11 +1,14 @@
-from app.errors import ValidationError
+import logging
+import re
 
 from django.contrib.auth import authenticate, get_user_model
 from rest_framework import serializers
 
-from .utils import AccountErrorMessages
-from .utils import new_password_is_correct
+from accounts.utils import AccountErrorMessages
+from app.errors import ValidationError
 
+
+logger = logging.getLogger(__name__)
 
 User = get_user_model()
 
@@ -18,13 +21,16 @@ class UserCreateSerializer(serializers.Serializer):
         if len(value) > 100:
             raise ValidationError(AccountErrorMessages.TOO_LONG_EMAIL_ERROR.value)
 
-        qs = User.objects.filter(email=value)
+        email = value.lower()
+        logger.debug(f"EMAIL-{email}")
+        qs = User.objects.filter(email=email)
         if qs.exists():
             raise ValidationError(AccountErrorMessages.NON_UNIQUE_EMAIL_ERROR.value)
         return value
 
     def validate_password(self, value):
-        if not new_password_is_correct(value):
+        logger.debug(f"PASSWORD-{value}")
+        if not re.fullmatch(r'[A-Za-z0-9@#$%^&_+=]{8,}', value):
             raise ValidationError(AccountErrorMessages.INCORRECT_PASSWORD_SCHEME_ERROR.value)
         return value 
 

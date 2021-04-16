@@ -62,7 +62,6 @@ class WishlistToolkit:
     def _get_wishlist_by_user(cls, user: User) -> Optional[Wishlist]:
         qs = Wishlist.objects.filter(user=user)
         if not qs.exists():
-            logger.warning(f"An authenticated user doesn't have a wishlist")
             return None
         return qs.first()
 

@@ -173,5 +173,11 @@ LOGGING = {
         'handlers': ['console'],
         'level': 'DEBUG',
     },
+    'loggers': {
+        'faker': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+        }
+    }
     
 }

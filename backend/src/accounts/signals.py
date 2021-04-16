@@ -13,5 +13,4 @@ User = settings.AUTH_USER_MODEL
 @receiver(post_save, sender=User)
 def post_save_user_create_receiver(sender, instance=None, created=False, **kwargs):
     if created:
-        Token.objects.create(user=instance)
         WishlistToolkit.create_new_wishlist(user=instance)
