@@ -21,8 +21,8 @@ logger = logging.getLogger(__name__)
 
 @api_view(["GET"])
 def get_category_api(request, *args, **kwargs):
+    data = request.GET
     try:
-        data = request.GET
         slug = data["slug"]
     except KeyError:
         logger.error("Request object doesn't have a slug field")
@@ -40,8 +40,8 @@ def get_category_api(request, *args, **kwargs):
 
 @api_view(["GET"])
 def fetch_category_courses_api(request, *args, **kwargs):
+    data = request.GET
     try:
-        data = request.GET
         slug = data["slug"]
     except KeyError:
         logger.error("Request object doesn't have a slug field")
