@@ -1,5 +1,7 @@
 import logging
 
+from typing import Optional
+
 from django.conf import settings
 
 from carts.models import Cart
@@ -15,9 +17,9 @@ User = settings.AUTH_USER_MODEL
 
 class CartToolkit:
     @classmethod
-    def load_cart(cls, user: User, cart_id: int) -> Cart:
+    def load_cart(cls, user: Optional[User] = None, cart_id: Optional[int] = None) -> Cart:
         cart = None
-        if not user.is_authenticated:
+        if user is None or not user.is_authenticated:
             cart_by_user_qs = Cart.objects.none()
         else:
             cart_by_user_qs = Cart.objects.filter(user=user, active=True)
@@ -31,7 +33,7 @@ class CartToolkit:
             cart = cart_by_user_qs.last()
         elif cart_by_id_qs.exists():
             cart_by_id = cart_by_id_qs.last()
-            if user.is_authenticated:
+            if user is not None and user.is_authenticated:
                 if cart_by_id.user is None:
                     cart_by_id.user = user
                     cart_by_id.save()

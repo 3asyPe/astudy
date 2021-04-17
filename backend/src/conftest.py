@@ -9,6 +9,8 @@ from app.test.api_client import DRFClient
 
 User = settings.AUTH_USER_MODEL
 
+pytestmark = [pytest.mark.django_db]
+
 
 @pytest.fixture
 def api():
@@ -28,6 +30,11 @@ def mixer():
 @pytest.fixture
 def user(mixer):
     return mixer.blend(User, email="testemail@gmail.com")
+
+
+@pytest.fixture
+def another_user(mixer):
+    return mixer.blend(User, email="testemail2@gmail.com")
 
 
 @pytest.fixture
