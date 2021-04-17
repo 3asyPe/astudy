@@ -3,8 +3,6 @@ import pytest
 import random
 import string
 
-from mixer.backend.django import mixer
-
 from categories.utils import CategoryErrorMessages
 
 

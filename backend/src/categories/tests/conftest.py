@@ -3,20 +3,19 @@ import string
 
 import pytest
 
-from mixer.backend.django import mixer
 
 pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
-def category(course_factory):
+def category(course_factory, mixer):
     category = mixer.blend("categories.Category", title="Test category")
     category.courses.add(course_factory())
     return category
 
 
 @pytest.fixture
-def course_factory():
+def course_factory(mixer):
     def course_mixer():
         return mixer.blend(
             "courses.Course", 

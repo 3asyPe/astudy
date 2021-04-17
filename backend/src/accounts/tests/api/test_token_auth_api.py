@@ -3,7 +3,6 @@ import pytest
 import random
 import string
 
-from mixer.backend.django import mixer
 from rest_framework.authtoken.models import Token
 
 from accounts.utils import AccountErrorMessages
@@ -25,7 +24,7 @@ def test_auth_with_existing_user(anon, user, user_token):
     assert response["email"] == user.email
 
 
-def test_auth_with_new_user(anon):
+def test_auth_with_new_user(anon, mixer):
     email = "randomemail@gmail.com"
     password = ''.join([random.choice(string.hexdigits) for _ in range(0, 8)])
     user = mixer.blend("accounts.User", email=email)
