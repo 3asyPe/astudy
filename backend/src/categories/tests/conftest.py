@@ -1,6 +1,3 @@
-import random
-import string
-
 import pytest
 
 
@@ -14,14 +11,4 @@ def category(course_factory, mixer):
     return category
 
 
-@pytest.fixture
-def course_factory(mixer):
-    def course_mixer():
-        return mixer.blend(
-            "courses.Course", 
-            title=''.join([random.choice(string.hexdigits) for _ in range(0, 8)]),
-            subtitle=''.join([random.choice(string.hexdigits) for _ in range(0, 8)]),
-            price=3.33,
-            description=''.join([random.choice(string.hexdigits) for _ in range(0, 8)]),
-        )
-    return course_mixer
+
