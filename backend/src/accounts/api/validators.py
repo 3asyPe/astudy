@@ -41,17 +41,14 @@ class AuthCustomTokenSerializer(serializers.Serializer):
         email = attrs.get('email')
         password = attrs.get('password')
 
-        if email and password:
-            email = email.lower()
-            user = authenticate(username=email, password=password)
+        email = email.lower()
+        user = authenticate(username=email, password=password)
 
-            if user:
-                if not user.is_active:
-                    raise ValidationError(AccountErrorMessages.DISABLED_ACCOUNT_ERROR.value)
-            else:
-                raise ValidationError(AccountErrorMessages.CREDENTIALS_ERROR.value)
-        else:
-            raise ValidationError(AccountErrorMessages.REQUEST_FIELDS_ERROR.value)
+        if not user:
+            qs = User.objects.filter(email=email)
+            if qs.exists() and not qs.first().is_active:
+                raise ValidationError(AccountErrorMessages.DISABLED_ACCOUNT_ERROR.value)
+            raise ValidationError(AccountErrorMessages.CREDENTIALS_ERROR.value)
 
         attrs['user'] = user
         return attrs

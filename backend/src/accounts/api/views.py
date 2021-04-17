@@ -12,10 +12,7 @@ from accounts.api.validators import (
     UserCreateSerializer,
     AuthCustomTokenSerializer
 )
-from accounts.service import (
-    create_user,
-    get_or_creat_token,
-)
+from accounts.services import AccountToolkit, UserCreator
 
 
 logger = logging.getLogger(__name__)
@@ -23,15 +20,11 @@ logger = logging.getLogger(__name__)
 
 @api_view(["POST"])
 def token_auth_api(request, *args, **kwargs):
-    serializer = AuthCustomTokenSerializer(data=request.data)
     try:
-        serializer.is_valid(raise_exception=True)
+        user, token = AccountToolkit.authenticate(data=request.data)
     except ValidationError as exc:
         logger.exception("A validation error occured during account authorization")
         return Response({"error": str(exc)}, status=400)
-    
-    user = serializer.validated_data['user']
-    token = get_or_creat_token(user=user)
 
     logger.info(f"The user with an email - {user.email} just logged in")
     return Response({
@@ -44,15 +37,13 @@ def token_auth_api(request, *args, **kwargs):
 
 @api_view(["POST"])
 def create_account_api(request, *args, **kwargs):
-    serializer = UserCreateSerializer(data=request.data)
     try:
-        serializer.is_valid(raise_exception=True)
+        user = UserCreator(data=request.data)()
     except ValidationError as exc:
         logger.exception("A validation error occured during account creation")
         return Response({"error": str(exc)}, status=400)
 
-    user = create_user(**serializer.validated_data)
-    token = get_or_creat_token(user=user)
+    token = AccountToolkit.get_or_create_token(user=user)
 
     logger.info(f"New account with email - {user.email} is created")
     return Response({
