@@ -4,6 +4,7 @@ from app.errors import ValidationError
 
 from rest_framework import serializers
 from rest_framework.decorators import api_view, permission_classes
+from rest_framework.exceptions import ValidationError as RestValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -11,7 +12,7 @@ from accounts.api.validators import (
     UserCreateSerializer,
     AuthCustomTokenSerializer
 )
-from accounts.services import (
+from accounts.service import (
     create_user,
     get_or_creat_token,
 )

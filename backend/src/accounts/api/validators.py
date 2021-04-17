@@ -22,14 +22,12 @@ class UserCreateSerializer(serializers.Serializer):
             raise ValidationError(AccountErrorMessages.TOO_LONG_EMAIL_ERROR.value)
 
         email = value.lower()
-        logger.debug(f"EMAIL-{email}")
         qs = User.objects.filter(email=email)
         if qs.exists():
             raise ValidationError(AccountErrorMessages.NON_UNIQUE_EMAIL_ERROR.value)
         return value
 
     def validate_password(self, value):
-        logger.debug(f"PASSWORD-{value}")
         if not re.fullmatch(r'[A-Za-z0-9@#$%^&_+=]{8,}', value):
             raise ValidationError(AccountErrorMessages.INCORRECT_PASSWORD_SCHEME_ERROR.value)
         return value 
