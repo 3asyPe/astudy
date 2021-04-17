@@ -39,6 +39,15 @@ def test_add_course_to_cart(course_factory, cart):
     assert test_course == course
 
 
+def test_add_already_added_course(course_factory, cart):
+    course = course_factory()
+
+    cart.courses.add(course)
+    CartToolkit.add_course_to_cart(cart=cart, course_slug=course.slug)
+
+    assert cart.courses.count() == 1
+
+
 def test_add_course_with_wrong_slug(cart):
     with pytest.raises(Course.DoesNotExist):
         CartToolkit.add_course_to_cart(cart=cart, course_slug="somerandomslug")
@@ -51,3 +60,10 @@ def test_add_unpublished_course(cart, unpublished_course):
         CartToolkit.add_course_to_cart(cart=cart, course_slug=unpublished_course.slug)
 
     assert cart.courses.count() == 0
+
+
+def test_updating_totals_after_adding_course(mocker, course_factory, cart):
+    update_totals = mocker.patch("carts.models.Cart.update_totals")
+    CartToolkit.add_course_to_cart(cart=cart, course_slug=course_factory().slug)
+    
+    assert update_totals.called_once()
