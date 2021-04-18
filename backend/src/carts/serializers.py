@@ -113,11 +113,3 @@ class SavedForLaterSerializer(serializers.ModelSerializer):
         cart = self.context["cart"]
         courses = CourseSelector.get_courses_by_saved_for_later(saved_for_later=obj)
         return CartCourseSerializer(instance=courses, many=True, context={"cart": cart}).data
-
-
-
-
-
-# Return discount for single course after adding it to cart/wishlist/s_list
-
-
