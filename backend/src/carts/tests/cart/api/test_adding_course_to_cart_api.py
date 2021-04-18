@@ -17,19 +17,20 @@ def call_add_to_cart(api, **kwargs):
     )
 
 
-def test_adding_course_to_cart_api(cart, course_factory, call_add_to_cart):
+def test_adding_course_to_cart_api(cart, course_factory, call_add_to_cart, api):
     course = course_factory()
     response = call_add_to_cart(cart=cart, course_slug=course.slug)
 
     assert response['id'] == cart.id
     assert float(response['subtotal']) == float(response["total"]) == float(course.price)
+    assert cart.courses.count() == 1
 
 
 def test_adding_course_to_cart_api_call_add_method(mocker, cart, course_factory, call_add_to_cart):
     add_to_cart = mocker.patch("carts.services.CartToolkit.add_course_to_cart", return_value=cart)
     
     course = course_factory()
-    response = call_add_to_cart(cart=cart, course_slug=course.slug)
+    response = call_add_to_cart(cart_id=cart.id, course_slug=course.slug)
 
     assert add_to_cart.called_once()
 
@@ -38,14 +39,14 @@ def test_adding_course_to_cart_api_call_delete_duplicates_method(mocker, cart, c
     delete_duplicates = mocker.patch("carts.services.CartListsToolkit.delete_duplicates_excluding_instance")
 
     course = course_factory()
-    response = call_add_to_cart(cart=cart, course_slug=course.slug)
+    response = call_add_to_cart(cart_id=cart.id, course_slug=course.slug)
 
     assert delete_duplicates.called_once()
 
 
 def test_adding_course_to_cart_api_with_wrong_slug(cart, call_add_to_cart):
     response = call_add_to_cart(
-        cart=cart, 
+        cart_id=cart.id, 
         course_slug="somerandomslug", 
         expected_status_code=400,
     )
@@ -55,7 +56,7 @@ def test_adding_course_to_cart_api_with_wrong_slug(cart, call_add_to_cart):
 
 def test_adding_course_to_cart_api_wihtout_slug(cart, call_add_to_cart):
     response = call_add_to_cart(
-        cart=cart,
+        cart_id=cart.id,
         expected_status_code=400,
     )
 

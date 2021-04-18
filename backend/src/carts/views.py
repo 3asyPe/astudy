@@ -141,7 +141,10 @@ def remove_course_from_cart_api(request, *args, **kwargs):
     ids = CartListsToolkit.get_cart_lists_ids_from_request(request)
     cart_lists = CartListsSelector.get_cart_lists_by_user_and_ids(user=request.user, ids=ids)
 
-    CartToolkit.remove_course_from_cart(cart=cart_lists["cart"], course_slug=course_slug)
+    try:
+        CartToolkit.remove_course_from_cart(cart=cart_lists["cart"], course_slug=course_slug)
+    except Course.DoesNotExist:
+        return Response({"error": CourseErrorMessages.COURSE_DOES_NOT_EXIST_ERROR.value}, status=400)
 
     serializer = CartOnlyInfoSerializer(instance=cart_lists["cart"])
     return Response(serializer.data, status=200)
