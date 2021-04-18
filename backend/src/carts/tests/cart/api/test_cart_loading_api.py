@@ -5,13 +5,6 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
-def cart(cart, api):
-    cart.user = api.user
-    cart.save()
-    return cart
-
-
-@pytest.fixture
 def cart_with_course(cart, course_factory):
     cart.courses.add(course_factory())
     return cart

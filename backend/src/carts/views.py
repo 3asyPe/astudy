@@ -63,7 +63,7 @@ def get_cart_info_api(request, *args, **kwargs):
     ids = CartListsToolkit.get_cart_lists_ids_from_request(request)
     cart = CartToolkit.load_cart(user=user, cart_id=ids["cart_id"])
     serializer = CartOnlyInfoSerializer(instance=cart)
-    return Response(serializer.data, status=400)
+    return Response(serializer.data, status=200)
 
 
 @api_view(["POST"])
