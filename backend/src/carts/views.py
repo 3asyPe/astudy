@@ -208,7 +208,10 @@ def check_on_course_already_in_cart_api(request, *args, **kwargs):
     
     user = request.user
     cart = CartToolkit.load_cart(user=user, cart_id=cart_id)
-    course_already_in_cart = CartToolkit.check_on_course_in_cart(cart=cart, course_slug=course_slug)
+    try:
+        course_already_in_cart = CartToolkit.check_on_course_in_cart(cart=cart, course_slug=course_slug)
+    except Course.DoesNotExist:
+        return Response({"error": CourseErrorMessages.COURSE_DOES_NOT_EXIST_ERROR.value}, status=400)
     return Response({"course_already_in_cart": course_already_in_cart}, status=200)
 
 
