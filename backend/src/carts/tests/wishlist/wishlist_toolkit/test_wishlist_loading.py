@@ -27,15 +27,15 @@ def test_load_non_existing_wishlist(user):
     assert wishlist.courses.count() == 0
 
 
-def test_load_non_existing_wishlist_call_create_method(mocker, user):
-    wishlist = Wishlist.objects.create(user=user)
+def test_load_non_existing_wishlist_call_create_method(mocker, user, another_user):
+    wishlist = Wishlist.objects.get_or_create(user=another_user)
     create_wishlist = mocker.patch(
         "carts.services.WishlistToolkit._create_wishlist",
-        return_value = wishlist
+        return_value=wishlist
     )
     got = WishlistToolkit.load_wishlist(user=user)
 
-    assert create_wishlist.called_once()
+    create_wishlist.assert_called_once()
 
 
 def test_load_wishlist_with_anonymoun_user(anonymous_user):

@@ -78,4 +78,4 @@ def test_removing_course_from_cart_api_call_remove_method(mocker, cart_with_two_
         course_slug=course.slug,
     )    
 
-    assert remove_course.called_once()
+    remove_course.assert_called_once()

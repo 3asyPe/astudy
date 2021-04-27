@@ -22,5 +22,5 @@ def test_get_courses_count_api_call_method(mocker, api, cart):
         "cart_id": cart.id,
     })
 
-    assert get_courses_count.called_once()
+    get_courses_count.assert_called_once()
 

@@ -31,31 +31,31 @@ def test_cart_loading_with_user_and_different_cart_id(cart, another_cart):
 
 
 def test_cart_loading_for_user_without_existing_cart(class_mocker, user):
-    cart_creator = class_mocker.patch("carts.services.CartCreator")
+    create_cart = class_mocker.patch("carts.services.CartToolkit._create_new_cart")
     test_cart = CartToolkit.load_cart(user=user)
 
-    assert cart_creator.called_once()
+    create_cart.assert_called_once()
     
 
 def test_cart_loading_without_arguments(class_mocker):
-    cart_creator = class_mocker.patch("carts.services.CartCreator")
+    create_cart = class_mocker.patch("carts.services.CartToolkit._create_new_cart")
     test_cart = CartToolkit.load_cart()
 
-    assert cart_creator.called_once()
+    create_cart.assert_called_once()
 
 
 def test_cart_loading_updating_totals(mocker, cart):
     cart_update_totals = mocker.patch("carts.models.Cart.update_totals")
     test_cart = CartToolkit.load_cart(user=cart.user)
 
-    assert cart_update_totals.called_once()
+    cart_update_totals.assert_called_once()
 
 
 def test_loading_inactive_cart(class_mocker, inactive_cart):
-    cart_creator = class_mocker.patch("carts.services.CartCreator")
+    create_cart = class_mocker.patch("carts.services.CartToolkit._create_new_cart")
     test_cart = CartToolkit.load_cart(user=inactive_cart.user, cart_id=inactive_cart.id)
 
-    assert cart_creator.called_once()
+    create_cart.assert_called_once()
     assert test_cart != inactive_cart
 
 

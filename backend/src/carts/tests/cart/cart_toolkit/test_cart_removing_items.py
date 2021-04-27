@@ -52,5 +52,5 @@ def test_removing_course_updating_totals(mocker, cart_with_one_course, course):
     update_totals = mocker.patch("carts.models.Cart.update_totals")
     CartToolkit.remove_course_from_cart(cart=cart_with_one_course, course_slug=course.slug)
 
-    update_totals.called_once()
+    update_totals.assert_called_once()
 

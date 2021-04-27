@@ -25,6 +25,7 @@ class WishlistToolkit:
         wishlist = cls._get_wishlist_by_user(user=user)
         if wishlist is None:
             wishlist = cls._create_wishlist(user=user)
+            logger.debug(f"wishlist-{wishlist}")
         return wishlist
 
     @classmethod

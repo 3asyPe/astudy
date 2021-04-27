@@ -32,7 +32,7 @@ def test_adding_course_to_cart_api_call_add_method(mocker, cart, course_factory,
     course = course_factory()
     response = call_add_to_cart(cart_id=cart.id, course_slug=course.slug)
 
-    assert add_to_cart.called_once()
+    add_to_cart.assert_called_once()
 
     
 def test_adding_course_to_cart_api_call_delete_duplicates_method(mocker, cart, course_factory, call_add_to_cart):
@@ -41,7 +41,7 @@ def test_adding_course_to_cart_api_call_delete_duplicates_method(mocker, cart, c
     course = course_factory()
     response = call_add_to_cart(cart_id=cart.id, course_slug=course.slug)
 
-    assert delete_duplicates.called_once()
+    delete_duplicates.assert_called_once()
 
 
 def test_adding_course_to_cart_api_with_wrong_slug(cart, call_add_to_cart):

@@ -72,4 +72,4 @@ def test_updating_totals_after_adding_course_to_cart(mocker, course_factory, car
     update_totals = mocker.patch("carts.models.Cart.update_totals")
     CartToolkit.add_course_to_cart(cart=cart, course_slug=course_factory().slug)
     
-    assert update_totals.called_once()
+    update_totals.assert_called_once()
