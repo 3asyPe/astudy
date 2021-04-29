@@ -19,11 +19,12 @@ def call_add_to_cart(api, **kwargs):
 
 def test_adding_course_to_cart_api(cart, course_factory, call_add_to_cart, api):
     course = course_factory()
-    response = call_add_to_cart(cart=cart, course_slug=course.slug)
+    response = call_add_to_cart(cart_id=cart.id, course_slug=course.slug)
 
     assert response['id'] == cart.id
     assert float(response['subtotal']) == float(response["total"]) == float(course.price)
     assert cart.courses.count() == 1
+    assert cart.courses.first() == course
 
 
 def test_adding_course_to_cart_api_call_add_method(mocker, cart, course_factory, call_add_to_cart):

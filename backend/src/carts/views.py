@@ -92,6 +92,7 @@ def add_course_to_cart_api(request, *args, **kwargs):
 
 
 @api_view(["POST"])
+@permission_classes([IsAuthenticated])
 def add_course_to_wishlist_api(request, *args, **kwargs):
     try:
         course_slug = request.POST["course_slug"]
@@ -103,7 +104,10 @@ def add_course_to_wishlist_api(request, *args, **kwargs):
     ids = CartListsToolkit.get_cart_lists_ids_from_request(request)
     cart_lists = CartListsSelector.get_cart_lists_by_user_and_ids(user=request.user, ids=ids)
 
-    wishlist = WishlistToolkit.add_course_to_wishlist(wishlist=cart_lists["wishlist"], course_slug=course_slug)
+    try:
+        wishlist = WishlistToolkit.add_course_to_wishlist(wishlist=cart_lists["wishlist"], course_slug=course_slug)
+    except Course.DoesNotExist:
+        return Response({"error": CourseErrorMessages.COURSE_DOES_NOT_EXIST_ERROR.value}, status=400)
     CartListsToolkit.delete_duplicates_excluding_instance(course_slug=course_slug, instance=wishlist, **cart_lists)
 
     serializer = CartOnlyInfoSerializer(instance=cart_lists["cart"])
