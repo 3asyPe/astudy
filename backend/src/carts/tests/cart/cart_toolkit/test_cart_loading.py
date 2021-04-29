@@ -51,8 +51,8 @@ def test_cart_loading_updating_totals(mocker, cart):
     cart_update_totals.assert_called_once()
 
 
-def test_loading_inactive_cart(class_mocker, inactive_cart):
-    create_cart = class_mocker.patch("carts.services.CartToolkit._create_new_cart")
+def test_loading_inactive_cart(mocker, inactive_cart):
+    create_cart = mocker.patch("carts.services.CartToolkit._create_new_cart")
     test_cart = CartToolkit.load_cart(user=inactive_cart.user, cart_id=inactive_cart.id)
 
     create_cart.assert_called_once()
