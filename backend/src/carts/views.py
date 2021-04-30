@@ -166,7 +166,10 @@ def remove_course_from_wishlist(request, *args, **kwargs):
     ids = CartListsToolkit.get_cart_lists_ids_from_request(request)
     cart_lists = CartListsSelector.get_cart_lists_by_user_and_ids(user=request.user, ids=ids)
 
-    WishlistToolkit.remove_course_from_wishlist(wishlist=cart_lists["wishlist"], course_slug=course_slug)
+    try:
+        WishlistToolkit.remove_course_from_wishlist(wishlist=cart_lists["wishlist"], course_slug=course_slug)
+    except Course.DoesNotExist:
+        return Response({"error": CourseErrorMessages.COURSE_DOES_NOT_EXIST_ERROR.value}, status=400)
 
     return Response({}, status=200)
 
@@ -230,5 +233,8 @@ def check_on_course_already_in_wishlist_api(request, *args, **kwargs):
 
     user = request.user
     wishlist = WishlistToolkit.load_wishlist(user=user)
-    course_already_in_wishlist = WishlistToolkit.check_on_course_in_wishlist(wishlist=wishlist, course_slug=course_slug)
+    try:
+        course_already_in_wishlist = WishlistToolkit.check_on_course_in_wishlist(wishlist=wishlist, course_slug=course_slug)
+    except Course.DoesNotExist:
+        return Response({"error": CourseErrorMessages.COURSE_DOES_NOT_EXIST_ERROR.value}, status=400)
     return Response({"course_already_in_wishlist": course_already_in_wishlist}, status=200)

@@ -67,9 +67,12 @@ class DRFClient(APIClient):
             return response
 
         content = self._decode(response)
+        if kwargs.get("empty_content") == True:
+            assert content == {}
+        else:
+            assert content
 
         assert response.status_code == expected
-        assert content
 
         return content
 

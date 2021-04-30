@@ -51,7 +51,6 @@ def test_adding_course_to_non_existed_wishlist(api, cart, call_add_to_wishlist, 
     assert wishlist.courses.first() == course
     
 
-
 def test_adding_course_to_wishlist_api_call_add_method(mocker, cart, wishlist, course_factory, call_add_to_wishlist):
     add_to_wishlist = mocker.patch("carts.services.WishlistToolkit.add_course_to_wishlist", return_value=wishlist)
     
