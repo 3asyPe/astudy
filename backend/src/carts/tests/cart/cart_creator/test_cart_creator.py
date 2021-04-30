@@ -1,17 +1,11 @@
 import pytest
 
 from app.errors import ValidationError
-from carts.models import Cart
 from carts.services import CartCreator
 from carts.utils import CartErrorMessages
 
 
 pytestmark = [pytest.mark.django_db]
-
-
-@pytest.fixture
-def cart(user):
-    return Cart.objects.create(user=user)
 
 
 def test_cart_creation_with_user(user):

@@ -15,8 +15,8 @@ User = settings.AUTH_USER_MODEL
 
 
 class SavedForLaterCreator:
-    def __init__(self, user: Optional[User]):
-        self.user = user if user.is_authenticated else None
+    def __init__(self, user: Optional[User]=None):
+        self.user = user if user is not None and user.is_authenticated else None
 
     def __call__(self) -> Optional[SavedForLater]:
         if self._allowed_to_create():
