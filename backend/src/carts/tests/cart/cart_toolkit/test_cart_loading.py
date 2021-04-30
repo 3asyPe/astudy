@@ -30,15 +30,15 @@ def test_cart_loading_with_user_and_different_cart_id(cart, another_cart):
     assert test_cart == cart
 
 
-def test_cart_loading_for_user_without_existing_cart(class_mocker, user):
-    create_cart = class_mocker.patch("carts.services.CartToolkit._create_new_cart")
+def test_cart_loading_for_user_without_existing_cart(mocker, user):
+    create_cart = mocker.patch("carts.services.CartToolkit._create_new_cart")
     test_cart = CartToolkit.load_cart(user=user)
 
     create_cart.assert_called_once()
     
 
-def test_cart_loading_without_arguments(class_mocker):
-    create_cart = class_mocker.patch("carts.services.CartToolkit._create_new_cart")
+def test_cart_loading_without_arguments(mocker):
+    create_cart = mocker.patch("carts.services.CartToolkit._create_new_cart")
     test_cart = CartToolkit.load_cart()
 
     create_cart.assert_called_once()
