@@ -18,7 +18,8 @@ class SavedForLaterToolkit:
     @classmethod
     def load_saved_for_later(cls, user: Optional[User]=None, saved_for_later_id: Optional[int]=None) -> SavedForLater:
         s_list = None
-        if user is None or not user.is_authenticated:
+        user = user if user is not None and user.is_authenticated else None
+        if user is None:
             s_list_by_user_qs = SavedForLater.objects.none()
         else:
             s_list_by_user_qs = SavedForLater.objects.filter(user=user)
@@ -32,7 +33,7 @@ class SavedForLaterToolkit:
             s_list = s_list_by_user_qs.last()
         elif s_list_by_id_qs.exists():
             s_list_by_id = s_list_by_id_qs.last()
-            if user is not None and user.is_authenticated:
+            if user:
                 if s_list_by_id.user is None:
                     s_list_by_id.user = user
                     s_list_by_id.save()
