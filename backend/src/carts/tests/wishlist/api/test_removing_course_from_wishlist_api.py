@@ -1,5 +1,6 @@
 import pytest
 
+from carts.utils import CartErrorMessages
 from courses.utils import CourseErrorMessages
 
 
@@ -71,7 +72,7 @@ def test_removing_course_from_wishlist_api_wihtout_slug(cart, wishlist_with_two_
         empty_content=False
     )
 
-    assert response["error"] == CourseErrorMessages.REQUEST_FIELDS_ERROR.value
+    assert response["error"] == CartErrorMessages.REQUEST_FIELDS_ERROR.value
     assert wishlist.courses.count() == 2
 
 

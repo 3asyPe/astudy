@@ -189,7 +189,10 @@ def remove_course_from_saved_for_later(request, *args, **kwargs):
     ids = CartListsToolkit.get_cart_lists_ids_from_request(request)
     cart_lists = CartListsSelector.get_cart_lists_by_user_and_ids(user=request.user, ids=ids)
 
-    SavedForLaterToolkit.remove_course_from_saved_for_later(s_list=cart_lists["saved_for_later"], course_slug=course_slug)
+    try:
+        SavedForLaterToolkit.remove_course_from_saved_for_later(s_list=cart_lists["saved_for_later"], course_slug=course_slug)
+    except Course.DoesNotExist:
+        return Response({"error": CourseErrorMessages.COURSE_DOES_NOT_EXIST_ERROR.value}, status=400)
 
     return Response({}, status=200)
 
