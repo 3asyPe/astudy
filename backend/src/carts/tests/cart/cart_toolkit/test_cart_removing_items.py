@@ -35,20 +35,20 @@ def test_remove_courses_from_cart(course_factory, cart, course_count):
         courses.pop(-1)
     
 
-def test_remove_not_added_course(course_factory, cart):
+def test_remove_not_added_course_from_cart(course_factory, cart):
     CartToolkit.remove_course_from_cart(cart=cart, course_slug=course_factory().slug)
     
     assert cart.courses.count() == 0
 
 
-def test_remove_course_with_wrong_slug(cart):
+def test_remove_course_with_wrong_slug_from_cart(cart):
     with pytest.raises(Course.DoesNotExist):
         CartToolkit.remove_course_from_cart(cart=cart, course_slug="somerandomslug")
 
     assert cart.courses.count() == 0
 
 
-def test_removing_course_updating_totals(mocker, cart_with_one_course, course):
+def test_removing_course_from_cart_updating_totals(mocker, cart_with_one_course, course):
     update_totals = mocker.patch("carts.models.Cart.update_totals")
     CartToolkit.remove_course_from_cart(cart=cart_with_one_course, course_slug=course.slug)
 
