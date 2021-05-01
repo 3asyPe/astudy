@@ -17,7 +17,7 @@ def call_add_to_cart(api, **kwargs):
     )
 
 
-def test_adding_course_to_cart_api(cart, course_factory, call_add_to_cart, api):
+def test_adding_course_to_cart_api(cart, course_factory, call_add_to_cart):
     course = course_factory()
     response = call_add_to_cart(cart_id=cart.id, course_slug=course.slug)
 
@@ -61,4 +61,4 @@ def test_adding_course_to_cart_api_wihtout_slug(cart, call_add_to_cart):
         expected_status_code=400,
     )
 
-    assert response["error"] == CourseErrorMessages.REQUEST_FIELDS_ERROR.value
+    assert response["error"] == CartErrorMessages.REQUEST_FIELDS_ERROR.value

@@ -126,7 +126,10 @@ def add_course_to_saved_for_later_api(request, *args, **kwargs):
     ids = CartListsToolkit.get_cart_lists_ids_from_request(request)
     cart_lists = CartListsSelector.get_cart_lists_by_user_and_ids(user=request.user, ids=ids)
 
-    saved_for_later = SavedForLaterToolkit.add_course_to_saved_for_later(s_list=cart_lists["saved_for_later"], course_slug=course_slug)
+    try:
+        saved_for_later = SavedForLaterToolkit.add_course_to_saved_for_later(s_list=cart_lists["saved_for_later"], course_slug=course_slug)
+    except Course.DoesNotExist:
+        return Response({"error": CourseErrorMessages.COURSE_DOES_NOT_EXIST_ERROR.value}, status=400)
     CartListsToolkit.delete_duplicates_excluding_instance(course_slug=course_slug, instance=saved_for_later, **cart_lists)
 
     serializer = CartOnlyInfoSerializer(instance=cart_lists["cart"])
