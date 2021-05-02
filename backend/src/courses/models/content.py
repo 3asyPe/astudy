@@ -5,7 +5,7 @@ from courses.utils import update_duration_time_hours_minutes
 
 
 class CourseContent(models.Model):
-    course = models.OneToOneField("courses.Course", on_delete=models.CASCADE,related_name="content")
+    course = models.OneToOneField("courses.Course", on_delete=models.CASCADE, related_name="content")
     sections_count = models.PositiveIntegerField(default=0)
     lectures_count = models.PositiveIntegerField(default=0)
     articles_count = models.PositiveIntegerField(default=0)

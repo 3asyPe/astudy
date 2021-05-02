@@ -3,6 +3,8 @@ import os
 
 from pathlib import Path
 
+from django.db.models import BigAutoField
+
 
 env = environ.Env(
     DEBUG=(bool, True)
@@ -181,3 +183,5 @@ LOGGING = {
     }
     
 }
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
