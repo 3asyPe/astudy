@@ -52,7 +52,7 @@ def reset_main_duration_times(course):
         }
     }
 ])
-def test_recalculating_course_duration_time_by_lecture(duration_times, course):
+def test_recalculating_course_duration_time_tree_by_lecture(duration_times, course):
     c_duration_time = course.content.duration_time
     sections = course.content.sections.all()
 
@@ -79,7 +79,7 @@ def test_recalculating_course_duration_time_by_lecture(duration_times, course):
         assert section.duration_time.minutes == duration_times[f"section{i}"]["minutes"]
 
 
-def test_recalculating_course_duration_times_by_lecture_call_recalculations(mocker, course):
+def test_recalculating_course_duration_time_tree_by_lecture_call_recalculations(mocker, course):
     recalculate_lecture = mocker.patch("courses.models.CourseLecture.recalculate_duration_time")
     recalculate_section = mocker.patch("courses.models.CourseSection.recalculate_duration_time")
     recalculate_content = mocker.patch("courses.models.CourseContent.recalculate_duration_time")
