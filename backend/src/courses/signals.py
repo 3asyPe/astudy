@@ -40,14 +40,12 @@ def course_content_post_save_receiver(sender, instance: CourseContent, created, 
 def course_section_post_save_receiver(sender, instance: CourseSection, created, *args, **kwargs):
     if created:
         CourseToolkit.create_course_section_duration_time(course_section=instance)
-        course_content = instance.course_content
-        course_content.recalculate_sections()
+        CourseToolkit.recalculate_course_content_tree_by_section(instance=instance)
 
 
 @receiver(post_delete, sender=CourseSection)
 def course_section_post_delete_receiver(sender, instance: CourseSection, *args, **kwargs):
-    course_content = instance.course_content
-    course_content.recalculate_sections()
+    CourseToolkit.recalculate_course_content_tree_by_section(instance=instance)
 
 
 @receiver(post_save, sender=CourseLecture)

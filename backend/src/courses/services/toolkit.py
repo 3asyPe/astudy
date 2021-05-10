@@ -42,6 +42,11 @@ class CourseToolkit:
         logger.info("Course content tree was recalculated successfully")
 
     @classmethod
+    def recalculate_course_content_tree_by_section(cls, instance: CourseSection):
+        course_content = instance.course_content
+        course_content.recalculate_sections()
+
+    @classmethod
     def create_course_content(cls, course: Course) -> CourseContent:
         return CourseContent.objects.get_or_create(course=course)
 
