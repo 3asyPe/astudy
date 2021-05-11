@@ -31,4 +31,9 @@ def course(mixer):
         l.duration_time.minutes = random.randint(0, 59)
         l.duration_time.seconds = random.randint(0, 59)
         l.duration_time.save()
+
+    for i in range(3):
+        mixer.blend("courses.CourseGoal", course=obj)
+        mixer.blend("courses.CourseRequirement", course=obj)
+    
     return obj
