@@ -53,7 +53,7 @@ class CouponCreator:
             logger.error(f"Not authorized user tried to create a coupon with code - {self.code}")
             return False
 
-        if self.code is None or Coupon.objects.filter(code=self.code).exists():
+        if self.code is None or Coupon.objects.filter(code=self.code).exists() or len(self.code) > 20:
             return False
 
         if timezone.now() > self.expires:

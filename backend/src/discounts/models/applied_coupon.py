@@ -9,7 +9,6 @@ class AppliedCouponManager(models.Manager):
         )
 
 
-
 class AppliedCoupon(models.Model):
     coupon = models.ForeignKey("discounts.Coupon", on_delete=models.CASCADE)
     cart = models.ForeignKey("carts.Cart", on_delete=models.CASCADE, related_name="applied_coupons")
