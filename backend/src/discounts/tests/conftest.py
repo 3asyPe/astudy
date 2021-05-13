@@ -9,6 +9,7 @@ def coupon(mixer, user):
     return mixer.blend(
         "discounts.Coupon",
         creator=user,
+        discount=10,
     )
 
 
@@ -17,5 +18,5 @@ def applied_coupon(mixer, coupon, cart):
     return mixer.blend(
         "discounts.AppliedCoupon",
         coupon=coupon,
-        cart=cart,
+        cart=cart
     )

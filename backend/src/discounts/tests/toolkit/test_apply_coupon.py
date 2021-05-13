@@ -17,13 +17,6 @@ def cart(cart, course_factory):
     return cart
 
 
-@pytest.fixture
-def coupon(coupon):
-    coupon.discount = 10
-    coupon.save()
-    return coupon
-
-
 def test_applying_valid_coupon(coupon, cart):
     coupon.applicable_to.add(cart.courses.first())
     applied_coupon = CouponToolkit.apply_coupon(code=coupon.code, cart=cart)
