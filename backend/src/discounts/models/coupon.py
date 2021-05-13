@@ -12,7 +12,7 @@ class Coupon(models.Model):
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     code = models.CharField(max_length=20, unique=True)
     applicable_to = models.ManyToManyField("courses.Course", related_name="coupons")
-    discount = models.PositiveIntegerField(default=0, validators=[MaxValueValidator(100)])
+    discount = models.PositiveIntegerField(default=1, validators=[MaxValueValidator(100)])
     expires = models.DateTimeField(blank=True, null=True)
     active = models.BooleanField(default=True)
     timestamp = models.DateTimeField(auto_now_add=True)

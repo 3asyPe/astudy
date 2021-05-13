@@ -10,3 +10,12 @@ def coupon(mixer, user):
         "discounts.Coupon",
         creator=user,
     )
+
+
+@pytest.fixture
+def applied_coupon(mixer, coupon, cart):
+    return mixer.blend(
+        "discounts.AppliedCoupon",
+        coupon=coupon,
+        cart=cart,
+    )

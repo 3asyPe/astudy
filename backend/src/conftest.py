@@ -56,3 +56,8 @@ def course_factory(mixer):
             description=''.join([random.choice(string.hexdigits) for _ in range(0, 8)]),
         )
     return course_mixer
+
+
+@pytest.fixture
+def cart(mixer, user):
+    return mixer.blend("carts.Cart", user=user)
