@@ -46,7 +46,6 @@ def apply_coupon_api(request, *args, **kwargs):
     return Response(serializer.data, status=200)
 
 
-
 @api_view(["POST"])
 def remove_applied_coupon_api(request, *args, **kwargs):
     try:
@@ -61,7 +60,7 @@ def remove_applied_coupon_api(request, *args, **kwargs):
     cart = cart_lists["cart"]
     wishlist = cart_lists["wishlist"]
     saved_for_later=cart_lists["saved_for_later"]
-
+    
     CouponToolkit.remove_applied_coupon(code=coupon_code, cart=cart)
 
     context={
