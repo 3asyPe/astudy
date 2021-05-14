@@ -35,7 +35,6 @@ def apply_coupon_api(request, *args, **kwargs):
     try:
         CouponToolkit.apply_coupon(code=coupon_code, cart=cart)
     except ValidationError as exc:
-        logger.debug(exc)
         return Response({"error": str(exc)}, status=400)
 
     context={

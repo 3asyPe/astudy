@@ -14,6 +14,16 @@ def coupon(mixer, user):
 
 
 @pytest.fixture
+def small_coupon(mixer):
+    return mixer.blend("discounts.Coupon", discount=10)
+
+
+@pytest.fixture
+def big_coupon(mixer):
+    return mixer.blend("discounts.Coupon", discount=20)
+
+
+@pytest.fixture
 def applied_coupon(mixer, coupon, cart):
     return mixer.blend(
         "discounts.AppliedCoupon",

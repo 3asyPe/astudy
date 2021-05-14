@@ -8,6 +8,7 @@ from django.contrib.auth.models import AnonymousUser
 from mixer.backend.django import mixer as _mixer
 
 from app.test.api_client import DRFClient
+from carts.models import Wishlist
 
 
 User = settings.AUTH_USER_MODEL
@@ -61,3 +62,13 @@ def course_factory(mixer):
 @pytest.fixture
 def cart(mixer, user):
     return mixer.blend("carts.Cart", user=user)
+
+
+@pytest.fixture
+def wishlist(user):
+    return Wishlist.objects.get_or_create(user=user)[0]
+
+
+@pytest.fixture
+def saved_for_later(mixer, user):
+    return mixer.blend("carts.SavedForLater", user=user)

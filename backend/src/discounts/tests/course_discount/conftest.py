@@ -5,16 +5,6 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
-def small_coupon(mixer):
-    return mixer.blend("discounts.Coupon", discount=10)
-
-
-@pytest.fixture
-def big_coupon(mixer):
-    return mixer.blend("discounts.Coupon", discount=20)
-
-
-@pytest.fixture
 def cart(mixer, small_coupon, big_coupon, cart, course_factory):
     mixer.blend("discounts.AppliedCoupon", coupon=small_coupon, cart=cart)
     mixer.blend("discounts.AppliedCoupon", coupon=big_coupon, cart=cart)
