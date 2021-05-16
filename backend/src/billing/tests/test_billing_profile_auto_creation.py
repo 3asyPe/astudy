@@ -1,8 +1,8 @@
-import pytest 
+import pytest
 
 from django.contrib.auth import get_user_model
 
-from carts.models import Wishlist
+from billing.models import BillingProfile
 
 
 pytestmark = [pytest.mark.django_db]
@@ -14,9 +14,9 @@ User = get_user_model()
 def user():
     return User.objects.create(
         email="newuseremail@gmail.com",
-        password="newpassword"
+        password="newpassword",
     )
 
 
-def test_wishlist_creation_for_new_user(user):
-    assert Wishlist.objects.get(user=user)
+def test_billing_profile_auto_creation(user):
+    assert BillingProfile.objects.get(user=user)

@@ -2,11 +2,18 @@ import pytest
 
 from accounts.utils import AccountErrorMessages
 from app.errors import ValidationError
+from billing.models import BillingProfile
 from billing.services import BillingProfileCreator
 from billing.utils import BillingProfileErrorMessages
 
 
 pytestmark = [pytest.mark.django_db]
+
+
+@pytest.fixture
+def user(user):
+    BillingProfile.objects.filter(user=user, active=True).delete()
+    return user
 
 
 def test_create_billing_profile_with_default_info(user):
