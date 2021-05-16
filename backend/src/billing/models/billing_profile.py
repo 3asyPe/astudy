@@ -7,7 +7,7 @@ User = settings.AUTH_USER_MODEL
 
 class BillingProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    country = models.CharField(max_length=120, default="United States of America", blank=True, null=True)
+    country = models.CharField(max_length=120, default="United States of America")
     postal_code = models.CharField(max_length=120, blank=True, null=True)
     customer_id = models.CharField(max_length=120, blank=True, null=True)
     active = models.BooleanField(default=True)
