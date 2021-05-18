@@ -173,9 +173,9 @@
                             </p>
                         </div>
                         <div class="faq-info" style="display: none"
-                             [@openCloseSection]="sectionel.classList.contains('faq-active')"
-                             (@openCloseSection.start)="$event.element.style.display = 'block'"
-                             (@openCloseSection.done)="$event.element.style.display = ($event.toState ? 'block' : 'none')">
+                             [@openCloseSection]="{value: sectionel.classList.contains('faq-active'), params: {maxHeight: section.lectures.length * 40 + 140}}"
+                             (@openCloseSection.start)="$event.element.style.display = 'block'; $event.element.style.maxHeight = $event.element.style.height"
+                             (@openCloseSection.done)="$event.element.style.display = ($event.toState ? 'block' : 'none'); $event.element.style.maxHeight = null">
                             <div class="faq-sub" *ngFor="let lecture of section.lectures">
                                 <div class="faq-sub-top">
                                     <h3 class="faq-cource-name" #lecturenameel>

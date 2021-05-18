@@ -19,6 +19,7 @@ import { CartWishlistComponent } from './cart/cart-wishlist/cart-wishlist.compon
 import { SavedForLaterComponent } from './cart/saved-for-later/saved-for-later.component';
 import { CartCouponsComponent } from './cart/cart-coupons/cart-coupons.component';
 import { TooltipDirective } from './shared/tooltip.directive';
+import { CheckoutComponent } from './checkout/checkout.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { TooltipDirective } from './shared/tooltip.directive';
     CartWishlistComponent,
     SavedForLaterComponent,
     CartCouponsComponent,
+    CheckoutComponent,
   ],
   imports: [
     BrowserModule,

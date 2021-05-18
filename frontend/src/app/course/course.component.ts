@@ -13,24 +13,24 @@ import { CourseService } from './course.service';
   animations: [
     trigger('openCloseSection', [
       state('true', style({
-        "max-height": "200px",
-        width: "100%",
+        "max-height": "{{maxHeight}}px",
+        width: '100%',
         overflow: "hidden",
         padding: "20px 40px",
         opacity: 1,
-      })),
+      }), {params: {maxHeight: 200}}),
       state('false', style({
         "max-height": "0px",
-        width: "0",
+        width: 0,
         overflow: "hidden",
         padding: "0",
         opacity: 0,
       })),
       transition('true => false', [
-        animate('0.4s ease')
+        animate('0.4s ease'),
       ]),
       transition('false => true', [
-        animate('0.4s ease')
+        animate('0.4s ease'),
       ]),
     ]),
     trigger('openCloseLectureDescription', [

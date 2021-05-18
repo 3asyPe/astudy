@@ -52,7 +52,7 @@
                     <p class="basket-all-sum">{{ total }}$</p>
                     <p class="basket-all-sub-sum" *ngIf="total !== subTotal">{{ subTotal }}$</p>
                 </div>
-                <button class="btn-blue btn-checkout" [disabled]="courses.length === 0">Checkout</button>
+                <button class="btn-blue btn-checkout" (click)="checkout()" [disabled]="courses.length === 0">Checkout</button>
                 <app-cart-coupons></app-cart-coupons>
             </div>
         </div>

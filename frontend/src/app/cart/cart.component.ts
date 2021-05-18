@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { AuthService } from '../auth/auth.service';
@@ -44,7 +45,8 @@ export class CartComponent implements OnInit, OnDestroy {
               private cartService: CartService,
               private cartCouponsServices: CartCouponsService,
               private wishlistService: CartWishlistService,
-              private savedForLaterService: SavedForLaterService,) { }
+              private savedForLaterService: SavedForLaterService,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.userSub = this.authService.user.subscribe(
@@ -133,6 +135,11 @@ export class CartComponent implements OnInit, OnDestroy {
       }
     })
   }
+
+  checkout(){
+    this.router.navigateByUrl('/cart/checkout');
+  }
+
 
   ngOnDestroy(){
     this.userSub.unsubscribe()

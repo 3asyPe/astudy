@@ -19,6 +19,10 @@
     margin-bottom: 5px;
 }
 
+.faq-info{
+    /* max-height: none !important; */
+}
+
 .faq-sub-top h3{
     cursor: auto;
 }
