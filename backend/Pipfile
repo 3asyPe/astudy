@@ -18,6 +18,7 @@ pytest-xdist = "*"
 django-environ = "*"
 mixer = "*"
 pytest-mock = "*"
+stripe = "*"
 
 [requires]
 python_version = "3.9"

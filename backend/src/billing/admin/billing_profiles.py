@@ -1,6 +1,5 @@
 from django.contrib import admin
 
-from app.admin import UserFilter
 from billing.models import BillingProfile
 
 
@@ -38,5 +37,4 @@ class BillingProfileAdmin(admin.ModelAdmin):
     list_filter = [
         'active',
         'country',
-        UserFilter
     ]

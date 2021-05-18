@@ -4,6 +4,7 @@ from django.conf import settings
 
 from accounts.utils import AccountErrorMessages
 from app.errors import ValidationError
+from app.integrations.stripe import AppStripe
 from billing.models import BillingProfile
 from billing.utils import BillingProfileErrorMessages
 
@@ -26,7 +27,8 @@ class BillingProfileCreator:
 
     def __call__(self) -> BillingProfile:
         if self.allowed_to_create(raise_exception=True):
-            return self.create()
+            billing_profile = self.create()
+            return billing_profile
 
     def create(self) -> BillingProfile:
         billing_profile = BillingProfile.objects.create(user=self.user)
@@ -52,4 +54,3 @@ class BillingProfileCreator:
             else:
                 return False
         return True
-        

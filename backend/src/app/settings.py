@@ -20,6 +20,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'gdsc@@f!dfqtc0!!8u!28)e*a&_3e667ji_qe5ja+8ldl)p89p'
 
+STRIPE_API_KEY = env("STRIPE_API_KEY", default=None)
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
 

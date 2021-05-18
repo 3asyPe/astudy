@@ -1,5 +1,6 @@
 from django.conf import settings
 
+from app.integrations.stripe import AppStripe
 from billing.models import BillingProfile
 from billing.services import BillingProfileCreator
 
@@ -11,3 +12,10 @@ class BillingProfileToolkit:
     @classmethod
     def create_new_billing_profile(cls, user: User) -> BillingProfile:
         return BillingProfileCreator(user=user)()
+
+    @classmethod
+    def create_new_customer(cls, billing_profile):
+        customer = AppStripe.create_customer(email=billing_profile.user.email)
+        billing_profile.customer_id = customer["id"]
+        billing_profile.save()
+        return billing_profile

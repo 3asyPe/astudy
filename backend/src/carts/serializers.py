@@ -69,7 +69,6 @@ class CartDiscountsInfoSerializer(serializers.ModelSerializer):
 
     def get_wishlist_discounts(self, obj):
         wishlist = self.context.get("wishlist")
-        logger.debug(f"WISHLIST-{wishlist}")
         if wishlist is None:
             return None
         discounts = DiscountSelector.get_discounts_for_wishlist(cart=obj, wishlist=wishlist)
@@ -77,7 +76,6 @@ class CartDiscountsInfoSerializer(serializers.ModelSerializer):
 
     def get_saved_for_later_discounts(self, obj):
         saved_for_later = self.context.get('saved_for_later')
-        logger.debug(f"SAVED_FOR_LATER-{saved_for_later}")
         if saved_for_later is None:
             return None
         discounts = DiscountSelector.get_discounts_for_saved_for_later(cart=obj, saved_for_later=saved_for_later)
