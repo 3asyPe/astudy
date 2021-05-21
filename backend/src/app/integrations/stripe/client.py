@@ -3,7 +3,7 @@ import stripe
 from django.conf import settings
 
 
-if settings.STRIPE_API_KEY:
+if settings.STRIPE_API_TURNED_ON:
     stripe.api_key = settings.STRIPE_API_KEY
 
 
