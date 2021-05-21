@@ -19,6 +19,7 @@ django-environ = "*"
 mixer = "*"
 pytest-mock = "*"
 stripe = "*"
+pytest-env = "*"
 
 [requires]
 python_version = "3.9"

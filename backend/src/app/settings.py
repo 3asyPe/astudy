@@ -1,8 +1,11 @@
 import environ
 import os
+import logging
 
 from pathlib import Path
 
+
+logger = logging.getLogger(__name__)
 
 env = environ.Env(
     DEBUG=(bool, True)
@@ -21,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'gdsc@@f!dfqtc0!!8u!28)e*a&_3e667ji_qe5ja+8ldl)p89p'
 
 STRIPE_API_KEY = env("STRIPE_API_KEY", default=None)
-STRIPE_API_TURNED_ON = True if STRIPE_API_KEY is not None else False
+STRIPE_API_TURNED_ON = True if STRIPE_API_KEY != "" else False
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
