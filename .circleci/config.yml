@@ -16,6 +16,7 @@ jobs:
       - run: 
           command:
             cd backend;
+            sudo pip install pip==21.0.1
             sudo pip install --upgrade pipenv
             pipenv install -r requirements.txt;
       - save_cache:
