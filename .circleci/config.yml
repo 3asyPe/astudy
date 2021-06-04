@@ -16,7 +16,7 @@ jobs:
       - run: 
           command:
             cd backend;
-            sudo pip install pipenv
+            sudo pip install --upgrade pipenv
             pipenv install -r requirements.txt;
       - save_cache:
           key: deps-{{ checksum "backend/requirements.txt" }}
