@@ -18,8 +18,8 @@ import { CartComponent } from './cart/cart.component';
 import { CartWishlistComponent } from './cart/cart-wishlist/cart-wishlist.component';
 import { SavedForLaterComponent } from './cart/saved-for-later/saved-for-later.component';
 import { CartCouponsComponent } from './cart/cart-coupons/cart-coupons.component';
-import { TooltipDirective } from './shared/tooltip.directive';
 import { CheckoutComponent } from './checkout/checkout.component';
+import { CardExpirationMaskDirective } from './shared/card-expiration-mask.directive';
 
 @NgModule({
   declarations: [
@@ -34,6 +34,7 @@ import { CheckoutComponent } from './checkout/checkout.component';
     SavedForLaterComponent,
     CartCouponsComponent,
     CheckoutComponent,
+    CardExpirationMaskDirective,
   ],
   imports: [
     BrowserModule,
