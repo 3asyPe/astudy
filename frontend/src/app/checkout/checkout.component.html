@@ -5,7 +5,8 @@
                 <h2 class="title title-left">Checkout</h2>
                 <sub>Billing Address</sub>
                 <select class="select select-country select-big" [(ngModel)]="country">
-                    <option [ngValue]="'Belarus'" selected>Belarus</option>
+                    <option value="Belarus" >Belarus</option>
+                    <option value="Russia" >Russia</option>
                 </select>
                 <div class="deliever-choise">
                     <label class="label-radio">
@@ -18,7 +19,11 @@
                     </label>
                 </div>
                 
-                <form class="ordering-box-form" *ngIf="newPaymentCard.checked">
+                <form class="ordering-box-form" [ngStyle]="{'display': newPaymentCard.checked ? 'block': 'none'}">
+                    <div class="card-error-box" *ngIf="cardErrors">
+                        <img class="card-error-icon" src="assets/images/warning.svg" alt="">
+                        <div class="card-error-message">{{cardErrors}}</div>
+                    </div>
                     <input class="input card-input" type="text" name="name" placeholder="Name on Card" required [(ngModel)]="cardHolderName">
                     <div class="custom-card-input" #cardNumber></div>
                     <div class="double-input">
@@ -27,12 +32,10 @@
                     </div>
                     <input class="input card-input" type="text" name="zip" maxlength="6" placeholder="Zip/Postal Code" required [(ngModel)]="cardHolderZip">
                     <label class="checkbox">
-                        <input type="checkbox" name="remember">
+                        <input type="checkbox" name="remember" [checked]="this.rememberCard" (change)="this.rememberCard = !this.rememberCard">
                         <span>Remember this Card</span>
                     </label>
                 </form>
-
-                <p>{{cardErrors}}</p>
 
                 <h2 class="title title-left">Order Details</h2>
                 <div class="ordering-details-wrap">

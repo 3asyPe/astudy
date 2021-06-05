@@ -15,7 +15,7 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
 
     total = '';
 
-    country!: string;
+    country = "Belarus";
 
     stripe: any;
     cardNumber: any;
@@ -31,6 +31,7 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
     cardHolderZip!: string;
 
     cardErrors: any;
+    rememberCard = true;
 
     @Input() paymentMethod = 'newPaymentCard';
     loading = false
@@ -65,9 +66,7 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             placeholder: 'Card Number',
         });
-        this.cardNumberElement.changes.subscribe(item => {
-            this.cardNumber.mount(this.cardNumberElement.first.nativeElement)
-        })
+        this.cardNumber.mount(this.cardNumberElement.first.nativeElement)
 
         this.cardExpiry = elements.create('cardExpiry', {
             classes: {base: 'input card-input'},
@@ -81,9 +80,7 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             placeholder: 'MM/YY',
         });
-        this.cardExpiryElement.changes.subscribe(item => {
-            this.cardExpiry.mount(this.cardExpiryElement.first.nativeElement)
-        })
+        this.cardExpiry.mount(this.cardExpiryElement.first.nativeElement)
 
         this.cardCvc = elements.create('cardCvc', {
             classes: {base: 'input card-input'},
@@ -97,9 +94,7 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             placeholder: 'Security Code',
         });
-        this.cardCvcElement.changes.subscribe(item => {
-            this.cardCvc.mount(this.cardCvcElement.first.nativeElement)
-        })
+        this.cardCvc.mount(this.cardCvcElement.first.nativeElement)
     }
 
     async handleCardConfirmation(){
@@ -110,7 +105,7 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
         console.log(token)
         if (error){
             console.log(error)
-            const cardErrors = error.message
+            this.cardErrors = error.message
         } else {
             this.loading = true
             this.loading = false
