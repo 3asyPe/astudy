@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Card(models.Model):
-    billing_profile = models.ForeignKey("billing.BillingProfile", on_delete=models.CASCADE)
+    billing_profile = models.ForeignKey("billing.BillingProfile", on_delete=models.CASCADE, related_name="cards")
     stripe_id = models.CharField(max_length=120)
     brand = models.CharField(max_length=120, blank=True, null=True)
     country = models.CharField(max_length=20, blank=True, null=True)

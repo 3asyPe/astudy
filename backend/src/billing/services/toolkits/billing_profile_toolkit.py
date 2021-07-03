@@ -19,3 +19,10 @@ class BillingProfileToolkit:
         billing_profile.customer_id = customer["id"]
         billing_profile.save()
         return billing_profile
+
+    @classmethod
+    def get_or_create_billing_profile(cls, user: User) -> BillingProfile:
+        qs = BillingProfile.objects.filter(user=user)
+        if qs.exists():
+            return qs.first()
+        return cls.create_new_billing_profile(user=user)
