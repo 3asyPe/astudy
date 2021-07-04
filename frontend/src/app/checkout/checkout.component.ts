@@ -1,8 +1,11 @@
 import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user.model';
+import { CartService } from '../cart/cart.service';
+import { CheckoutService } from './checkout.service';
 
 declare var Stripe: stripe.StripeStatic;
 
@@ -13,9 +16,27 @@ declare var Stripe: stripe.StripeStatic;
 })
 export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
 
-    total = '';
+    courses: {
+        slug: string,
+        image: string,
+        title: string,
+        subtitle: string,
+        price: number,
+        discount: {
+          applied_coupon: string,
+          course_slug: string,
+          new_price: number,
+        }|null
+    }[] = [];
+    subtotal = 0.00;
+    total = 0.00;
 
     country = "Belarus";
+    cards!: {
+        brand: string,
+        last4: string,
+        default: string,
+    }[];
 
     stripe: any;
     cardNumber: any;
@@ -40,12 +61,21 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
     userSub!: Subscription;
     user: User|null = null;
 
-    constructor(private authService: AuthService) { }
+    constructor(private authService: AuthService,
+                private cartService: CartService,
+                private checkoutService: CheckoutService,
+                private router: Router) { }
 
     ngOnInit(): void {
         this.userSub = this.authService.user.subscribe(
             user => {
-              this.user = user
+                this.user = user
+                if (!this.user){
+
+                } else { 
+                    this.fetchBillingProfile()
+                    this.fetchOrderDetails()
+                }
             }
           )
 
@@ -97,7 +127,36 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
         this.cardCvc.mount(this.cardCvcElement.first.nativeElement)
     }
 
+    fetchBillingProfile(){
+        this.loading = true
+        this.checkoutService.fetchBillingProfileData().subscribe(
+            billing_profile => {
+                this.country = billing_profile.country
+                this.cardHolderZip = billing_profile.postal_code
+                this.cards = billing_profile.cards
+                this.loading = false
+            }
+        )
+    }
+
+    fetchOrderDetails(){
+        this.loading = true
+        this.cartService.fetchCartData().subscribe(
+            data => {
+                console.log(data)
+                if (data.courses.length === 0){
+                    this.router.navigateByUrl('/cart');
+                }
+                this.courses = data.courses
+                this.subtotal = data.subtotal
+                this.total = data.total
+                this.loading = false
+            }
+        )
+    }
+
     async handleCardConfirmation(){
+        this.loading = true
         const {token, error} = await this.stripe.createToken(this.cardNumber, {
             name: this.cardHolderName,
             address_zip: this.cardHolderZip,
@@ -106,9 +165,9 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
         if (error){
             console.log(error)
             this.cardErrors = error.message
-        } else {
-            this.loading = true
             this.loading = false
+        } else {
+            this.cardErrors = []
         }
     }
 

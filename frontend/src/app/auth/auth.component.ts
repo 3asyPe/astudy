@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Form, NgForm } from '@angular/forms';
+import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { AuthService } from './auth.service';
 
@@ -43,14 +43,14 @@ export class AuthComponent implements OnInit, OnDestroy {
   }
 
   onSignInSubmit(form: NgForm) {
-    this.userSub = this.authService.signin(
+    this.authService.signin(
       form.value.email,
       form.value.password,
     ).subscribe()
   }
 
   onSignUpSubmit(form: NgForm) {
-    this.userSub = this.authService.signup(
+    this.authService.signup(
       form.value.name,
       form.value.email, 
       form.value.password
