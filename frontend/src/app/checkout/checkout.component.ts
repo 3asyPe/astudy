@@ -1,10 +1,10 @@
 import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user.model';
 import { CartService } from '../cart/cart.service';
+import { countries } from '../shared/country-data-store';
 import { CheckoutService } from './checkout.service';
 
 declare var Stripe: stripe.StripeStatic;
@@ -31,6 +31,7 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
     subtotal = 0.00;
     total = 0.00;
 
+    countries = countries 
     country = "Belarus";
     cards!: {
         brand: string,
@@ -167,7 +168,7 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
             this.cardErrors = error.message
             this.loading = false
         } else {
-            this.cardErrors = []
+            this.cardErrors = [ ]
         }
     }
 

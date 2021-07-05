@@ -5,8 +5,7 @@
                 <h2 class="title title-left">Checkout</h2>
                 <sub>Billing Address</sub>
                 <select class="select select-country select-big" [(ngModel)]="country">
-                    <option value="Belarus" >Belarus</option>
-                    <option value="Russia" >Russia</option>
+                    <option *ngFor="let country of countries" value="{{country.name}}" >{{country.name}}</option>
                 </select>
                 <div class="deliever-choise">
                     <label class="label-radio" *ngFor="let card of cards">
