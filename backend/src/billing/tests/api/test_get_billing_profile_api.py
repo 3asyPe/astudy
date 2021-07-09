@@ -11,7 +11,6 @@ def test_get_billing_profile_api_with_user(api, billing_profile):
     response = api.get("/api/billing/get/")
 
     assert response["country"] == "Canada"
-    assert response["postal_code"] == "666666"
     
     card = response["cards"][0]
     assert card["brand"] == "VISA"
@@ -32,5 +31,4 @@ def test_get_nonexistent_billing_profile_api(api, mocker):
     response = api.get("/api/billing/get/")
 
     assert response["country"]
-    assert "postal_code" in response
     assert "cards" in response

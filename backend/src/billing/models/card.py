@@ -6,6 +6,7 @@ class Card(models.Model):
     stripe_id = models.CharField(max_length=120)
     brand = models.CharField(max_length=120, blank=True, null=True)
     country = models.CharField(max_length=20, blank=True, null=True)
+    postal_code = models.CharField(max_length=120, blank=True, null=True)
     exp_month = models.IntegerField(blank=True, null=True)
     exp_year = models.IntegerField(blank=True, null=True)
     last4 = models.CharField(max_length=4, blank=True, null=True)

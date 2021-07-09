@@ -18,7 +18,6 @@ def billing_profile(api, mixer):
         )
 
     billing_profile.country = "Canada"
-    billing_profile.postal_code = "666666"
     billing_profile.save()
 
     card = mixer.blend(
@@ -27,6 +26,7 @@ def billing_profile(api, mixer):
         brand="VISA", 
         country="Belarus",
         last4="4242",
+        postal_code="424242",
         default=False
     )
     billing_profile.cards.add(card)

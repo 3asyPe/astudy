@@ -23,7 +23,6 @@ def test_create_billing_profile_with_default_info(user):
 
     assert billing_profile.user == user
     assert billing_profile.country == "United States of America"
-    assert billing_profile.postal_code == None
     assert billing_profile.active == True
 
 
@@ -31,13 +30,11 @@ def test_create_billing_profile_with_custom_data(user):
     billing_profile = BillingProfileCreator(
         user=user,
         country="Belarus",
-        postal_code=213023,
         customer_id="randomstring",
     )()
 
     assert billing_profile.user == user
     assert billing_profile.country == "Belarus"
-    assert billing_profile.postal_code == 213023
     assert billing_profile.customer_id == "randomstring"
     assert billing_profile.active == True
 

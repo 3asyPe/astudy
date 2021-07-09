@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'categories',
     'courses',
     'discounts',
+    'orders',
 ]
 
 REST_FRAMEWORK = {

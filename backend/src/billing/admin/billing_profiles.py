@@ -9,7 +9,6 @@ class BillingProfileAdmin(admin.ModelAdmin):
         'id',
         'user',
         'country',
-        'postal_code',
         'active',
     ]
 
@@ -17,14 +16,12 @@ class BillingProfileAdmin(admin.ModelAdmin):
         'id',
         'user',
         'country',
-        'postal_code',
         'active'
     ]
 
     fields = [
         'user',
         'country',
-        'postal_code',
         'customer_id',
         'active',
     ]

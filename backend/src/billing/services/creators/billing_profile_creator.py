@@ -17,12 +17,10 @@ class BillingProfileCreator:
         self, 
         user: User, 
         country: Optional[str] = None, 
-        postal_code: Optional[str] = None,
         customer_id: Optional[str] = None,
     ):
         self.user = user if user.is_authenticated else None
         self.country = country
-        self.postal_code = postal_code
         self.customer_id = customer_id
 
     def __call__(self) -> BillingProfile:
@@ -34,8 +32,6 @@ class BillingProfileCreator:
         billing_profile = BillingProfile.objects.create(user=self.user)
         if self.country:
             billing_profile.country = self.country
-        if self.postal_code:
-            billing_profile.postal_code = self.postal_code
         if self.customer_id:
             billing_profile.customer_id = self.customer_id
         billing_profile.save()

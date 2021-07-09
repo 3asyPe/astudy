@@ -20,6 +20,5 @@ class BillingProfileSerializer(serializers.ModelSerializer):
         model = BillingProfile
         fields = [
             'country',
-            'postal_code',
             'cards',
         ]

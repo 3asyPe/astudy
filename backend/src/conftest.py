@@ -8,6 +8,7 @@ from django.contrib.auth.models import AnonymousUser
 from mixer.backend.django import mixer as _mixer
 
 from app.test.api_client import DRFClient
+from billing.models import BillingProfile
 from carts.models import Wishlist
 
 
@@ -72,3 +73,11 @@ def wishlist(user):
 @pytest.fixture
 def saved_for_later(mixer, user):
     return mixer.blend("carts.SavedForLater", user=user)
+
+
+@pytest.fixture
+def billing_profile(mixer, user):
+    qs = BillingProfile.objects.filter(user=user, active=True)
+    if qs.exists():
+        return qs.first()
+    return mixer.blend("billing.BillingProfile", user=user)
