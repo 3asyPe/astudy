@@ -12,4 +12,4 @@ logger = logging.getLogger(__name__)
 @receiver(pre_save, sender=Order)
 def pre_save_order_receiver(sender, instance: Order, *args, **kwargs):
     if not instance.order_id:
-        instance.set_new_order_id()
+        instance.set_new_order_id(save_instance=False)

@@ -1,0 +1,9 @@
+import enum
+
+class OrderErorrMessages(enum.Enum):
+    EMPTY_CART_ERROR = "EMPTY_CART_ERROR"
+
+
+class PaymentMethodErrorMessages(enum.Enum):
+    UNSUPPORTED_PAYMENT_METHOD_TYPE_ERROR = "UNSUPPORTED_PAYMENT_METHOD_TYPE_ERROR"
+    WRONG_STRIPE_ID_ERROR = "WRONG_STRIPE_ID_ERROR"

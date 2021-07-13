@@ -10,7 +10,6 @@ class CardAdmin(admin.ModelAdmin):
         'user',
         'brand',
         'last4',
-        'active',
     ]
 
     list_display_links = [
@@ -18,19 +17,14 @@ class CardAdmin(admin.ModelAdmin):
         'user',
         'brand',
         'last4',
-        'active',
     ]
 
     fields = [
-        'billing_profile',
-        'stripe_id',
         'brand',
         'country',
         'exp_month',
         'exp_year',
         'last4',
-        'default',
-        'active',
     ]
 
     readonly_fields = [
@@ -38,10 +32,8 @@ class CardAdmin(admin.ModelAdmin):
     ]
 
     list_filters = [
-        'active',
         'brand',
         'country',
-        'default',
     ]
 
     def user(self, obj):

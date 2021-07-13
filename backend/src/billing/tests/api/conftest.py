@@ -27,7 +27,6 @@ def billing_profile(api, mixer):
         country="Belarus",
         last4="4242",
         postal_code="424242",
-        default=False
     )
     billing_profile.cards.add(card)
     return billing_profile
