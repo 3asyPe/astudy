@@ -4,7 +4,7 @@ from django.conf import settings
 
 class PaymentMethod(models.Model):
     type = models.CharField(max_length=50, choices=settings.PAYMENT_METHODS)
-    stripe_id = models.CharField(max_length=120)
+    stripe_token = models.CharField(max_length=120)
     
     card = models.ForeignKey("billing.Card", on_delete=models.SET_NULL, blank=True, null=True)
 

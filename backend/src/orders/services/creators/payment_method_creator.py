@@ -10,9 +10,9 @@ from orders.utils import PaymentMethodErrorMessages
 
 
 class PaymentMethodCreator:
-    def __init__(self, type: str, stripe_id: str, card: Optional[Card]=None):
+    def __init__(self, type: str, stripe_token: str, card: Optional[Card]=None):
         self.type = type
-        self.stripe_id = stripe_id
+        self.stripe_token = stripe_token
         self.card = card
 
     def __call__(self) -> Optional[PaymentMethod]:
@@ -27,14 +27,17 @@ class PaymentMethodCreator:
     def create(self) -> PaymentMethod:
         return PaymentMethod.objects.create(
             type=self.type,
-            stripe_id=self.stripe_id,
+            stripe_token=self.stripe_token,
         )
 
     def allowed_to_create(self) -> bool:
         if not self.type in dict(settings.PAYMENT_METHODS):
             raise ValidationError(PaymentMethodErrorMessages.UNSUPPORTED_PAYMENT_METHOD_TYPE_ERROR.value)
 
-        if not self.stripe:
-            raise ValidationError(PaymentMethodErrorMessages.WRONG_STRIPE_ID_ERROR.value)
+        if not self.stripe_token.startswith("tok_"):
+            raise ValidationError(PaymentMethodErrorMessages.WRONG_STRIPE_TOKEN_ERROR.value)
 
+        if settings.STRIPE_API_TURNED_ON and not AppStripe.validate_token(self.stripe_token):
+            raise ValidationError(PaymentMethodErrorMessages.WRONG_STRIPE_TOKEN_ERROR.value)
+        
         return True
