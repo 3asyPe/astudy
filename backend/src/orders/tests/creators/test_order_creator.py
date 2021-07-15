@@ -9,12 +9,6 @@ from orders.utils import OrderErorrMessages
 pytestmark = [pytest.mark.django_db]
 
 
-@pytest.fixture
-def cart_with_course(cart, course_factory):
-    cart.courses.add(course_factory())
-    return cart
-
-
 def test_order_creation(billing_profile, cart_with_course, payment_method):
     order = OrderCreator(
         billing_profile=billing_profile,

@@ -21,3 +21,9 @@ def payment_method(mixer):
         type="CARD",
         stripe_token="tok_test",
     )
+
+
+@pytest.fixture
+def cart_with_course(cart, course_factory):
+    cart.courses.add(course_factory())
+    return cart
