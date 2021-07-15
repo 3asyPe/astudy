@@ -19,4 +19,5 @@ def payment_method(mixer):
     return mixer.blend(
         "orders.PaymentMethod",
         type="CARD",
+        stripe_token="tok_test",
     )

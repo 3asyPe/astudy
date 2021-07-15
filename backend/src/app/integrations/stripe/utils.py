@@ -1,0 +1,6 @@
+import enum
+
+
+class StripeErrorMessages(enum.Enum):
+    WRONG_STRIPE_TOKEN_ERROR = "WRONG_STRIPE_TOKEN_ERROR"
+    WRONG_STRIPE_CUSTOMER_ID = "WRONG_STRIPE_CUSTOMER_ID"

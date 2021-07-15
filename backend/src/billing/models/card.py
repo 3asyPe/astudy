@@ -19,5 +19,15 @@ class Card(models.Model):
         verbose_name = ('Card')
         verbose_name_plural = ('Cards')
 
+    def set_as_default(self):
+        cards = Card.objects.filter(billing_profile=self.billing_profile)
+
+        for card in cards:
+            card.default = False
+            card.save()
+
+        self.default = True
+        self.save()
+
     def __str__(self):
         return f"{self.billing_profile.__str__()} | Card | {self.brand}"
