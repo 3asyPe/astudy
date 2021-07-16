@@ -1,3 +1,5 @@
+from typing import Optional
+
 from billing.models import BillingProfile, Card
 from billing.services import CardCreator
 from carts.models import Cart
@@ -11,11 +13,15 @@ class OrderToolkit:
         cls, 
         billing_profile: BillingProfile, 
         cart: Cart,
-        stripe_token: str, 
+        card_last4: Optional[str] = None,
+        stripe_token: Optional[str] = None, 
         save_card: bool = False,
     ) -> Order:
         card = None
-        if save_card:
+        if card_last4:
+            card = Card.objects.get(billing_profile=billing_profile, last4=card_last4)
+            stripe_token = card.stripe_id
+        elif save_card:
             card = CardCreator(
                 billing_profile=billing_profile, 
                 stripe_token=stripe_token,

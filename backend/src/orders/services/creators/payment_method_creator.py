@@ -34,7 +34,7 @@ class PaymentMethodCreator:
         if not self.type in dict(settings.PAYMENT_METHODS):
             raise ValidationError(PaymentMethodErrorMessages.UNSUPPORTED_PAYMENT_METHOD_TYPE_ERROR.value)
 
-        if not self.stripe_token.startswith("tok_"):
+        if not self.stripe_token.startswith("tok_") and not self.stripe_token.startswith("card_"):
             raise ValidationError(PaymentMethodErrorMessages.WRONG_STRIPE_TOKEN_ERROR.value)
 
         if settings.STRIPE_API_TURNED_ON and not AppStripe.validate_token(self.stripe_token):

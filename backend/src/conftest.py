@@ -81,3 +81,17 @@ def billing_profile(mixer, user):
     if qs.exists():
         return qs.first()
     return mixer.blend("billing.BillingProfile", user=user)
+
+
+@pytest.fixture
+def card(mixer, billing_profile):
+    card = mixer.blend(
+        "billing.Card",
+        billing_profile=billing_profile, 
+        stripe_id="card_1JD9PPAGKJR9v1iNUvmLh76d",
+        brand="VISA", 
+        country="Belarus",
+        postal_code="424242",
+        last4="4242",
+    )
+    return card
