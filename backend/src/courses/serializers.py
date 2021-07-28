@@ -166,3 +166,14 @@ class CartCourseSerializer(serializers.ModelSerializer):
         if discount is None:
             return None
         return discount.serialize()
+
+
+class OrderCourseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Course
+        fields = [
+            "slug",
+            "image",
+            "title",
+            "subtitle",
+        ]

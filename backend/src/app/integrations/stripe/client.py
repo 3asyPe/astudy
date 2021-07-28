@@ -14,6 +14,7 @@ if settings.STRIPE_API_TURNED_ON:
 class AppStripe:
     customer = stripe.Customer
     token = stripe.Token
+    charge = stripe.Charge
 
     @classmethod
     def create_customer(cls, email):
@@ -42,6 +43,16 @@ class AppStripe:
     @classmethod
     def retrieve_token(cls, token):
         return cls.token.retrieve(token)
+
+    @classmethod
+    def create_charge(cls, customer_id, token, amount, metadata={}):
+        return cls.charge.create(
+            amount=int(amount*100), # Stripe interpret 1111$ as 11.11$
+            currency="usd",
+            customer=customer_id,
+            source=token,
+            metadata=metadata,
+        )
 
     @classmethod
     def validate_token(cls, token) -> bool:

@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from app.errors import ValidationError
 from billing.services import BillingProfileToolkit
 from carts.services import CartToolkit
+from orders.api.serializers import CompletedOrderSerializer
 from orders.services import OrderToolkit
 
 
@@ -25,7 +26,7 @@ def complete_order_api(request, *args, **kwargs):
         payment_method = data["payment_method"]
 
         remember_card = False
-        if payment_method == "newPaymentCard":
+        if payment_method == "new_payment_card":
             remember_card = data["remember_card"] == "true"
 
         card_last4 = None
@@ -38,7 +39,7 @@ def complete_order_api(request, *args, **kwargs):
     billing_profile.save()
 
     try:
-        order = OrderToolkit.place_an_order(
+        order = OrderToolkit.complete_order(
             billing_profile=billing_profile,
             cart=cart,
             stripe_token=stripe_token,
@@ -46,8 +47,8 @@ def complete_order_api(request, *args, **kwargs):
             save_card=remember_card,
         )
     except ValidationError as exc:
-        return Response({"error": str(exc.value)}, status=400)
+        return Response({"error": str(exc)}, status=400)
 
-    logger.info(f'Order with id - {order.id} has been created')
-    
-    return Response({"order_id": order.order_id}, 200)
+    serializer = CompletedOrderSerializer(instance=order)
+
+    return Response(serializer.data, 200)

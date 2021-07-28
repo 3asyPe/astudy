@@ -11,7 +11,7 @@ def complete_order_request(stripe_token):
     return {
         "card_token": stripe_token,
         "country": "US",
-        "payment_method": "newPaymentCard",
+        "payment_method": "new_payment_card",
         "remember_card": "true",
     }
 

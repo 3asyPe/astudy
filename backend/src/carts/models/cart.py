@@ -24,14 +24,19 @@ class Cart(models.Model):
         verbose_name = ("Cart")
         verbose_name_plural = ("Carts")
 
-    def update_totals(self) -> 'carts.Cart':
-        """Updates cart totals. This method made to avoid circular imports"""
+    def update_totals(self):
+        """Updates cart totals. This method is made to avoid circular imports"""
         from carts.services import CartToolkit
         CartToolkit.update_cart_totals(cart=self)
         return self
 
     def get_courses_count(self):
         return self.courses.all().count()
+
+    def deactivate(self, save_instance=True):
+        self.active = False
+        if save_instance:
+            self.save()
 
     def __str__(self):
         return f"{self.user.__str__()} | id - {self.id} | active - {self.active} | total - {self.total}"

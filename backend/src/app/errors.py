@@ -4,3 +4,7 @@ class ValidationError(Exception):
 
 class DiscountDoesNotExistError(Exception):
     pass
+
+
+class UnknownError(Exception):
+    pass

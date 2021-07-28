@@ -4,3 +4,7 @@ class UnknownStripeError(Exception):
 
 class StripeResponseFieldError(Exception):
     pass
+
+
+class NotChargedStripeError(Exception):
+    pass
